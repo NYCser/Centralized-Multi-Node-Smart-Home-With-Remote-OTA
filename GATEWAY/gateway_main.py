@@ -9,6 +9,7 @@ import threading
 import sqlite3
 from flask import Flask, request
 from flask_cors import CORS 
+import socket
 
 # 1. Import app và socketio từ app/main.py
 # Đảm bảo file app/main.py của bạn đã khởi tạo: socketio = SocketIO(app, cors_allowed_origins="*")
@@ -67,7 +68,6 @@ def ensure_admin(conn):
         print("[AUTH] Admin account created")
 
     conn.commit()
-    conn.close()
 
 # ── 2. Khởi động các dịch vụ nền (Workers) ─────────────────
 
@@ -105,18 +105,22 @@ def start_api():
     for bp in blueprints:
         try:
             # URL ví dụ: http://192.168.1.246:5000/api/auth/login
-            app.register_blueprint(bp, url_prefix='')
+            app.register_blueprint(bp, url_prefix='/api')
+
             print(f"[API] Registered: {bp.name}")
         except Exception as e:
             print(f"[API] Error registering {bp.name}: {e}")
 
     port = int(os.getenv("API_PORT", 5000))
     print("=" * 55)
-    print(f"[MAIN] Gateway LIVE at: http://192.168.1.33:{port}/")
+    ip = socket.gethostbyname(socket.gethostname())
+    print(f"[MAIN] Gateway LIVE at: http://{ip}:{port}/")
     print("=" * 55)
 
     # Chạy server trên 0.0.0.0 để cho phép truy cập từ máy tính khác trong mạng
-    socketio.run(app, host="0.0.0.0", port=port, allow_unsafe_werkzeug=True)
+    #socketio.run(app, host="0.0.0.0", port=port, allow_unsafe_werkzeug=True)
+    debug = os.getenv("DEBUG", "0") == "1"
+    socketio.run(app, host="0.0.0.0", port=port, debug=debug)
 
 # ── Main Entry ──────────────────────────────────────────────
 

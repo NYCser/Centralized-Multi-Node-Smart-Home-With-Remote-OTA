@@ -1,139 +1,168 @@
-# Cloudflare Tunnel Configuration
-# Location: ~/.cloudflared/config.yml
-# 
-# This file defines:
-# 1. Tunnel identity
-# 2. Ingress routing rules (which domain → which local service)
-# 3. Logging and connection settings
+# # Cloudflare Tunnel Configuration
+# # Location: ~/.cloudflared/config.yml
+# # 
+# # This file defines:
+# # 1. Tunnel identity
+# # 2. Ingress routing rules (which domain → which local service)
+# # 3. Logging and connection settings
 
-# ═══════════════════════════════════════════════════════════════════
-# TUNNEL SETTINGS
-# ═══════════════════════════════════════════════════════════════════
+# # ═══════════════════════════════════════════════════════════════════
+# # TUNNEL SETTINGS
+# # ═══════════════════════════════════════════════════════════════════
 
-# Tunnel name (should match: cloudflared tunnel create <name>)
+
 tunnel: nhathongminh
-
-# Credentials file path
-# cloudflared login creates: ~/.cloudflared/<UUID>.json
-# Update <UUID> to match your tunnel UUID
-credentials-file: /home/pi/.cloudflared/<REPLACE-WITH-YOUR-UUID>.json
-
-# ═══════════════════════════════════════════════════════════════════
-# INGRESS RULES (Route incoming traffic)
-# ═══════════════════════════════════════════════════════════════════
-# Rules are evaluated in order (top-first matching wins)
+credentials-file: /home/pi/.cloudflared/2f5be01f-842e-4dcf-a2df-6344b2760503.json
 
 ingress:
-  # API Endpoint - Main REST API
-  - hostname: api.yourdomain.com
-    path: /*
+  - hostname: nhathongminh.crfnetwork.cyou
     service: http://localhost:5000
-    originRequest:
-      httpHostHeader: localhost
-      timeout: 30s
-      noTLSVerify: true  # Localhost has self-signed cert
-      headers:
-        add:
-          X-Tunnel-Origin: cloudflare
-  
-  # WebSocket for Socket.IO (real-time updates)
-  - hostname: api.yourdomain.com
-    path: /socket.io/*
+
+  - hostname: nhathongminh.crfnetwork.cyou
+    # path: /socket.io/*
     service: ws://localhost:5001
-    originRequest:
-      httpHostHeader: localhost
-      timeout: 0  # No timeout for WebSocket
-      headers:
-        add:
-          X-Tunnel-Origin: cloudflare
-  
-  # Optional: Health check endpoint (for monitoring)
-  - hostname: api.yourdomain.com
-    path: /health
-    service: http://localhost:5000
-  
-  # Catch-all: 404 for unmapped routes
+
   - service: http_status:404
 
-# ═══════════════════════════════════════════════════════════════════
-# LOGGING SETTINGS
-# ═══════════════════════════════════════════════════════════════════
-
-# Log level: debug, info, warn, error
 loglevel: info
 
-# Log file path
-logfile: /home/pi/.cloudflared/cloudflared.log
 
-# ═══════════════════════════════════════════════════════════════════
-# CONNECTION SETTINGS
-# ═══════════════════════════════════════════════════════════════════
 
-# Grace period for graceful shutdown
-grace-period: 30s
+# tunnel: nhathongminh
+# credentials-file: /home/pi/.cloudflared/2f5be01f-842e-4dcf-a2df-6344b2760503.json
 
-# Heartbeat interval to keep connection alive
-heartbeat-interval: 30s
+# ingress:
+#   - hostname: nhathongminh.crfnetwork.cyou
+#     service: http://localhost:5000
 
-# Max failed heartbeats before reconnect
-max-failed-heartbeats: 5
+#   - service: http_status:404
 
-# Number of connection threads
-num-workers: 1  # For Raspberry Pi, keep low to save resources
 
-# ═══════════════════════════════════════════════════════════════════
-# OPTIONAL: METRICS & MONITORING
-# ═══════════════════════════════════════════════════════════════════
 
-# Expose metrics on local port (for prometheus/monitoring)
-# metrics: 127.0.0.1:8888
+# # Tunnel name (should match: cloudflared tunnel create <name>)
+# tunnel: nhathongminh
 
-# ═══════════════════════════════════════════════════════════════════
-# SETUP INSTRUCTIONS
-# ═══════════════════════════════════════════════════════════════════
+# # Credentials file path
+# # cloudflared login creates: ~/.cloudflared/<UUID>.json
+# # Update <UUID> to match your tunnel UUID
+# credentials-file: /home/pi/.cloudflared/<REPLACE-WITH-YOUR-UUID>.json
 
-# 1. Find your tunnel UUID:
-#    cloudflared tunnel list
-#    Or: ls ~/.cloudflared/*.json | grep -oE '[a-f0-9-]{36}' | head -1
+# # ═══════════════════════════════════════════════════════════════════
+# # INGRESS RULES (Route incoming traffic)
+# # ═══════════════════════════════════════════════════════════════════
+# # Rules are evaluated in order (top-first matching wins)
 
-# 2. Replace <REPLACE-WITH-YOUR-UUID> in credentials-file path above
+# ingress:
+#   # API Endpoint - Main REST API
+#   - hostname: api.yourdomain.com
+#     path: /*
+#     service: http://localhost:5000
+#     originRequest:
+#       httpHostHeader: localhost
+#       timeout: 30s
+#       noTLSVerify: true  # Localhost has self-signed cert
+#       headers:
+#         add:
+#           X-Tunnel-Origin: cloudflare
+  
+#   # WebSocket for Socket.IO (real-time updates)
+#   - hostname: api.yourdomain.com
+#     path: /socket.io/*
+#     service: ws://localhost:5001
+#     originRequest:
+#       httpHostHeader: localhost
+#       timeout: 0  # No timeout for WebSocket
+#       headers:
+#         add:
+#           X-Tunnel-Origin: cloudflare
+  
+#   # Optional: Health check endpoint (for monitoring)
+#   - hostname: api.yourdomain.com
+#     path: /health
+#     service: http://localhost:5000
+  
+#   # Catch-all: 404 for unmapped routes
+#   - service: http_status:404
 
-# 3. Replace yourdomain.com with your actual domain
+# # ═══════════════════════════════════════════════════════════════════
+# # LOGGING SETTINGS
+# # ═══════════════════════════════════════════════════════════════════
 
-# 4. Test config:
-#    cloudflared tunnel validate
-#
-# 5. Run tunnel:
-#    cloudflared tunnel run smarthome-gateway
-#
-# 6. Or auto-start with systemd:
-#    sudo systemctl start cloudflared.service
-#    sudo systemctl status cloudflared.service
-#
-# 7. Verify DNS record exists:
-#    https://dash.cloudflare.com → Your Domain → DNS
-#    Should have CNAME: api → smarthome-gateway.cfargotunnel.com
+# # Log level: debug, info, warn, error
+# loglevel: info
 
-# ═══════════════════════════════════════════════════════════════════
-# COMMON ISSUES & SOLUTIONS
-# ═══════════════════════════════════════════════════════════════════
+# # Log file path
+# logfile: /home/pi/.cloudflared/cloudflared.log
 
-# Issue: "Tunnel authentication failed"
-# → Run: cloudflared tunnel login
-# → Then: cloudflared tunnel create smarthome-gateway
+# # ═══════════════════════════════════════════════════════════════════
+# # CONNECTION SETTINGS
+# # ═══════════════════════════════════════════════════════════════════
 
-# Issue: "Connection refused at localhost:5000"
-# → Make sure Flask API is running: python gateway_main.py
-# → Check: curl http://localhost:5000/health
+# # Grace period for graceful shutdown
+# grace-period: 30s
 
-# Issue: "Tunnel connected but requests timeout"
-# → Increase timeout values above
-# → Check Raspberry Pi CPU/memory: top
-# → Check network connectivity: ping 8.8.8.8
+# # Heartbeat interval to keep connection alive
+# heartbeat-interval: 30s
 
-# Issue: "Domain doesn't resolve"
-# → Wait 5-10 minutes for DNS propagation
-# → Verify CNAME record in Cloudflare DNS
-# → Flush DNS: sudo systemctl restart systemd-resolved
+# # Max failed heartbeats before reconnect
+# max-failed-heartbeats: 5
 
-# ═══════════════════════════════════════════════════════════════════
+# # Number of connection threads
+# num-workers: 1  # For Raspberry Pi, keep low to save resources
+
+# # ═══════════════════════════════════════════════════════════════════
+# # OPTIONAL: METRICS & MONITORING
+# # ═══════════════════════════════════════════════════════════════════
+
+# # Expose metrics on local port (for prometheus/monitoring)
+# # metrics: 127.0.0.1:8888
+
+# # ═══════════════════════════════════════════════════════════════════
+# # SETUP INSTRUCTIONS
+# # ═══════════════════════════════════════════════════════════════════
+
+# # 1. Find your tunnel UUID:
+# #    cloudflared tunnel list
+# #    Or: ls ~/.cloudflared/*.json | grep -oE '[a-f0-9-]{36}' | head -1
+
+# # 2. Replace <REPLACE-WITH-YOUR-UUID> in credentials-file path above
+
+# # 3. Replace yourdomain.com with your actual domain
+
+# # 4. Test config:
+# #    cloudflared tunnel validate
+# #
+# # 5. Run tunnel:
+# #    cloudflared tunnel run smarthome-gateway
+# #
+# # 6. Or auto-start with systemd:
+# #    sudo systemctl start cloudflared.service
+# #    sudo systemctl status cloudflared.service
+# #
+# # 7. Verify DNS record exists:
+# #    https://dash.cloudflare.com → Your Domain → DNS
+# #    Should have CNAME: api → smarthome-gateway.cfargotunnel.com
+
+# # ═══════════════════════════════════════════════════════════════════
+# # COMMON ISSUES & SOLUTIONS
+# # ═══════════════════════════════════════════════════════════════════
+
+# # Issue: "Tunnel authentication failed"
+# # → Run: cloudflared tunnel login
+# # → Then: cloudflared tunnel create smarthome-gateway
+
+# # Issue: "Connection refused at localhost:5000"
+# # → Make sure Flask API is running: python gateway_main.py
+# # → Check: curl http://localhost:5000/health
+
+# # Issue: "Tunnel connected but requests timeout"
+# # → Increase timeout values above
+# # → Check Raspberry Pi CPU/memory: top
+# # → Check network connectivity: ping 8.8.8.8
+
+# # Issue: "Domain doesn't resolve"
+# # → Wait 5-10 minutes for DNS propagation
+# # → Verify CNAME record in Cloudflare DNS
+# # → Flush DNS: sudo systemctl restart systemd-resolved
+
+# # ═══════════════════════════════════════════════════════════════════

@@ -369,8 +369,8 @@ def _log_access(room_id, uid, user_name, action, success):
 # ── Redis command listener ────────────────────────────────
 
 def command_listener():
-    """
-    Lắng nghe lệnh từ Web (qua Redis pubsub).
+
+    """Lắng nghe lệnh từ Web (qua Redis pubsub).
     Thay thế Firebase on_snapshot.
     """
     bus    = MessageBus.get_instance()

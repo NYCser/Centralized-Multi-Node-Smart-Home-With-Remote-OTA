@@ -55,12 +55,12 @@ def open_daily_db(date_str: str):
 def hash_pw(pw): return hashlib.sha256(pw.encode()).hexdigest()
 
 
-def require_auth(f):
-    @wraps(f)
-    def d(*a, **kw):
-        token = request.headers.get("Authorization","").replace("Bearer ","").strip()
-        cached = r.get(f"session:{token}")
-        conn   = get_db()
+def get_current_user(token):
+    if not token:
+        return None
+    cached = r.get(f"session:{token}")
+    conn = get_db()
+    try:
         if cached:
             row = conn.execute("SELECT id,email,display_name,role FROM users WHERE id=?",
                                (int(cached),)).fetchone()
@@ -69,32 +69,38 @@ def require_auth(f):
                 "SELECT u.id,u.email,u.display_name,u.role FROM sessions s JOIN users u ON s.user_id=u.id WHERE s.token=? AND s.expires_at>?",
                 (token, datetime.utcnow().isoformat())
             ).fetchone()
+        return dict(row) if row else None
+    finally:
         conn.close()
-        if not row: return jsonify({"error":"unauthorized"}),401
-        request.current_user = dict(row)
-        return f(*a,**kw)
+
+
+def require_auth(f):
+    @wraps(f)
+    def d(*a, **kw):
+        token = request.headers.get("Authorization", "").replace("Bearer ", "").strip()
+        if not token:
+            return jsonify({"error": "Unauthorized"}), 401
+        user = get_current_user(token)
+        if not user:
+            return jsonify({"error": "Session expired or invalid"}), 401
+        request.current_user = user
+        return f(*a, **kw)
     return d
 
 
 def require_admin(f):
     @wraps(f)
     def d(*a, **kw):
-        token  = request.headers.get("Authorization","").replace("Bearer ","").strip()
-        cached = r.get(f"session:{token}")
-        conn   = get_db()
-        if cached:
-            row = conn.execute("SELECT id,email,role FROM users WHERE id=?",
-                               (int(cached),)).fetchone()
-        else:
-            row = conn.execute(
-                "SELECT u.id,u.email,u.role FROM sessions s JOIN users u ON s.user_id=u.id WHERE s.token=? AND s.expires_at>?",
-                (token, datetime.utcnow().isoformat())
-            ).fetchone()
-        conn.close()
-        if not row:              return jsonify({"error":"unauthorized"}),401
-        if row["role"]!="admin": return jsonify({"error":"forbidden"}),403
-        request.current_user = dict(row)
-        return f(*a,**kw)
+        token = request.headers.get("Authorization", "").replace("Bearer ", "").strip()
+        if not token:
+            return jsonify({"error": "Unauthorized"}), 401
+        user = get_current_user(token)
+        if not user:
+            return jsonify({"error": "Session expired or invalid"}), 401
+        if user.get("role") != "admin":
+            return jsonify({"error": "Forbidden"}), 403
+        request.current_user = user
+        return f(*a, **kw)
     return d
 
 
@@ -106,17 +112,39 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/auth/register", methods=["POST"])
 def register():
     data  = request.json or {}
-    email = data.get("email","").lower().strip()
+    email = data.get("email"," ").lower().strip()
     pw    = data.get("password","")
     name  = data.get("display_name", email.split("@")[0])
-    if not email or not pw: return jsonify({"error":"Email và mật khẩu là bắt buộc"}),400
+    if not email or not pw:
+        return jsonify({"error":"Email và mật khẩu là bắt buộc"}), 400
     conn  = get_db()
     exist = conn.execute("SELECT id FROM users WHERE email=?", (email,)).fetchone()
-    if exist: return jsonify({"error":"Email đã tồn tại"}),409
+    if exist:
+        conn.close()
+        return jsonify({"error":"Email đã tồn tại"}), 409
     conn.execute("INSERT INTO users(email,password,display_name,role) VALUES(?,?,?,?)",
                  (email, hash_pw(pw), name, "user"))
-    conn.commit(); conn.close()
-    return jsonify({"message":"Đăng ký thành công"})
+    user_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+    conn.commit()
+    conn.close()
+
+    token = secrets.token_hex(32)
+    exp   = (datetime.utcnow()+timedelta(seconds=SESSION_EXPIRE)).isoformat()
+    c2    = get_db()
+    c2.execute("INSERT INTO sessions(token,user_id,expires_at) VALUES(?,?,?)",
+               (token, user_id, exp))
+    c2.commit(); c2.close()
+    r.setex(f"session:{token}", SESSION_EXPIRE, str(user_id))
+
+    return jsonify({
+        "token": token,
+        "user": {
+            "id": user_id,
+            "email": email,
+            "display_name": name,
+            "role": "user"
+        }
+    })
 
 @auth_bp.route("/auth/login", methods=["POST"])
 def login():
@@ -148,6 +176,12 @@ def login():
         "id":user["id"],"email":user["email"],
         "display_name":user["display_name"],"role":user["role"]
     }})
+
+@auth_bp.route("/auth/me")
+@require_auth
+def me():
+    return jsonify({"user": request.current_user})
+
 
 @auth_bp.route("/auth/logout", methods=["POST"])
 @require_auth
