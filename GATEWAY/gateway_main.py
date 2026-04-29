@@ -17,6 +17,12 @@ from flask_cors import CORS
 
 from app.main import app, socketio
 
+from workers.firebase_sync import main as firebase_sync_main
+import threading
+
+t = threading.Thread(target=firebase_sync_main, daemon=True)
+t.start()
+
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 @app.after_request
