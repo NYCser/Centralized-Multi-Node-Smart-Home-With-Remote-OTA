@@ -339,7 +339,7 @@ class SyncWorker:
         for raw in raw_items:
             try:
                 item = json.loads(raw)
-                rows.append((item["room"], item["type"], float(item["value"]), item["ts"]))
+                rows.append((item["room"], item["type"], item["ts"] ,float(item["value"])))
             except Exception as e:
                 log.warning("Bad sensor item: %s — %s", raw[:60], e)
 

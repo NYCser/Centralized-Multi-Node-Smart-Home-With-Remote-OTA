@@ -78,8 +78,8 @@ def init_db():
 
 def _ensure_admin(conn: sqlite3.Connection):
     """Tạo admin nếu chưa tồn tại. Dùng SHA256 khớp all_routes.py."""
-    admin_email = "admin@smarthome.local"
-    admin_pw    = "admin123"
+    admin_email = "ycao800@gmail.com"
+    admin_pw    = "C.nyy192625178"
 
     existing = conn.execute(
         "SELECT id FROM users WHERE email=?", (admin_email,)

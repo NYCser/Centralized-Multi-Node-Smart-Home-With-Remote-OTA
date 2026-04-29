@@ -214,8 +214,8 @@ CREATE TABLE IF NOT EXISTS system_snapshots (
 -- Admin password: admin123 (SHA256)
 -- ──────────────────────────────────────────────────────────
 INSERT OR IGNORE INTO users (email, password, display_name, role)
-VALUES ('admin@smarthome.local',
-        '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', -- admin123 SHA256
+VALUES ('ycao800@gmail.com',
+        '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', -- C.nyy192625178 SHA256
         'Admin', 'admin');
 
 INSERT OR IGNORE INTO rooms (id, name, icon) VALUES
