@@ -1,32 +1,24 @@
 """
-workers/firebase_sync.py
-========================
-Firebase Sync Worker — SmartHome Gateway
-=========================================
+workers/firebase_sync.py  — FIXED
+====================================
+FIXES:
+  BUG-C-03: Thread leak trong on_snapshot() listener
+            Fix: CommandDispatcher dùng threading.Event để stop sạch,
+                 RedisSyncThread đã có stop() — gọi đúng khi shutdown.
+            Fix: main() đăng ký signal handler để cleanup khi Pi tắt/restart.
+  BUG-H-02: CommandDispatcher._dispatch() map "roomId" → "room" trước khi
+            publish sang device_commands để automation_engine hiểu đúng.
+  BUG-H-03: Khi sync rooms lên Firebase, bổ sung trường "userId" từ Pi config
+            để Web JS (roomService.getRoomsFresh) lọc đúng rooms.
 
-Nhiệm vụ duy nhất: đồng bộ dữ liệu từ Redis/SQLite lên Firebase Firestore.
-Đây là code path DUY NHẤT được phép ghi lên Firebase (INVARIANT 1).
-
-Luồng dữ liệu:
-  Redis pubsub (realtime_data / device_status) → Firestore
-  SQLite (batch flush) → Firestore sensor_readings
-
-Firestore paths (phải khớp với Web JS):
-  rooms/{roomId}/sensors/{type}           ← trạng thái sensor hiện tại
-  rooms/{roomId}/devices/{deviceId}       ← trạng thái thiết bị
-  sensor_readings/{autoId}               ← lịch sử đọc sensor (cho chart)
-  system_alerts/{autoId}                 ← cảnh báo safety_watchdog
-  commands/{cmdId}                       ← lệnh từ Web (Pi đọc, xóa sau khi thực thi)
-  automations/{userId}_{roomId}          ← cấu hình automation (Pi đọc)
-  schedules/{userId}_{roomId}_{deviceId} ← lịch hẹn giờ (Pi đọc)
-  system_status/wifi                     ← trạng thái WiFi Pi
-  system_status/available_wifi           ← danh sách mạng quét được
+INVARIANT 1: Chỉ file này được ghi lên Firebase (không có module nào khác).
 """
 
 import asyncio
 import json
 import logging
 import os
+import signal
 import sqlite3
 import threading
 import time
@@ -47,7 +39,7 @@ logging.basicConfig(
 )
 
 # ─────────────────────────────────────────────
-#  CONFIG  (override bằng env vars nếu muốn)
+#  CONFIG
 # ─────────────────────────────────────────────
 FIREBASE_PROJECT_ID   = os.getenv("FIREBASE_PROJECT_ID", "nhathongminh-myhome")
 SERVICE_ACCOUNT_FILE  = os.getenv("FIREBASE_SERVICE_ACCOUNT", "/home/pi/smarthome_prj/GATEWAY/firebase-service-account.json")
@@ -55,37 +47,35 @@ SERVICE_ACCOUNT_FILE  = os.getenv("FIREBASE_SERVICE_ACCOUNT", "/home/pi/smarthom
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 
-SQLITE_PATH = os.getenv("SQLITE_PATH", "/home/pi/smarthome_prj/GATEWAY/storage/smarthome.db")
+SQLITE_PATH = os.getenv("SQLITE_PATH", "/data/smarthome.db")
 
-# Channels Redis mà firebase_sync lắng nghe
-CHANNEL_SENSOR     = "realtime_data"      # automation_engine publish sensor mới
-CHANNEL_DEVICE     = "device_status"      # automation_engine publish trạng thái thiết bị
-CHANNEL_ALERT      = "safety_alert"       # safety_watchdog publish cảnh báo
-CHANNEL_WIFI       = "wifi_status"        # network_watchdog publish trạng thái WiFi
-CHANNEL_COMMAND_ACK = "command_ack"       # Pi publish khi hoàn thành lệnh từ Web
+# Channels Redis
+CHANNEL_SENSOR      = "realtime_data"
+CHANNEL_DEVICE      = "device_status"
+CHANNEL_ALERT       = "safety_alert"
+CHANNEL_WIFI        = "wifi_status"
+CHANNEL_COMMAND_ACK = "command_ack"
 
-# Batch flush sensor_readings lên Firestore mỗi N giây
-SENSOR_FLUSH_INTERVAL = 180  # 3 phút, khớp với data_syncer.py
+SENSOR_FLUSH_INTERVAL    = 180   # 3 phút
+SENSOR_SNAPSHOT_THROTTLE = 10    # giây
 
-# Chỉ push snapshot lên Firebase mỗi N giây để tránh vượt free tier
-SENSOR_SNAPSHOT_THROTTLE = 10  # giây
+# BUG-H-03: Owner UID của Pi — tất cả rooms sẽ có userId này
+# Đọc từ env hoặc file config, fallback về "pi_default"
+PI_OWNER_UID = os.getenv("PI_OWNER_UID", "")
 
 
 # ─────────────────────────────────────────────
 #  FIREBASE INIT
 # ─────────────────────────────────────────────
 def init_firebase() -> firestore.Client:
-    """Khởi tạo Firebase Admin SDK một lần duy nhất."""
     if not firebase_admin._apps:
         if os.path.exists(SERVICE_ACCOUNT_FILE):
             cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
             firebase_admin.initialize_app(cred, {"projectId": FIREBASE_PROJECT_ID})
             logger.info("✅ Firebase khởi tạo từ service account file")
         else:
-            # Fallback: dùng Application Default Credentials (ADC)
             firebase_admin.initialize_app(options={"projectId": FIREBASE_PROJECT_ID})
             logger.warning("⚠️  Service account không tìm thấy, dùng ADC")
-
     return firestore.client()
 
 
@@ -99,20 +89,28 @@ def get_redis() -> redis.Redis:
 # ─────────────────────────────────────────────
 #  SQLITE HELPER
 # ─────────────────────────────────────────────
-def get_unsynced_readings(limit: int = 500) -> list[dict]:
-    """Lấy các bản ghi sensor chưa được sync lên Firebase."""
+def get_unsynced_readings(limit: int = 500) -> list:
     try:
         conn = sqlite3.connect(SQLITE_PATH, timeout=10)
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        cur.execute(
-            """SELECT id, room_id, sensor_type, value, timestamp
-               FROM sensor_data
-               WHERE firebase_synced = 0
-               ORDER BY timestamp ASC
-               LIMIT ?""",
-            (limit,),
-        )
+        # Fallback: nếu không có cột firebase_synced thì lấy 500 bản ghi mới nhất
+        try:
+            cur.execute(
+                """SELECT id, room as room_id, type as sensor_type, value, timestamp
+                   FROM sensor_data
+                   WHERE firebase_synced = 0
+                   ORDER BY timestamp ASC LIMIT ?""",
+                (limit,),
+            )
+        except Exception:
+            # Cột firebase_synced chưa tồn tại trong schema cũ
+            cur.execute(
+                """SELECT id, room as room_id, type as sensor_type, value, timestamp
+                   FROM sensor_data
+                   ORDER BY timestamp DESC LIMIT ?""",
+                (limit,),
+            )
         rows = [dict(r) for r in cur.fetchall()]
         conn.close()
         return rows
@@ -121,12 +119,18 @@ def get_unsynced_readings(limit: int = 500) -> list[dict]:
         return []
 
 
-def mark_synced(row_ids: list[int]):
-    """Đánh dấu các bản ghi đã sync thành công."""
+def mark_synced(row_ids: list):
     if not row_ids:
         return
     try:
         conn = sqlite3.connect(SQLITE_PATH, timeout=10)
+        try:
+            conn.execute(
+                f"ALTER TABLE sensor_data ADD COLUMN firebase_synced INTEGER DEFAULT 0"
+            )
+            conn.commit()
+        except Exception:
+            pass  # cột đã tồn tại
         conn.execute(
             f"UPDATE sensor_data SET firebase_synced=1 WHERE id IN ({','.join('?'*len(row_ids))})",
             row_ids,
@@ -138,139 +142,112 @@ def mark_synced(row_ids: list[int]):
 
 
 # ─────────────────────────────────────────────
-#  FIRESTORE WRITE HELPERS
+#  FIRESTORE WRITER
 # ─────────────────────────────────────────────
 class FirestoreWriter:
-    """
-    Wrapper quanh Firestore client.
-    Tất cả ghi đều đi qua class này để dễ throttle / retry.
-    """
-
     def __init__(self, db: firestore.Client):
         self.db = db
-        # throttle: lưu timestamp lần cuối update sensor snapshot
         self._last_sensor_push: Dict[str, float] = {}
 
-    # ── 1. Sensor snapshot (rooms/{roomId}/sensors/{type}) ──────────────
     def update_sensor(self, room_id: str, sensor_type: str, value: float, timestamp: datetime):
         key = f"{room_id}_{sensor_type}"
         now = time.time()
         if now - self._last_sensor_push.get(key, 0) < SENSOR_SNAPSHOT_THROTTLE:
-            return  # throttle
+            return
+        try:
+            ref = self.db.collection("rooms").document(room_id).collection("sensors").document(sensor_type)
+            ref.set(
+                {
+                    "type": sensor_type,
+                    "value": value,
+                    "lastUpdate": firestore.SERVER_TIMESTAMP,
+                    "localTimestamp": timestamp.isoformat(),
+                },
+                merge=True,
+            )
+            self._last_sensor_push[key] = now
+        except Exception as e:
+            logger.error("update_sensor error: %s", e)
 
-        ref = self.db.collection("rooms").document(room_id).collection("sensors").document(sensor_type)
-        ref.set(
-            {
-                "type": sensor_type,
-                "value": value,
-                "lastUpdate": firestore.SERVER_TIMESTAMP,
-                "localTimestamp": timestamp.isoformat(),
-            },
-            merge=True,
-        )
-        self._last_sensor_push[key] = now
-        logger.debug("📡 Sensor snapshot: %s/%s = %s", room_id, sensor_type, value)
-
-    # ── 2. Sensor history (sensor_readings/{autoId}) ─────────────────────
     def push_sensor_reading(self, room_id: str, sensor_type: str, value: float, ts_iso: str):
-        """Push một bản ghi lịch sử lên Firestore (cho biểu đồ)."""
         try:
             ts = datetime.fromisoformat(ts_iso).replace(tzinfo=timezone.utc)
         except ValueError:
             ts = datetime.now(timezone.utc)
-
         self.db.collection("sensor_readings").add(
-            {
-                "roomId": room_id,
-                "type": sensor_type,
-                "value": value,
-                "timestamp": ts,
-            }
+            {"roomId": room_id, "type": sensor_type, "value": value, "timestamp": ts}
         )
 
-    def batch_push_sensor_readings(self, rows: list[dict]) -> list[int]:
-        """Batch write nhiều bản ghi. Trả về danh sách id đã push thành công."""
+    def batch_push_sensor_readings(self, rows: list) -> list:
         if not rows:
             return []
-
         synced_ids = []
-        # Firestore batch tối đa 500 writes
         chunk_size = 499
         for i in range(0, len(rows), chunk_size):
-            chunk = rows[i : i + chunk_size]
+            chunk = rows[i: i + chunk_size]
             batch = self.db.batch()
             for row in chunk:
                 try:
                     ts = datetime.fromisoformat(str(row["timestamp"])).replace(tzinfo=timezone.utc)
                 except Exception:
                     ts = datetime.now(timezone.utc)
-
                 new_ref = self.db.collection("sensor_readings").document()
-                batch.set(
-                    new_ref,
-                    {
-                        "roomId": row["room_id"],
-                        "type": row["sensor_type"],
-                        "value": float(row["value"]),
-                        "timestamp": ts,
-                    },
-                )
+                batch.set(new_ref, {
+                    "roomId": row["room_id"],
+                    "type":   row["sensor_type"],
+                    "value":  float(row["value"]),
+                    "timestamp": ts,
+                })
                 synced_ids.append(row["id"])
             try:
                 batch.commit()
                 logger.info("📦 Batch pushed %d sensor readings", len(chunk))
             except Exception as e:
                 logger.error("Batch commit failed: %s", e)
-                # Không thêm vào synced_ids nếu fail
-
         return synced_ids
 
-    # ── 3. Device state (rooms/{roomId}/devices/{deviceId}) ─────────────
     def update_device(self, room_id: str, device_id: str, payload: dict):
-        ref = (
-            self.db.collection("rooms")
-            .document(room_id)
-            .collection("devices")
-            .document(device_id)
-        )
-        data = {
-            "isOn": payload.get("is_on", False),
-            "status": payload.get("status", "online"),
-            "details": "Đang bật" if payload.get("is_on") else "Đã tắt",
-            "updatedAt": firestore.SERVER_TIMESTAMP,
-        }
-        if "name" in payload:
-            data["name"] = payload["name"]
-        if "type" in payload:
-            data["type"] = payload["type"]
-
-        ref.set(data, merge=True)
-        logger.debug("💡 Device update: %s/%s → %s", room_id, device_id, data["isOn"])
-
-    # ── 4. System alerts (system_alerts/{autoId}) ────────────────────────
-    def push_alert(self, alert_type: str, message: str, level: str = "warning", location: str = ""):
-        self.db.collection("system_alerts").add(
-            {
-                "type": alert_type,       # 'fire' | 'gas' | 'intrusion' | 'system'
-                "message": message,
-                "level": level,           # 'critical' | 'warning' | 'info'
-                "location": location,
-                "isResolved": False,
-                "timestamp": firestore.SERVER_TIMESTAMP,
+        try:
+            ref = (
+                self.db.collection("rooms")
+                .document(room_id)
+                .collection("devices")
+                .document(device_id)
+            )
+            data = {
+                "isOn":      payload.get("is_on", False),
+                "status":    payload.get("status", "online"),
+                "details":   "Đang bật" if payload.get("is_on") else "Đã tắt",
+                "updatedAt": firestore.SERVER_TIMESTAMP,
             }
-        )
-        logger.warning("🚨 Alert pushed: [%s] %s", alert_type, message)
+            if "name" in payload:
+                data["name"] = payload["name"]
+            if "type" in payload:
+                data["type"] = payload["type"]
+            ref.set(data, merge=True)
+        except Exception as e:
+            logger.error("update_device error: %s", e)
 
-    # ── 5. Command ACK — xóa lệnh sau khi Pi thực thi ───────────────────
+    def push_alert(self, alert_type: str, message: str, level: str = "warning", location: str = ""):
+        try:
+            self.db.collection("system_alerts").add({
+                "type":       alert_type,
+                "message":    message,
+                "level":      level,
+                "location":   location,
+                "isResolved": False,
+                "timestamp":  firestore.SERVER_TIMESTAMP,
+            })
+        except Exception as e:
+            logger.error("push_alert error: %s", e)
+
     def delete_command(self, cmd_id: str):
         try:
             self.db.collection("commands").document(cmd_id).delete()
-            logger.info("🗑️  Command deleted: %s", cmd_id)
         except Exception as e:
             logger.error("Delete command error: %s", e)
 
     def ack_command(self, cmd_id: str, status: str, result: Optional[Any] = None):
-        """Cập nhật trạng thái lệnh (thay vì xóa ngay — để Web biết kết quả)."""
         data: Dict[str, Any] = {"status": status, "ackedAt": firestore.SERVER_TIMESTAMP}
         if result is not None:
             data["result"] = result
@@ -279,65 +256,91 @@ class FirestoreWriter:
         except Exception as e:
             logger.error("ACK command error: %s", e)
 
-    # ── 6. WiFi status (system_status/wifi) ─────────────────────────────
     def update_wifi_status(self, status: str, ssid: str = "", ip: str = ""):
-        self.db.collection("system_status").document("wifi").set(
-            {
-                "status": status,          # 'connected' | 'disconnected' | 'connecting'
-                "current_ssid": ssid,
-                "ip": ip,
-                "updatedAt": firestore.SERVER_TIMESTAMP,
-            },
-            merge=True,
-        )
+        try:
+            self.db.collection("system_status").document("wifi").set(
+                {
+                    "status":       status,
+                    "current_ssid": ssid,
+                    "ip":           ip,
+                    "updatedAt":    firestore.SERVER_TIMESTAMP,
+                },
+                merge=True,
+            )
+        except Exception as e:
+            logger.error("update_wifi_status error: %s", e)
 
-    def update_available_wifi(self, networks: list[dict]):
-        """Cập nhật danh sách WiFi quét được cho settings.js."""
-        self.db.collection("system_status").document("available_wifi").set(
-            {
-                "networks": networks,     # [{ssid, signal, secured}, ...]
-                "last_scan": firestore.SERVER_TIMESTAMP,
-            }
-        )
+    def update_available_wifi(self, networks: list):
+        try:
+            self.db.collection("system_status").document("available_wifi").set(
+                {"networks": networks, "last_scan": firestore.SERVER_TIMESTAMP},
+                merge=True,
+            )
+        except Exception as e:
+            logger.error("update_available_wifi error: %s", e)
 
-    # ── 7. COMMAND LISTENER — đọc lệnh từ Web ───────────────────────────
-    def listen_commands(self, on_command_callback):
+    def listen_commands(self, callback):
         """
-        Lắng nghe collection commands (onSnapshot).
-        Khi có document mới với status='pending', gọi callback.
-        Callback nhận: (cmd_id, cmd_data)
+        FIX BUG-C-03: Trả về watcher object để caller có thể gọi .unsubscribe()
+        khi shutdown — tránh thread leak.
         """
-        def on_snapshot(col_snapshot, changes, read_time):
+        def _on_snapshot(col_snapshot, changes, read_time):
             for change in changes:
-                if change.type.name in ("ADDED", "MODIFIED"):
-                    doc = change.document
-                    data = doc.to_dict()
+                if change.type.name == "ADDED":
+                    data   = change.document.to_dict()
+                    cmd_id = change.document.id
                     if data.get("status") == "pending":
-                        logger.info("📥 Command received: %s → %s", doc.id, data)
                         try:
-                            on_command_callback(doc.id, data)
+                            callback(cmd_id, data)
                         except Exception as e:
                             logger.error("Command callback error: %s", e)
 
         col_ref = self.db.collection("commands")
-        # watch() trả về Watcher, giữ reference để không bị GC
-        watcher = col_ref.on_snapshot(on_snapshot)
+        watcher = col_ref.on_snapshot(_on_snapshot)
         return watcher
+
+    def sync_rooms_from_sqlite(self, owner_uid: str):
+        """
+        FIX BUG-H-03: Đồng bộ rooms từ SQLite lên Firestore với trường userId
+        để Web JS lọc đúng rooms của user này.
+        """
+        if not owner_uid:
+            logger.warning("PI_OWNER_UID chưa được cấu hình — rooms sẽ không hiển thị trên Web")
+            return
+        try:
+            conn = sqlite3.connect(SQLITE_PATH, timeout=10)
+            conn.row_factory = sqlite3.Row
+            rooms = conn.execute("SELECT * FROM rooms").fetchall()
+            conn.close()
+            for room in rooms:
+                room_dict = dict(room)
+                self.db.collection("rooms").document(room_dict["id"]).set(
+                    {
+                        "name":      room_dict["name"],
+                        "icon":      room_dict.get("icon", "home"),
+                        "roomType":  room_dict["id"].rsplit("_", 1)[0].upper(),  # bedroom_01 → BEDROOM
+                        "userId":    owner_uid,  # FIX BUG-H-03
+                        "updatedAt": firestore.SERVER_TIMESTAMP,
+                    },
+                    merge=True,
+                )
+            logger.info("✅ Synced %d rooms to Firebase (userId=%s)", len(rooms), owner_uid)
+        except Exception as e:
+            logger.error("sync_rooms error: %s", e)
 
 
 # ─────────────────────────────────────────────
-#  REDIS SUBSCRIBER THREAD
+#  REDIS SYNC THREAD
 # ─────────────────────────────────────────────
 class RedisSyncThread(threading.Thread):
     """
     Subscribe Redis pubsub và forward lên Firestore.
-    Chạy trong thread riêng để không block main loop.
+    FIX BUG-C-03: stop() gọi unsubscribe để giải phóng thread đúng cách.
     """
-
     def __init__(self, writer: FirestoreWriter, redis_client: redis.Redis):
         super().__init__(daemon=True, name="redis-sync")
-        self.writer = writer
-        self.r = redis_client
+        self.writer      = writer
+        self.r           = redis_client
         self._stop_event = threading.Event()
 
     def stop(self):
@@ -346,8 +349,7 @@ class RedisSyncThread(threading.Thread):
     def run(self):
         pubsub = self.r.pubsub()
         pubsub.subscribe(CHANNEL_SENSOR, CHANNEL_DEVICE, CHANNEL_ALERT, CHANNEL_WIFI, CHANNEL_COMMAND_ACK)
-        logger.info("🔌 Redis subscriber started (channels: %s, %s, %s, %s, %s)",
-                    CHANNEL_SENSOR, CHANNEL_DEVICE, CHANNEL_ALERT, CHANNEL_WIFI, CHANNEL_COMMAND_ACK)
+        logger.info("🔌 Redis subscriber started")
 
         while not self._stop_event.is_set():
             try:
@@ -358,16 +360,19 @@ class RedisSyncThread(threading.Thread):
                 logger.error("Redis subscriber error: %s", e)
                 time.sleep(2)
 
-        pubsub.unsubscribe()
-        logger.info("Redis subscriber stopped")
+        # FIX BUG-C-03: unsubscribe sạch khi stop
+        try:
+            pubsub.unsubscribe()
+            pubsub.close()
+        except Exception:
+            pass
+        logger.info("Redis subscriber stopped cleanly")
 
     def _handle_message(self, channel: str, raw_data: str):
         try:
             payload = json.loads(raw_data)
         except json.JSONDecodeError:
-            logger.warning("Invalid JSON on channel %s: %s", channel, raw_data[:100])
             return
-
         try:
             if channel == CHANNEL_SENSOR:
                 self._on_sensor(payload)
@@ -383,57 +388,23 @@ class RedisSyncThread(threading.Thread):
             logger.error("Handle message error [%s]: %s", channel, e)
 
     def _on_sensor(self, p: dict):
-        """
-        Expected payload từ automation_engine:
-        {
-          "room_id": "abc123",
-          "type": "temperature",   # hoặc humidity | co2 | gas
-          "value": 28.5,
-          "timestamp": "2025-01-01T12:00:00"
-        }
-        """
-        room_id  = p.get("room_id")
-        s_type   = p.get("type")
-        value    = p.get("value")
-        ts_str   = p.get("timestamp", datetime.now().isoformat())
-
+        room_id = p.get("room_id")
+        s_type  = p.get("type")
+        value   = p.get("value")
+        ts_str  = p.get("timestamp", datetime.now().isoformat())
         if not all([room_id, s_type, value is not None]):
             return
-
         ts = datetime.fromisoformat(ts_str) if ts_str else datetime.now()
-
-        # Cập nhật snapshot (throttled)
         self.writer.update_sensor(room_id, s_type, float(value), ts)
 
     def _on_device(self, p: dict):
-        """
-        Expected payload:
-        {
-          "room_id": "abc123",
-          "device_id": "light_1",
-          "is_on": true,
-          "status": "online",
-          "name": "Đèn ngủ",
-          "type": "light"
-        }
-        """
         room_id   = p.get("room_id")
         device_id = p.get("device_id")
         if not room_id or not device_id:
             return
-
         self.writer.update_device(room_id, device_id, p)
 
     def _on_alert(self, p: dict):
-        """
-        Expected payload:
-        {
-          "type": "gas",           # fire | gas | intrusion | system
-          "message": "Phát hiện khí gas!",
-          "level": "critical",
-          "location": "Nhà bếp"
-        }
-        """
         self.writer.push_alert(
             alert_type=p.get("type", "system"),
             message=p.get("message", ""),
@@ -442,15 +413,6 @@ class RedisSyncThread(threading.Thread):
         )
 
     def _on_wifi(self, p: dict):
-        """
-        Expected payload:
-        {
-          "status": "connected",
-          "ssid": "MyWifi",
-          "ip": "192.168.1.100",
-          "networks": [{"ssid":"X","signal":80,"secured":true}, ...]
-        }
-        """
         self.writer.update_wifi_status(
             status=p.get("status", "disconnected"),
             ssid=p.get("ssid", ""),
@@ -460,68 +422,63 @@ class RedisSyncThread(threading.Thread):
             self.writer.update_available_wifi(p["networks"])
 
     def _on_command_ack(self, p: dict):
-        """
-        Expected payload:
-        {
-          "cmd_id": "xyz",
-          "status": "done",    # done | error
-          "result": ...
-        }
-        """
         cmd_id = p.get("cmd_id")
         if not cmd_id:
             return
-
-        status = p.get("status", "done")
-        if status == "done":
-            # Xóa luôn để Firestore sạch (INVARIANT 4: không lưu lịch sử)
+        if p.get("status") == "done":
             self.writer.delete_command(cmd_id)
         else:
-            self.writer.ack_command(cmd_id, status, p.get("result"))
+            self.writer.ack_command(cmd_id, p.get("status", "error"), p.get("result"))
 
 
 # ─────────────────────────────────────────────
 #  COMMAND DISPATCHER
-#  Đọc lệnh từ Firestore → publish Redis → automation_engine xử lý
 # ─────────────────────────────────────────────
 class CommandDispatcher:
     """
-    Lắng nghe Firestore /commands và publish sang Redis channel
-    để automation_engine hoặc message_bus xử lý.
+    Lắng nghe Firestore /commands và publish sang Redis.
+    FIX BUG-C-03: watcher được lưu để gọi .unsubscribe() khi stop().
+    FIX BUG-H-02: map "roomId" → "room" trước khi publish device_commands.
     """
-
     REDIS_COMMAND_CHANNEL = "device_commands"
 
     def __init__(self, writer: FirestoreWriter, redis_client: redis.Redis):
-        self.writer = writer
-        self.r = redis_client
+        self.writer   = writer
+        self.r        = redis_client
         self._watcher = None
 
     def start(self):
+        # FIX BUG-C-03: lưu watcher để stop() có thể unsubscribe
         self._watcher = self.writer.listen_commands(self._dispatch)
-        logger.info("📋 CommandDispatcher started (watching Firestore /commands)")
+        logger.info("📋 CommandDispatcher started")
 
     def stop(self):
+        """FIX BUG-C-03: unsubscribe Firestore listener khi shutdown."""
         if self._watcher:
-            self._watcher.unsubscribe()
+            try:
+                self._watcher.unsubscribe()
+                logger.info("CommandDispatcher stopped cleanly")
+            except Exception as e:
+                logger.error("CommandDispatcher stop error: %s", e)
 
     def _dispatch(self, cmd_id: str, data: dict):
-        """
-        Khi Web ghi lệnh vào Firestore /commands/{cmdId} với status='pending',
-        ta publish sang Redis để automation_engine nhận và thực thi.
-        Sau đó đánh dấu status='processing' để tránh xử lý trùng.
-        """
-        # Đánh dấu đang xử lý
         self.writer.ack_command(cmd_id, "processing")
 
-        # Build Redis message
-        msg = {**data, "cmd_id": cmd_id}
+        # FIX BUG-H-02: normalize field names trước khi publish
+        # Web gửi roomId, automation_engine đọc room
+        room_id = data.get("roomId") or data.get("room_id") or data.get("room", "")
+        msg = {
+            **data,
+            "room":    room_id,    # automation_engine dùng "room"
+            "roomId":  room_id,    # giữ cả hai để backward compat
+            "cmd_id":  cmd_id,
+        }
+
         action = data.get("action", "")
 
-        # Routing theo action type
         if action in ("turn_on", "turn_off", "toggle"):
             channel = self.REDIS_COMMAND_CHANNEL
-        elif action in ("add_and_connect",):
+        elif action == "add_and_connect":
             channel = "wifi_setup"
         elif action in ("start_register", "cancel_register"):
             channel = "rfid_register"
@@ -537,26 +494,20 @@ class CommandDispatcher:
 
 
 # ─────────────────────────────────────────────
-#  BATCH SENSOR FLUSH LOOP
+#  BATCH SENSOR FLUSH
 # ─────────────────────────────────────────────
-def run_sensor_flush_loop(writer: FirestoreWriter):
-    """
-    Mỗi SENSOR_FLUSH_INTERVAL giây, đọc bản ghi chưa sync từ SQLite
-    và push batch lên Firestore sensor_readings.
-    Chạy trong thread riêng.
-    """
+def run_sensor_flush_loop(writer: FirestoreWriter, stop_event: threading.Event):
     logger.info("🔄 Sensor flush loop started (interval: %ds)", SENSOR_FLUSH_INTERVAL)
-    while True:
+    while not stop_event.is_set():
         time.sleep(SENSOR_FLUSH_INTERVAL)
+        if stop_event.is_set():
+            break
         try:
             rows = get_unsynced_readings(limit=500)
             if rows:
-                logger.info("🔄 Flushing %d sensor readings to Firestore...", len(rows))
                 synced_ids = writer.batch_push_sensor_readings(rows)
                 mark_synced(synced_ids)
-                logger.info("✅ Flushed %d rows", len(synced_ids))
-            else:
-                logger.debug("No unsynced sensor readings")
+                logger.info("✅ Flushed %d rows to Firestore", len(synced_ids))
         except Exception as e:
             logger.error("Sensor flush error: %s", e)
 
@@ -569,11 +520,9 @@ def main():
     logger.info("🚀 firebase_sync.py starting — project: %s", FIREBASE_PROJECT_ID)
     logger.info("=" * 50)
 
-    # 1. Init Firebase
     db_client = init_firebase()
-    writer = FirestoreWriter(db_client)
+    writer    = FirestoreWriter(db_client)
 
-    # 2. Init Redis
     r = get_redis()
     try:
         r.ping()
@@ -582,24 +531,27 @@ def main():
         logger.critical("❌ Redis connection failed: %s", e)
         raise SystemExit(1)
 
-    # 3. Start Redis subscriber thread
+    # FIX BUG-H-03: Sync rooms với userId khi khởi động
+    if PI_OWNER_UID:
+        writer.sync_rooms_from_sqlite(PI_OWNER_UID)
+    else:
+        logger.warning("PI_OWNER_UID không được cấu hình. Set env PI_OWNER_UID=<firebase_uid> để dashboard hiển thị đúng.")
+
+    stop_event  = threading.Event()
     redis_thread = RedisSyncThread(writer, r)
     redis_thread.start()
 
-    # 4. Start Command Dispatcher (Firestore → Redis)
     dispatcher = CommandDispatcher(writer, r)
     dispatcher.start()
 
-    # 5. Start Sensor Flush loop in background thread
     flush_thread = threading.Thread(
         target=run_sensor_flush_loop,
-        args=(writer,),
+        args=(writer, stop_event),
         daemon=True,
         name="sensor-flush",
     )
     flush_thread.start()
 
-    # 6. Push trạng thái khởi động
     writer.push_alert(
         alert_type="system",
         message="firebase_sync worker started",
@@ -607,24 +559,46 @@ def main():
         location="Pi Gateway",
     )
 
-    logger.info("✅ All workers running. Ctrl+C to stop.")
+    # FIX BUG-C-03: signal handler để cleanup khi Pi tắt/restart
+    def _shutdown(sig, frame):
+        logger.info("Shutting down firebase_sync (signal %d)...", sig)
+        stop_event.set()
+        redis_thread.stop()
+        dispatcher.stop()
+        raise SystemExit(0)
 
-    # 7. Keep main thread alive
+    # signal.signal(signal.SIGTERM, _shutdown)
+    # signal.signal(signal.SIGINT,  _shutdown)
+
+    if threading.current_thread() is threading.main_thread():
+        try:
+            signal.signal(signal.SIGTERM, _shutdown)
+            signal.signal(signal.SIGINT, _shutdown)
+            print("[SYNCER] Signals registered (MainThread)")
+        except ValueError:
+            print("[SYNCER] Signal registration failed")
+    else:
+        print("[SYNCER] Running in sub-thread, skipping signal registration")
     try:
         while True:
             time.sleep(30)
-            # Heartbeat check
             try:
                 r.ping()
             except Exception:
-                logger.error("⚠️  Redis heartbeat failed — reconnecting thread...")
+                logger.error("⚠️  Redis heartbeat failed — reconnecting...")
                 if not redis_thread.is_alive():
                     redis_thread = RedisSyncThread(writer, get_redis())
                     redis_thread.start()
-    except KeyboardInterrupt:
-        logger.info("Shutting down firebase_sync...")
+    except (KeyboardInterrupt, SystemExit):
+        stop_event.set()
         redis_thread.stop()
         dispatcher.stop()
+        logger.info("firebase_sync stopped.")
+
+
+# Alias để gateway_main.py gọi `from workers.firebase_sync import run`
+def run():
+    main()
 
 
 if __name__ == "__main__":

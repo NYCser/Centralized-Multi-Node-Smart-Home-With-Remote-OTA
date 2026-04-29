@@ -55,9 +55,12 @@ for DEVICE in $DEVICES; do
         if mount -t "$FSTYPE" -o rw,uid=1000,gid=1000 "$PARTITION_PATH" "$MOUNT_POINT" 2>/dev/null; then
             log "✓ SUCCESS: Mounted $PARTITION_PATH ($FSTYPE) at $MOUNT_POINT"
             
-            # Tạo thư mục exports
-            mkdir -p "$MOUNT_POINT/exports"
-            chmod 755 "$MOUNT_POINT/exports"
+            # # Tạo thư mục exports
+            # mkdir -p "$MOUNT_POINT/exports"
+            # chmod 755 "$MOUNT_POINT/exports"
+            # Thành dòng mới để khớp với logic Layer 4:
+            mkdir -p "$MOUNT_POINT/data"
+            chmod 755 "$MOUNT_POINT/data"
             
             # Kiểm tra quyền
             if [ -w "$MOUNT_POINT" ]; then

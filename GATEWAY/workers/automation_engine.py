@@ -1,11 +1,13 @@
 """
-workers/automation_engine.py
-════════════════════════════
-Automation Engine – xử lý:
-  1. Logic IF/THEN từ cảm biến (nhiệt độ, gas)
-  2. Scheduler hẹn giờ (đọc giờ hệ thống đã sync DS3231)
-  3. RFID Enrollment mode với timeout
-  4. Lắng nghe lệnh từ Web (device_commands, automation_commands, ...)
+workers/automation_engine.py  — FIXED
+═══════════════════════════════════════
+FIXES:
+  BUG-H-01: process_sensor() chỉ xử lý temperature → bổ sung humidity, co2, gas
+  BUG-C-05: scheduler_loop() xóa schedule sau 1 lần chạy (enabled=0)
+            Fix: KHÔNG xóa → schedules chạy lại mỗi ngày đúng giờ
+            (Chỉ chạy 1 lần mỗi phút: dùng "last_run" tracking tránh chạy 60 lần/phút)
+  BUG-H-02: command_listener nhận "roomId" từ Firebase/Web nhưng chỉ đọc "room"
+            Fix: chấp nhận cả hai key: data.get("room") or data.get("roomId")
 """
 
 import time
@@ -35,6 +37,9 @@ CACHED_DEVICE_STATES: dict = {}
 MANUAL_CONTROL_CACHE: dict = {}  # {device_id: datetime}
 ENROLLMENT_STATE:     dict = {"active": False, "start_time": None, "pending_name": ""}
 
+# FIX BUG-C-05: track schedule execution để tránh chạy nhiều lần trong cùng 1 phút
+SCHEDULE_LAST_RUN: dict = {}  # {schedule_id: "HH:MM date"}
+
 
 # ── DB helpers ────────────────────────────────────────────
 
@@ -48,17 +53,18 @@ def get_db():
 def load_cache():
     global CACHED_AUTOMATIONS, CACHED_SCHEDULES
     conn = get_db()
-    for row in conn.execute("SELECT * FROM automations WHERE enabled=1").fetchall():
-        CACHED_AUTOMATIONS[row["room_id"]] = dict(row)
-    CACHED_SCHEDULES = [dict(r) for r in conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
-    conn.close()
+    try:
+        for row in conn.execute("SELECT * FROM automations WHERE enabled=1").fetchall():
+            CACHED_AUTOMATIONS[row["room_id"]] = dict(row)
+        CACHED_SCHEDULES = [dict(r) for r in conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
+    finally:
+        conn.close()
     print(f"[AUTO] Cache loaded: {len(CACHED_AUTOMATIONS)} rules, {len(CACHED_SCHEDULES)} schedules")
 
 
 # ── Automation logic ──────────────────────────────────────
 
 def _is_safety_locked(room_id: str) -> bool:
-    """Kiểm tra xem phòng có đang trong trạng thái khẩn cấp không."""
     bus = MessageBus.get_instance()
     return bool(bus.get_redis().exists(f"safety_lock:{room_id}"))
 
@@ -67,7 +73,7 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
                  value: float, threshold: float):
     """Kiểm tra rule và bắn lệnh MQTT nếu cần."""
     if _is_safety_locked(room_id):
-        return  # Safety first – không can thiệp
+        return
 
     device_id = DEVICE_MAP.get(room_id, {}).get(device_type)
     if not device_id:
@@ -86,15 +92,13 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
     should_on = value > threshold
     cache_key = f"{room_id}_{device_id}"
     if CACHED_DEVICE_STATES.get(cache_key) == should_on:
-        return  # Không đổi trạng thái
+        return
 
     CACHED_DEVICE_STATES[cache_key] = should_on
     action = "turn_on" if should_on else "turn_off"
     bus.publish_mqtt(f"home/{room_id}/command", {
         "device": device_id, "action": action, "source": "automation"
     })
-
-    # Log automation
     _log_automation(room_id, f"auto_{device_type}",
                     [f"{device_id} → {action}"],
                     f"sensor_{device_type}")
@@ -103,24 +107,33 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
 def _log_automation(room_id: str, scenario: str, actions: list, triggered_by: str):
     try:
         conn = get_db()
-        conn.execute(
-            "INSERT INTO automation_logs (room, scenario, actions, triggered_by) VALUES (?,?,?,?)",
-            (room_id, scenario, json.dumps(actions), triggered_by)
-        )
-        conn.commit()
-        conn.close()
+        try:
+            conn.execute(
+                "INSERT INTO automation_logs (room, scenario, actions, triggered_by) VALUES (?,?,?,?)",
+                (room_id, scenario, json.dumps(actions), triggered_by)
+            )
+            conn.commit()
+        finally:
+            conn.close()
     except Exception as e:
         print(f"[AUTO] log error: {e}")
 
 
 def process_sensor(room_id: str, sensor_data: dict):
-    """Chạy logic automation khi nhận được dữ liệu cảm biến."""
+    """
+    FIX BUG-H-01: Xử lý TẤT CẢ loại cảm biến, không chỉ temperature.
+    - temperature → fan_threshold, light_threshold
+    - humidity    → fan_threshold (quạt khi ẩm cao)
+    - co2         → fan_threshold (quạt khi CO2 cao)
+    - gas         → đã có safety_watchdog xử lý riêng, không xử lý ở đây
+    """
     rule = CACHED_AUTOMATIONS.get(room_id)
     if not rule or not rule.get("enabled"):
         return
 
     bus = MessageBus.get_instance()
 
+    # Nhiệt độ → quạt + đèn
     if "temperature" in sensor_data:
         val = float(sensor_data["temperature"])
         if rule.get("fan_threshold"):
@@ -128,11 +141,22 @@ def process_sensor(room_id: str, sensor_data: dict):
         if rule.get("light_threshold"):
             _try_control(bus, room_id, "light", val, float(rule["light_threshold"]))
 
+    # Độ ẩm → quạt (nếu humidity cao thì bật quạt)
+    if "humidity" in sensor_data and rule.get("fan_threshold"):
+        val = float(sensor_data["humidity"])
+        _try_control(bus, room_id, "fan", val, float(rule["fan_threshold"]))
+
+    # CO2 → quạt (nếu CO2 cao thì bật quạt thông gió)
+    if "co2" in sensor_data and rule.get("fan_threshold"):
+        val = float(sensor_data["co2"])
+        # CO2 threshold thường cao hơn (ppm), dùng riêng nếu có, fallback fan_threshold * 10
+        co2_thresh = float(rule.get("co2_threshold") or float(rule["fan_threshold"]) * 10)
+        _try_control(bus, room_id, "fan", val, co2_thresh)
+
 
 # ── Scheduler ─────────────────────────────────────────────
 
 def _check_clock_validity() -> bool:
-    """Kiểm tra giờ hệ thống có hợp lệ không (đã sync DS3231 chưa)."""
     if datetime.now().year < CLOCK_WARN_YEAR:
         bus = MessageBus.get_instance()
         bus.publish_event("realtime_data", {
@@ -146,8 +170,9 @@ def _check_clock_validity() -> bool:
 
 def scheduler_loop():
     """
-    So sánh giờ hệ thống (đã sync DS3231) với bảng schedules.
-    Chạy trong thread daemon riêng.
+    FIX BUG-C-05: KHÔNG set enabled=0 sau khi chạy.
+    Thay vào đó, dùng SCHEDULE_LAST_RUN để đảm bảo mỗi lịch chỉ chạy 1 lần/phút.
+    Schedules có thể lặp lại mỗi ngày đúng giờ.
     """
     print("[SCHEDULER] Started")
     while True:
@@ -158,38 +183,47 @@ def scheduler_loop():
 
             now          = datetime.now()
             current_hhmm = now.strftime("%H:%M")
+            today_key    = now.strftime("%Y-%m-%d")
             bus          = MessageBus.get_instance()
 
             for sched in list(CACHED_SCHEDULES):
-                if (sched.get("enabled") and
-                        sched.get("time") == current_hhmm and
-                        sched.get("device_id")):
+                if not sched.get("enabled"):
+                    continue
+                if sched.get("time") != current_hhmm:
+                    continue
+                if not sched.get("device_id"):
+                    continue
 
-                    room_id   = sched["room_id"]
-                    device_id = sched["device_id"]
-                    action    = sched["action"]
+                # FIX BUG-C-05: kiểm tra đã chạy trong phút này chưa
+                run_key = f"{sched['id']}_{current_hhmm}_{today_key}"
+                if SCHEDULE_LAST_RUN.get(sched["id"]) == run_key:
+                    continue  # Đã chạy trong phút này rồi, bỏ qua
 
-                    if _is_safety_locked(room_id):
-                        print(f"[SCHEDULER] {room_id} is safety-locked, skip schedule")
-                        continue
+                room_id   = sched["room_id"]
+                device_id = sched["device_id"]
+                action    = sched["action"]
 
-                    bus.publish_mqtt(f"home/{room_id}/command", {
-                        "device": device_id,
-                        "action": action,
-                        "source": "schedule"
-                    })
-                    MANUAL_CONTROL_CACHE[device_id] = datetime.now()
-                    print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
+                if _is_safety_locked(room_id):
+                    print(f"[SCHEDULER] {room_id} is safety-locked, skip schedule")
+                    continue
 
-                    # Xoá schedule sau khi thực thi (one-shot)
-                    conn = get_db()
-                    conn.execute("UPDATE schedules SET enabled=0 WHERE id=?", (sched["id"],))
-                    conn.commit()
-                    conn.close()
-                    CACHED_SCHEDULES.remove(sched)
-                    _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
+                bus.publish_mqtt(f"home/{room_id}/command", {
+                    "device": device_id,
+                    "action": action,
+                    "source": "schedule"
+                })
+                MANUAL_CONTROL_CACHE[device_id] = datetime.now()
 
-            # Đồng bộ chính xác với đồng hồ
+                # FIX BUG-C-05: ghi nhận đã chạy trong phút này (KHÔNG disabled)
+                SCHEDULE_LAST_RUN[sched["id"]] = run_key
+
+                print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
+                _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
+
+            # Dọn cache SCHEDULE_LAST_RUN mỗi 24h để tránh memory leak
+            if len(SCHEDULE_LAST_RUN) > 1000:
+                SCHEDULE_LAST_RUN.clear()
+
             time.sleep(1.0 - (time.time() % 1.0))
 
         except Exception as e:
@@ -199,117 +233,152 @@ def scheduler_loop():
 
 # ── RFID Enrollment ───────────────────────────────────────
 
-def _enrollment_timeout_watcher():
-    """Tự đóng chế độ enrollment sau ENROLLMENT_TIMEOUT giây."""
-    while True:
-        time.sleep(5)
-        state = ENROLLMENT_STATE
-        if state["active"] and state["start_time"]:
-            elapsed = (datetime.now() - state["start_time"]).total_seconds()
-            if elapsed > ENROLLMENT_TIMEOUT:
-                state["active"]     = False
-                state["start_time"] = None
-                bus = MessageBus.get_instance()
-                bus.publish_event("realtime_data", {
-                    "event":   "enrollment_timeout",
-                    "message": "Chế độ nạp thẻ đã hết thời gian (60s)"
-                })
-                print("[AUTO] Enrollment mode timed out")
+def _check_enrollment_timeout():
+    if (ENROLLMENT_STATE["active"] and
+            ENROLLMENT_STATE.get("start_time") and
+            (datetime.now() - ENROLLMENT_STATE["start_time"]).total_seconds() > ENROLLMENT_TIMEOUT):
+        ENROLLMENT_STATE["active"]     = False
+        ENROLLMENT_STATE["start_time"] = None
+        print("[AUTO] Enrollment timeout — mode OFF")
+        MessageBus.get_instance().publish_event("realtime_data", {
+            "event": "enrollment_timeout", "message": "Hết thời gian đăng ký thẻ"
+        })
 
 
-threading.Thread(target=_enrollment_timeout_watcher, daemon=True).start()
-
-
-# ── MQTT Inbound handler ──────────────────────────────────
+# ── MQTT inbound handler ──────────────────────────────────
 
 def handle_inbound(envelope: dict):
-    """
-    Xử lý tin nhắn đến từ MQTT (qua CH_INBOUND của MessageBus).
-    envelope = {"topic": "...", "payload": {...}, "ts": ...}
-    """
     topic   = envelope.get("topic", "")
     payload = envelope.get("payload", {})
-    parts   = topic.split("/")
 
+    parts = topic.split("/")
     if len(parts) < 3:
         return
 
     room_id  = parts[1]
     category = parts[2]
 
-    # ── Cảm biến ──────────────────────────────────────────
+    # ── Dữ liệu cảm biến ──────────────────────────────────
     if category == "sensors":
-        safety_watchdog.CACHED_SENSORS.setdefault(room_id, {}).update(payload)
-        
-        # Push từng cảm biến vào Redis buffer để data_syncer flush vào SQLite
         bus = MessageBus.get_instance()
-        r = bus.get_redis()
-        for sensor_type, value in payload.items():
-            buffer_item = {
-                "room": room_id,
-                "type": sensor_type,
-                "value": value,
-                "timestamp": datetime.now().isoformat()
-            }
-            r.rpush("sensor_buffer", json.dumps(buffer_item))
-        
+        r   = bus.get_redis()
+
+        # Cập nhật CACHED_SENSORS cho safety_watchdog
+        cached = safety_watchdog.CACHED_SENSORS.setdefault(room_id, {})
+        cached.update(payload)
+
+        # Lưu vào Redis snapshot
+        r.setex(f"sensor:{room_id}", 300, json.dumps(payload))
+
+        # Lưu vào SQLite
+        conn = get_db()
+        try:
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            for s_type, value in payload.items():
+                if isinstance(value, (int, float)):
+                    conn.execute(
+                        "INSERT INTO sensor_data (room, type, value, timestamp) VALUES (?,?,?,?)",
+                        (room_id, s_type, float(value), now)
+                    )
+            conn.commit()
+        except Exception as e:
+            print(f"[AUTO] sensor DB write error: {e}")
+        finally:
+            conn.close()
+
+        # Automation logic
         process_sensor(room_id, payload)
 
-    # ── Phản hồi trạng thái thiết bị ──────────────────────
-    elif category == "status":
-        device_id = payload.get("deviceId") or payload.get("device_id")
-        is_on     = payload.get("isOn", payload.get("is_on", False))
-        if device_id:
-            CACHED_DEVICE_STATES[f"{room_id}_{device_id}"] = is_on
+        # Push lên Firebase via publish
+        for s_type, value in payload.items():
+            if isinstance(value, (int, float)):
+                bus.publish_event("realtime_data", {
+                    "room_id":   room_id,
+                    "type":      s_type,
+                    "value":     value,
+                    "timestamp": datetime.now().isoformat()
+                })
 
-    # ── Cảnh báo từ ESP ───────────────────────────────────
+    # ── Trạng thái thiết bị phản hồi từ ESP32 ─────────────
+    elif category == "status":
+        bus = MessageBus.get_instance()
+        r   = bus.get_redis()
+
+        device_id = payload.get("device")
+        is_on     = bool(payload.get("is_on", False))
+
+        if device_id:
+            # Cập nhật SQLite device_status
+            conn = get_db()
+            try:
+                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                conn.execute(
+                    "INSERT OR REPLACE INTO device_status (room, device_id, is_on, source, updated_at) VALUES (?,?,?,?,?)",
+                    (room_id, device_id, 1 if is_on else 0, payload.get("source", "esp32"), now)
+                )
+                conn.commit()
+            except Exception as e:
+                print(f"[AUTO] device_status DB error: {e}")
+            finally:
+                conn.close()
+
+            # Push lên Firebase
+            bus.publish_event("device_status", {
+                "room_id":   room_id,
+                "device_id": device_id,
+                "is_on":     is_on,
+                "status":    "online",
+                "name":      payload.get("name", device_id),
+                "type":      payload.get("type", "")
+            })
+
+    # ── Cảnh báo từ thiết bị ─────────────────────────────
     elif category == "alert":
         bus = MessageBus.get_instance()
         bus.publish_event("realtime_data", {
-            "event":   "new_alert",
-            "type":    payload.get("type", "device"),
-            "room":    room_id,
-            "message": payload.get("message", "Cảnh báo từ thiết bị"),
-            "level":   payload.get("level", "warning"),
+            "event":     "new_alert",
+            "type":      payload.get("type", "device"),
+            "room":      room_id,
+            "message":   payload.get("message", "Cảnh báo từ thiết bị"),
+            "level":     payload.get("level", "warning"),
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
 
     # ── Xác thực RFID/vân tay ─────────────────────────────
     elif category == "auth":
+        _check_enrollment_timeout()
         _handle_auth(room_id, payload)
 
 
 def _handle_auth(room_id: str, payload: dict):
-    """Kiểm tra thẻ RFID hoặc vân tay."""
     uid = str(payload.get("cardUid") or payload.get("uid") or
               payload.get("fingerprintId", ""))
     bus = MessageBus.get_instance()
 
-    # Chế độ Enrollment đang bật → đăng ký thẻ mới
     if ENROLLMENT_STATE["active"]:
         owner_name = ENROLLMENT_STATE.get("pending_name", "Thẻ mới")
         try:
             conn = get_db()
-            conn.execute(
-                "INSERT OR REPLACE INTO rfid_cards (uid, owner_name, is_active) VALUES (?,?,1)",
-                (uid, owner_name)
-            )
-            conn.commit()
-            conn.close()
+            try:
+                conn.execute(
+                    "INSERT OR REPLACE INTO rfid_cards (uid, owner_name, is_active) VALUES (?,?,1)",
+                    (uid, owner_name)
+                )
+                conn.commit()
+            finally:
+                conn.close()
 
             ENROLLMENT_STATE["active"]     = False
             ENROLLMENT_STATE["start_time"] = None
 
-            # Phản hồi LCD của ESP
             bus.publish_mqtt(f"home/{room_id}/command", {
                 "action":  "enrollment_success",
                 "uid":     uid,
                 "message": f"Da luu the: {owner_name}"
             })
-            # Thông báo Web
             bus.publish_event("realtime_data", {
-                "event":     "enrollment_success",
-                "uid":       uid,
+                "event":      "enrollment_success",
+                "uid":        uid,
                 "owner_name": owner_name
             })
             print(f"[AUTH] Enrolled new card: {uid} -> {owner_name}")
@@ -317,12 +386,13 @@ def _handle_auth(room_id: str, payload: dict):
             print(f"[AUTH] enrollment error: {e}")
         return
 
-    # Chế độ bình thường → kiểm tra DB
     conn     = get_db()
-    card_row = conn.execute(
-        "SELECT * FROM rfid_cards WHERE uid=? AND is_active=1", (uid,)
-    ).fetchone()
-    conn.close()
+    try:
+        card_row = conn.execute(
+            "SELECT * FROM rfid_cards WHERE uid=? AND is_active=1", (uid,)
+        ).fetchone()
+    finally:
+        conn.close()
 
     if card_row:
         owner = card_row["owner_name"]
@@ -343,18 +413,19 @@ def _log_access(room_id, uid, user_name, action, success):
     try:
         conn = get_db()
         now  = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        conn.execute(
-            "INSERT INTO access_logs (room, uid, user_name, action, success, timestamp) VALUES (?,?,?,?,?,?)",
-            (room_id, uid, user_name, action, 1 if success else 0, now)
-        )
-        conn.execute(
-            "INSERT INTO notifications (type, title, message, room, created_at) VALUES (?,?,?,?,?)",
-            ("access", "ACCESS LOGS",
-             f"{'thanh cong' if success else 'that bai'} {user_name} - {room_id}", room_id, now)
-        )
-        conn.commit()
-        conn.close()
-        # Push realtime
+        try:
+            conn.execute(
+                "INSERT INTO access_logs (room, uid, user_name, action, success, timestamp) VALUES (?,?,?,?,?,?)",
+                (room_id, uid, user_name, action, 1 if success else 0, now)
+            )
+            conn.execute(
+                "INSERT INTO notifications (type, title, message, room, created_at) VALUES (?,?,?,?,?)",
+                ("access", "ACCESS LOGS",
+                 f"{'thanh cong' if success else 'that bai'} {user_name} - {room_id}", room_id, now)
+            )
+            conn.commit()
+        finally:
+            conn.close()
         MessageBus.get_instance().publish_event("realtime_data", {
             "event":     "access_log",
             "room":      room_id,
@@ -369,9 +440,9 @@ def _log_access(room_id, uid, user_name, action, success):
 # ── Redis command listener ────────────────────────────────
 
 def command_listener():
-
-    """Lắng nghe lệnh từ Web (qua Redis pubsub).
-    Thay thế Firebase on_snapshot.
+    """
+    FIX BUG-H-02: Chấp nhận cả "room" và "roomId" từ Web/Firebase
+    để tránh lệnh bị bỏ qua do sai tên trường.
     """
     bus    = MessageBus.get_instance()
     r      = bus.get_redis()
@@ -379,7 +450,8 @@ def command_listener():
     pubsub.subscribe(
         "device_commands", "automation_commands",
         "rfid_commands",   "schedule_commands",
-        "alert_commands",  CH_INBOUND
+        "alert_commands",  CH_INBOUND,
+        "rfid_register",   "wifi_setup"
     )
     print("[AUTO] Command listener started")
 
@@ -390,17 +462,20 @@ def command_listener():
             channel = message["channel"]
             data    = json.loads(message["data"])
 
-            # ── MQTT inbound từ MessageBus ─────────────────
             if channel == CH_INBOUND:
                 handle_inbound(data)
 
-            # ── Lệnh điều khiển thiết bị từ Web ───────────
             elif channel == "device_commands":
-                room_id   = data["room"]
-                device_id = data["device_id"]
-                is_on     = data["is_on"]
+                # FIX BUG-H-02: chấp nhận cả "room" lẫn "roomId"
+                room_id   = data.get("room") or data.get("roomId") or data.get("room_id", "")
+                device_id = data.get("device_id") or data.get("deviceId", "")
+                is_on     = data.get("is_on", False)
 
-                if _is_safety_locked(room_id) and data.get("source") == "web":
+                if not room_id or not device_id:
+                    print(f"[AUTO] device_commands: missing room or device_id: {data}")
+                    continue
+
+                if _is_safety_locked(room_id) and data.get("source") in ("web", None):
                     print(f"[AUTO] {room_id} is safety-locked, web command blocked")
                     bus.publish_event("realtime_data", {
                         "event":   "command_blocked",
@@ -414,10 +489,10 @@ def command_listener():
                 bus.publish_mqtt(f"home/{room_id}/command", {
                     "device": device_id,
                     "action": "turn_on" if is_on else "turn_off",
-                    "source": "web"
+                    "source": data.get("source", "web"),
+                    "cmd_id": data.get("cmd_id", "")
                 })
 
-            # ── Cập nhật automation rule ───────────────────
             elif channel == "automation_commands":
                 action  = data.get("action")
                 room_id = data.get("room_id")
@@ -426,7 +501,6 @@ def command_listener():
                 elif action == "delete" and room_id:
                     CACHED_AUTOMATIONS.pop(room_id, None)
 
-            # ── RFID commands ──────────────────────────────
             elif channel == "rfid_commands":
                 action = data.get("action")
                 uid    = data.get("uid", "")
@@ -435,21 +509,33 @@ def command_listener():
                     ENROLLMENT_STATE["start_time"]   = datetime.now()
                     ENROLLMENT_STATE["pending_name"] = data.get("owner_name", "Thẻ mới")
                     print(f"[AUTO] Enrollment mode ON (timeout: {ENROLLMENT_TIMEOUT}s)")
-                elif action == "add" and uid:
-                    pass  # Đã xử lý qua API trực tiếp
                 elif action == "delete" and uid:
                     bus.publish_mqtt("home/entrance_01/command", {
                         "action": "delete_user", "uid": uid
                     })
 
-            # ── Schedule commands ──────────────────────────
+            elif channel == "rfid_register":
+                # Lệnh từ Firebase qua firebase_sync (start_register / cancel_register)
+                action = data.get("action")
+                if action == "start_register":
+                    ENROLLMENT_STATE["active"]       = True
+                    ENROLLMENT_STATE["start_time"]   = datetime.now()
+                    ENROLLMENT_STATE["pending_name"] = data.get("owner_name", "Thẻ mới")
+                    print("[AUTO] Enrollment started via Firebase command")
+                elif action == "cancel_register":
+                    ENROLLMENT_STATE["active"]     = False
+                    ENROLLMENT_STATE["start_time"] = None
+                    print("[AUTO] Enrollment cancelled via Firebase command")
+
             elif channel == "schedule_commands":
                 if data.get("action") == "reload":
                     conn = get_db()
                     global CACHED_SCHEDULES
-                    CACHED_SCHEDULES = [dict(r) for r in
-                                       conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
-                    conn.close()
+                    try:
+                        CACHED_SCHEDULES = [dict(r) for r in
+                                           conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
+                    finally:
+                        conn.close()
                     print(f"[AUTO] Schedules reloaded: {len(CACHED_SCHEDULES)}")
 
         except Exception as e:

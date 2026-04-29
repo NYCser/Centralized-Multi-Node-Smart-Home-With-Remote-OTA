@@ -1,7 +1,11 @@
 -- ═══════════════════════════════════════════════════════════
--- SmartHome Local - SQLite Schema
--- File duy nhất, tất cả bảng dữ liệu
+-- SmartHome Local - SQLite Schema  (UPDATED)
 -- PRAGMA journal_mode = WAL  ← chạy khi connect để bảo vệ SD
+--
+-- CHANGES vs original:
+--   - sensor_data: thêm cột firebase_synced (0/1) cho firebase_sync.py
+--   - automations: thêm cột co2_threshold cho BUG-H-01
+--   - schedules: KHÔNG xóa enabled sau khi chạy (fix BUG-C-05)
 -- ═══════════════════════════════════════════════════════════
 
 PRAGMA journal_mode = WAL;
@@ -30,31 +34,34 @@ CREATE TABLE IF NOT EXISTS sessions (
 -- 2. CẤU TRÚC NHÀ
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS rooms (
-    id          TEXT    PRIMARY KEY,             -- kitchen_01, bedroom_01...
+    id          TEXT    PRIMARY KEY,
     name        TEXT    NOT NULL,
     icon        TEXT    DEFAULT 'home',
     created_at  TEXT    DEFAULT (datetime('now','localtime'))
 );
 
 CREATE TABLE IF NOT EXISTS devices (
-    id          TEXT    PRIMARY KEY,             -- fan_kt_1, light_lv_1...
+    id          TEXT    PRIMARY KEY,
     room_id     TEXT    NOT NULL,
     name        TEXT    NOT NULL,
-    type        TEXT    NOT NULL,               -- fan | light | door | ac
+    type        TEXT    NOT NULL,
     FOREIGN KEY(room_id) REFERENCES rooms(id)
 );
 
 -- ──────────────────────────────────────────────────────────
--- 3. DỮ LIỆU CẢM BIẾN (ghi theo batch)
+-- 3. DỮ LIỆU CẢM BIẾN
+-- Thêm firebase_synced để firebase_sync.py biết cái nào chưa push
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS sensor_data (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    room        TEXT    NOT NULL,
-    type        TEXT    NOT NULL,               -- temperature|humidity|gas|co2|tvoc
-    value       REAL    NOT NULL,
-    timestamp   TEXT    DEFAULT (datetime('now','localtime'))
+    id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    room             TEXT    NOT NULL,
+    type             TEXT    NOT NULL,
+    value            REAL    NOT NULL,
+    timestamp        TEXT    DEFAULT (datetime('now','localtime')),
+    firebase_synced  INTEGER DEFAULT 0   -- 0=chưa sync, 1=đã sync lên Firebase
 );
-CREATE INDEX IF NOT EXISTS idx_sensor_room_ts ON sensor_data(room, type, timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_sensor_room_ts  ON sensor_data(room, type, timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_sensor_unsynced ON sensor_data(firebase_synced) WHERE firebase_synced=0;
 
 -- ──────────────────────────────────────────────────────────
 -- 4. TRẠNG THÁI THIẾT BỊ (realtime snapshot)
@@ -63,7 +70,7 @@ CREATE TABLE IF NOT EXISTS device_status (
     room        TEXT    NOT NULL,
     device_id   TEXT    NOT NULL,
     is_on       INTEGER DEFAULT 0,
-    source      TEXT    DEFAULT 'unknown',      -- web|auto|schedule|safety
+    source      TEXT    DEFAULT 'unknown',
     updated_at  TEXT    DEFAULT (datetime('now','localtime')),
     PRIMARY KEY (room, device_id)
 );
@@ -74,9 +81,9 @@ CREATE TABLE IF NOT EXISTS device_status (
 CREATE TABLE IF NOT EXISTS system_alerts (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     room        TEXT,
-    type        TEXT,                           -- gas|fire|system|ota
+    type        TEXT,
     message     TEXT,
-    level       TEXT    DEFAULT 'info',         -- info|warning|critical
+    level       TEXT    DEFAULT 'info',
     is_resolved INTEGER DEFAULT 0,
     resolved_at TEXT,
     timestamp   TEXT    DEFAULT (datetime('now','localtime'))
@@ -84,7 +91,7 @@ CREATE TABLE IF NOT EXISTS system_alerts (
 CREATE INDEX IF NOT EXISTS idx_alert_unresolved ON system_alerts(is_resolved, timestamp DESC);
 
 -- ──────────────────────────────────────────────────────────
--- 6. THÔNG BÁO (chuông trên Web)
+-- 6. THÔNG BÁO
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS notifications (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -118,7 +125,7 @@ CREATE TABLE IF NOT EXISTS access_logs (
     room        TEXT,
     uid         TEXT,
     user_name   TEXT,
-    action      TEXT,                           -- open_door|attempt_failed|enroll
+    action      TEXT,
     success     INTEGER DEFAULT 0,
     duration_s  INTEGER,
     timestamp   TEXT    DEFAULT (datetime('now','localtime'))
@@ -132,8 +139,8 @@ CREATE TABLE IF NOT EXISTS automation_logs (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     room        TEXT,
     scenario    TEXT,
-    actions     TEXT,                           -- JSON array
-    triggered_by TEXT,                          -- temperature|gas|schedule|web
+    actions     TEXT,
+    triggered_by TEXT,
     timestamp   TEXT    DEFAULT (datetime('now','localtime'))
 );
 
@@ -149,25 +156,30 @@ CREATE TABLE IF NOT EXISTS rfid_cards (
 
 -- ──────────────────────────────────────────────────────────
 -- 11. RULES TỰ ĐỘNG HÓA
+-- Thêm co2_threshold (fix BUG-H-01)
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS automations (
     room_id         TEXT    PRIMARY KEY,
     enabled         INTEGER DEFAULT 1,
     fan_threshold   REAL,
     light_threshold REAL,
-    gas_threshold   REAL    DEFAULT 600
+    gas_threshold   REAL    DEFAULT 600,
+    co2_threshold   REAL    DEFAULT 1000   -- ppm, thêm mới cho BUG-H-01
 );
 
 -- ──────────────────────────────────────────────────────────
 -- 12. LỊCH HẸN GIỜ
+-- FIX BUG-C-05: enabled=1 mặc định, KHÔNG set 0 sau khi chạy
+-- Dùng last_run TEXT để track lần chạy cuối (HH:MM YYYY-MM-DD)
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS schedules (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     room_id     TEXT    NOT NULL,
     device_id   TEXT    NOT NULL,
-    action      TEXT    NOT NULL,               -- turn_on|turn_off
+    action      TEXT    NOT NULL,
     time        TEXT    NOT NULL,               -- HH:MM
     enabled     INTEGER DEFAULT 1,
+    last_run    TEXT    DEFAULT '',             -- FIX BUG-C-05: track lần chạy
     created_at  TEXT    DEFAULT (datetime('now','localtime'))
 );
 
@@ -179,13 +191,13 @@ CREATE TABLE IF NOT EXISTS ota_logs (
     room        TEXT,
     filename    TEXT,
     url         TEXT,
-    status      TEXT    DEFAULT 'sent',         -- sent|success|failed
+    status      TEXT    DEFAULT 'sent',
     triggered_by TEXT,
     timestamp   TEXT    DEFAULT (datetime('now','localtime'))
 );
 
 -- ──────────────────────────────────────────────────────────
--- 14. SYSTEM SNAPSHOTS (uptime tracking)
+-- 14. SYSTEM SNAPSHOTS
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS system_snapshots (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -199,10 +211,11 @@ CREATE TABLE IF NOT EXISTS system_snapshots (
 
 -- ──────────────────────────────────────────────────────────
 -- 15. SEED DATA MẶC ĐỊNH
+-- Admin password: admin123 (SHA256)
 -- ──────────────────────────────────────────────────────────
 INSERT OR IGNORE INTO users (email, password, display_name, role)
 VALUES ('admin@smarthome.local',
-        'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', -- password: 123
+        '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', -- admin123 SHA256
         'Admin', 'admin');
 
 INSERT OR IGNORE INTO rooms (id, name, icon) VALUES
@@ -217,3 +230,9 @@ INSERT OR IGNORE INTO devices (id, room_id, name, type) VALUES
     ('light_kt_1', 'kitchen_01',     'Đèn',   'light'),
     ('fan_lv_1',   'living_room_01', 'Quạt',  'fan'),
     ('light_lv_1', 'living_room_01', 'Đèn',   'light');
+
+INSERT OR IGNORE INTO automations (room_id, enabled, fan_threshold, gas_threshold, co2_threshold)
+VALUES
+    ('bedroom_01',     1, 30.0, 600, 1000),
+    ('kitchen_01',     1, 32.0, 600, 1000),
+    ('living_room_01', 1, 30.0, 600, 1000);

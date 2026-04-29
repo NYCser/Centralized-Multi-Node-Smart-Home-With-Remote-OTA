@@ -1,0 +1,2083 @@
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 213, in <module>
+    init_db()
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 66, in init_db
+    conn.executescript(f.read())
+sqlite3.OperationalError: no such column: firebase_synced
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 213, in <module>
+    init_db()
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 66, in init_db
+    conn.executescript(f.read())
+sqlite3.OperationalError: no such column: firebase_synced
+2026-04-29 13:25:39 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 13:25:39 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[MAIN] Firebase cred not found at /home/pi/GATEWAY/firebase-service-account.json — FirebaseSync disabled
+[MAIN] All workers started
+[BUS] Outbound loop started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[AUTO] Command listener started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 13:25:40 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 13:25:40 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 13:25:45 [INFO][SYNCER] 127.0.0.1 - - [29/Apr/2026 13:25:45] "[33mGET / HTTP/1.1[0m" 404 -
+2026-04-29 13:25:46 [INFO][SYNCER] 127.0.0.1 - - [29/Apr/2026 13:25:46] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-04-29 13:30:39 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:30:39 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:30:39 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-29.db (mode: sd2)
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:33:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:36:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 13:39:40 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 14:01:04 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:01:04 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[MAIN] Firebase cred not found at /home/pi/GATEWAY/firebase-service-account.json — FirebaseSync disabled
+[BUS] Outbound loop started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Command listener started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:01:04 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:01:04 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:01:09 [INFO][SYNCER] 127.0.0.1 - - [29/Apr/2026 14:01:09] "[33mGET / HTTP/1.1[0m" 404 -
+2026-04-29 14:05:48 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:05:48 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[MAIN] Firebase cred not found at /home/pi/GATEWAY/firebase-service-account.json — FirebaseSync disabled
+[MAIN] All workers started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[BRIDGE] Realtime bridge started
+[BUS] Outbound loop started
+[SCHEDULER] Started
+[API] Registered /api: auth
+[AUTO] Command listener started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:05:48 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:05:48 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:15:12 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:15:12 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[MAIN] Firebase cred not found at /home/pi/GATEWAY/firebase-service-account.json — FirebaseSync disabled
+[BUS] Outbound loop started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Command listener started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:15:12 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:15:12 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:22:32 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:22:32 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[MAIN] Firebase cred not found at /home/pi/GATEWAY/firebase-service-account.json — FirebaseSync disabled
+[BUS] MQTT connected & subscribed
+[MAIN] All workers started
+[BUS] Outbound loop started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[AUTO] Command listener started
+[API] Registered /api: devices
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:22:33 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:22:33 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:29:49 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:29:49 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:29:50 [INFO][SYNCER] ==================================================
+2026-04-29 14:29:50 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:29:50 [INFO][SYNCER] ==================================================
+2026-04-29 14:29:50 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:29:50 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+2026-04-29 14:29:50 [WARNING][SYNCER] PI_OWNER_UID không được cấu hình. Set env PI_OWNER_UID=<firebase_uid> để dashboard hiển thị đúng.
+2026-04-29 14:29:50 [INFO][SYNCER] 🔌 Redis subscriber started
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Command listener started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[NET] NTP sync error: Command '['sudo', 'hwclock', '-w']' returned non-zero exit status 1.
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:29:51 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:29:51 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 14:29:51 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:29:51 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 14:29:51 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Exception in thread FirebaseSync:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 594, in run
+    main()
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 570, in main
+    signal.signal(signal.SIGTERM, _shutdown)
+  File "/usr/lib/python3.11/signal.py", line 56, in signal
+    handler = _signal.signal(_enum_to_int(signalnum), _enum_to_int(handler))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: signal only works in main thread of the main interpreter
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 14:32:51 [ERROR][SYNCER] Batch commit failed: 403 Missing or insufficient permissions.
+2026-04-29 14:32:51 [INFO][SYNCER] ✅ Flushed 58 rows to Firestore
+2026-04-29 14:34:49 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:34:49 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:34:50 [INFO][SYNCER] ==================================================
+2026-04-29 14:34:50 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:34:50 [INFO][SYNCER] ==================================================
+2026-04-29 14:34:50 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:34:50 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+2026-04-29 14:34:50 [WARNING][SYNCER] PI_OWNER_UID không được cấu hình. Set env PI_OWNER_UID=<firebase_uid> để dashboard hiển thị đúng.
+2026-04-29 14:34:50 [INFO][SYNCER] 🔌 Redis subscriber started
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MQTT connected & subscribed
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:34:50 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 14:34:50 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 14:34:50 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:34:50 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:34:51 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Exception in thread FirebaseSync:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 594, in run
+    main()
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 570, in main
+    signal.signal(signal.SIGTERM, _shutdown)
+  File "/usr/lib/python3.11/signal.py", line 56, in signal
+    handler = _signal.signal(_enum_to_int(signalnum), _enum_to_int(handler))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: signal only works in main thread of the main interpreter
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 14:34:57 [INFO][SYNCER] 127.0.0.1 - - [29/Apr/2026 14:34:57] "[33mGET / HTTP/1.1[0m" 404 -
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 14:37:10 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:37:10 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 214, in <module>
+    start_workers()
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 114, in start_workers
+    from workers import firebase_sync
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 574
+    try:
+    ^
+IndentationError: expected an indented block after 'if' statement on line 573
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+2026-04-29 14:38:55 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:38:55 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 222, in <module>
+    start_workers()
+  File "/home/pi/smarthome_prj/GATEWAY/gateway_main.py", line 114, in start_workers
+    from workers import firebase_sync
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 574
+    try:
+    ^
+IndentationError: expected an indented block after 'if' statement on line 573
+2026-04-29 14:42:29 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:42:29 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:42:30 [INFO][SYNCER] ==================================================
+2026-04-29 14:42:30 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:42:30 [INFO][SYNCER] ==================================================
+2026-04-29 14:42:30 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:42:30 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+2026-04-29 14:42:30 [WARNING][SYNCER] PI_OWNER_UID không được cấu hình. Set env PI_OWNER_UID=<firebase_uid> để dashboard hiển thị đúng.
+2026-04-29 14:42:30 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 14:42:30 [INFO][SYNCER] 📋 CommandDispatcher started
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Command listener started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+2026-04-29 14:42:30 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+ * Debug mode: off
+2026-04-29 14:42:30 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:42:30 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 14:42:31 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+2026-04-29 14:42:52 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:42:52 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:42:52 [INFO][SYNCER] ==================================================
+2026-04-29 14:42:52 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:42:52 [INFO][SYNCER] ==================================================
+2026-04-29 14:42:53 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:42:53 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+2026-04-29 14:42:53 [WARNING][SYNCER] PI_OWNER_UID không được cấu hình. Set env PI_OWNER_UID=<firebase_uid> để dashboard hiển thị đúng.
+2026-04-29 14:42:53 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 14:42:53 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 14:42:53 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:42:53 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:42:53 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:42:53 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 14:43:17 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:43:17 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:43:18 [INFO][SYNCER] ==================================================
+2026-04-29 14:43:18 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:43:18 [INFO][SYNCER] ==================================================
+2026-04-29 14:43:18 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:43:18 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+2026-04-29 14:43:18 [WARNING][SYNCER] PI_OWNER_UID không được cấu hình. Set env PI_OWNER_UID=<firebase_uid> để dashboard hiển thị đúng.
+2026-04-29 14:43:18 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 14:43:18 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 14:43:18 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:43:18 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:43:18 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 14:43:19 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+2026-04-29 14:50:25 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:50:25 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:50:26 [INFO][SYNCER] ==================================================
+2026-04-29 14:50:26 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:50:26 [INFO][SYNCER] ==================================================
+2026-04-29 14:50:26 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:50:26 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[BUS] MQTT connected & subscribed
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Command listener started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:50:26 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:50:26 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:50:27 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 14:50:27 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 14:50:27 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 14:50:27 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 14:50:27 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 14:53:15 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 14:53:15 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 14:53:16 [INFO][SYNCER] ==================================================
+2026-04-29 14:53:16 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 14:53:16 [INFO][SYNCER] ==================================================
+2026-04-29 14:53:16 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 14:53:16 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[NET] NTP sync error: Command '['sudo', 'hwclock', '-w']' returned non-zero exit status 1.
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 14:53:16 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 14:53:16 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 14:53:17 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 14:53:17 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 14:53:17 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 14:53:17 [INFO][SYNCER] 🔌 Redis subscriber started
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 14:53:17 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+2026-04-29 14:53:23 [INFO][SYNCER] 127.0.0.1 - - [29/Apr/2026 14:53:23] "GET / HTTP/1.1" 200 -
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 15:02:10 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:02:10 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:02:10 [INFO][SYNCER] ==================================================
+2026-04-29 15:02:10 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:02:10 [INFO][SYNCER] ==================================================
+2026-04-29 15:02:11 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:02:11 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[NET] NTP sync error: Command '['sudo', 'hwclock', '-w']' returned non-zero exit status 1.
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:02:11 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:02:11 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:02:11 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 15:02:11 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:02:11 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:02:11 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:02:11 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 471, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 412, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 15:03:33 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:03:33 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:03:33 [INFO][SYNCER] ==================================================
+2026-04-29 15:03:33 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:03:33 [INFO][SYNCER] ==================================================
+2026-04-29 15:03:34 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:03:34 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:03:34 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:03:34 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:03:34 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 15:03:34 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:03:34 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:03:34 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 472, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 413, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+2026-04-29 15:03:35 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 15:07:22 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:07:22 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:07:22 [INFO][SYNCER] ==================================================
+2026-04-29 15:07:22 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:07:22 [INFO][SYNCER] ==================================================
+2026-04-29 15:07:22 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:07:23 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:07:23 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:07:23 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:07:23 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 15:07:23 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:07:23 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:07:23 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:07:23 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 472, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 413, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 15:12:22 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:12:22 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:12:22 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-29.db (mode: sd2)
+2026-04-29 15:14:05 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:14:05 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:14:06 [INFO][SYNCER] ==================================================
+2026-04-29 15:14:06 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:14:06 [INFO][SYNCER] ==================================================
+Exception in thread FirebaseSync:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 601, in run
+    main()
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 523, in main
+    db_client = init_firebase()
+                ^^^^^^^^^^^^^^^
+  File "/home/pi/smarthome_prj/GATEWAY/workers/firebase_sync.py", line 73, in init_firebase
+    cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/firebase_admin/credentials.py", line 98, in __init__
+    json_data = json.load(json_file)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Command listener started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:14:06 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:14:06 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:14:32 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:14:32 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:14:33 [INFO][SYNCER] ==================================================
+2026-04-29 15:14:33 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:14:33 [INFO][SYNCER] ==================================================
+2026-04-29 15:14:33 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:14:33 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MQTT connected & subscribed
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Command listener started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:14:34 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:14:34 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:14:34 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 15:14:34 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:14:34 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:14:34 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:14:34 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 472, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 413, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 15:19:32 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:19:32 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:19:32 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-29.db (mode: sd2)
+2026-04-29 15:20:13 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:20:13 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:20:14 [INFO][SYNCER] ==================================================
+2026-04-29 15:20:14 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:20:14 [INFO][SYNCER] ==================================================
+2026-04-29 15:20:15 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:20:15 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:20:15 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:20:15 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:20:15 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 15:20:15 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:20:15 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:20:15 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:20:15 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 472, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 413, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 15:23:49 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:23:49 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:23:50 [INFO][SYNCER] ==================================================
+2026-04-29 15:23:50 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-14261
+2026-04-29 15:23:50 [INFO][SYNCER] ==================================================
+2026-04-29 15:23:50 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:23:50 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:23:50 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:23:50 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:23:51 [ERROR][SYNCER] sync_rooms error: 403 Missing or insufficient permissions.
+2026-04-29 15:23:51 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:23:51 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:23:51 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:23:51 [ERROR][SYNCER] push_alert error: 403 Missing or insufficient permissions.
+Thread-ConsumeBidirectionalStream caught unexpected exception Error 7:  Missing or insufficient permissions. and will exit.
+google.api_core.exceptions.PermissionDenied: 403 Missing or insufficient permissions.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/api_core/bidi.py", line 647, in _thread_main
+    self._on_response(response)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 472, in on_snapshot
+    meth(self, proto.target_change)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 413, in _on_snapshot_target_change_remove
+    raise RuntimeError(error_message) from exceptions.from_grpc_status(
+RuntimeError: Error 7:  Missing or insufficient permissions.
+Exception in thread Thread-OnRpcTerminated:
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/pi/smarthome_prj/GATEWAY/venv/lib/python3.11/site-packages/google/cloud/firestore_v1/watch.py", line 356, in close
+    raise reason
+google.api_core.exceptions.Cancelled: 499 Disconnecting idle stream. Timed out waiting for new targets.
+2026-04-29 15:28:10 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:28:10 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:28:10 [INFO][SYNCER] ==================================================
+2026-04-29 15:28:10 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-myhome
+2026-04-29 15:28:10 [INFO][SYNCER] ==================================================
+2026-04-29 15:28:11 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:28:11 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[AUTO] Command listener started
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:28:11 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:28:11 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:28:12 [INFO][SYNCER] ✅ Synced 3 rooms to Firebase (userId=UID_CUA_BAN)
+2026-04-29 15:28:12 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:28:12 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:28:12 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:31:12 [INFO][SYNCER] 📦 Batch pushed 60 sensor readings
+2026-04-29 15:31:12 [INFO][SYNCER] ✅ Flushed 60 rows to Firestore
+2026-04-29 15:33:10 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:33:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:33:10 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-29.db (mode: sd2)
+2026-04-29 15:34:12 [INFO][SYNCER] 📦 Batch pushed 120 sensor readings
+2026-04-29 15:34:12 [INFO][SYNCER] ✅ Flushed 120 rows to Firestore
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:36:10 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:37:13 [INFO][SYNCER] 📦 Batch pushed 144 sensor readings
+2026-04-29 15:37:13 [INFO][SYNCER] ✅ Flushed 144 rows to Firestore
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 15:39:11 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 15:40:14 [INFO][SYNCER] 📦 Batch pushed 148 sensor readings
+2026-04-29 15:40:14 [INFO][SYNCER] ✅ Flushed 148 rows to Firestore
+2026-04-29 15:55:57 [INFO][SYNCER] SyncWorker starting...
+2026-04-29 15:55:57 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-29 15:55:57 [INFO][SYNCER] ==================================================
+2026-04-29 15:55:57 [INFO][SYNCER] 🚀 firebase_sync.py starting — project: nhathongminh-myhome
+2026-04-29 15:55:57 [INFO][SYNCER] ==================================================
+2026-04-29 15:55:58 [INFO][SYNCER] ✅ Firebase khởi tạo từ service account file
+2026-04-29 15:55:58 [INFO][SYNCER] ✅ Redis connected at localhost:6379
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-29 15:55:58 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.30:5000
+2026-04-29 15:55:58 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-29 15:55:59 [INFO][SYNCER] ✅ Synced 3 rooms to Firebase (userId=UID_CUA_BAN)
+2026-04-29 15:55:59 [INFO][SYNCER] 🔌 Redis subscriber started
+2026-04-29 15:55:59 [INFO][SYNCER] 📋 CommandDispatcher started
+2026-04-29 15:55:59 [INFO][SYNCER] 🔄 Sensor flush loop started (interval: 180s)
+2026-04-29 15:58:59 [INFO][SYNCER] 📦 Batch pushed 124 sensor readings
+2026-04-29 15:58:59 [INFO][SYNCER] ✅ Flushed 124 rows to Firestore
+2026-04-29 16:00:57 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:00:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:00:57 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-29.db (mode: sd2)
+2026-04-29 16:01:59 [INFO][SYNCER] 📦 Batch pushed 72 sensor readings
+2026-04-29 16:01:59 [INFO][SYNCER] ✅ Flushed 72 rows to Firestore
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:03:57 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:05:00 [INFO][SYNCER] 📦 Batch pushed 26 sensor readings
+2026-04-29 16:05:00 [INFO][SYNCER] ✅ Flushed 26 rows to Firestore
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:06:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:09:58 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
+2026-04-29 16:12:59 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
