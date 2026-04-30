@@ -24,6 +24,13 @@ MANUAL_OVERRIDE_DURATION = 120   # giây
 ENROLLMENT_TIMEOUT       = 60    # giây
 CLOCK_WARN_YEAR          = 2024  # nếu năm < này → cảnh báo giờ sai
 
+# ── Hysteresis & Debounce config ─────────────────────────
+# FIX: Ngưỡng bật/tắt tách biệt để tránh relay kích On/Off liên tục
+HYSTERESIS_OFFSET  = 2.0   # °C — bật ở T > threshold, tắt ở T < threshold - offset
+MIN_SWITCH_DELAY_S = 30    # giây tối thiểu giữa 2 lần chuyển relay (debounce phần cứng)
+# Tracking thời điểm chuyển trạng thái gần nhất theo từng device
+DEVICE_LAST_SWITCH: dict = {}   # { f"{room_id}_{device_id}" → datetime }
+
 DEVICE_MAP = {
     "kitchen_01":     {"fan": "fan_kt_1",  "light": "light_kt_1"},
     "living_room_01": {"fan": "fan_lv_1",  "light": "light_lv_1"},
@@ -71,7 +78,17 @@ def _is_safety_locked(room_id: str) -> bool:
 
 def _try_control(bus: MessageBus, room_id: str, device_type: str,
                  value: float, threshold: float):
-    """Kiểm tra rule và bắn lệnh MQTT nếu cần."""
+    """
+    Kiểm tra rule và bắn lệnh MQTT nếu cần.
+
+    FIX HYSTERESIS: Thay ngưỡng cứng bằng ngưỡng kép:
+      - Bật  khi value > threshold
+      - Tắt  khi value < (threshold - HYSTERESIS_OFFSET)
+      → Tránh relay bật/tắt liên tục khi giá trị dao động quanh ngưỡng.
+
+    FIX DEBOUNCE: Chỉ gửi lệnh khi đã qua MIN_SWITCH_DELAY_S kể từ lần chuyển cuối.
+    FIX STATEFUL: Chỉ gửi lệnh khi trạng thái THỰC SỰ thay đổi.
+    """
     if _is_safety_locked(room_id):
         return
 
@@ -89,18 +106,41 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
     if last_manual and (datetime.now() - last_manual).total_seconds() < MANUAL_OVERRIDE_DURATION:
         return
 
-    should_on = value > threshold
-    cache_key = f"{room_id}_{device_id}"
-    if CACHED_DEVICE_STATES.get(cache_key) == should_on:
+    cache_key    = f"{room_id}_{device_id}"
+    current_on   = CACHED_DEVICE_STATES.get(cache_key)   # None = chưa biết
+
+    # ── Hysteresis logic ──────────────────────────────────
+    # Xác định trạng thái mong muốn dựa trên giá trị và ngưỡng kép
+    threshold_off = threshold - HYSTERESIS_OFFSET   # ngưỡng TẮT thấp hơn ngưỡng BẬT
+    if current_on is True:
+        # Đang BẬT → chỉ tắt khi value xuống DƯỚI ngưỡng TẮT
+        should_on = value > threshold_off
+    elif current_on is False:
+        # Đang TẮT → chỉ bật khi value vượt TRÊN ngưỡng BẬT
+        should_on = value > threshold
+    else:
+        # Chưa biết trạng thái → dùng ngưỡng bật bình thường
+        should_on = value > threshold
+
+    # ── Stateful check — không gửi lệnh nếu trạng thái không đổi ──
+    if current_on == should_on:
         return
 
+    # ── Debounce — bảo vệ relay, không chuyển quá nhanh ──────────
+    now = datetime.now()
+    last_switch = DEVICE_LAST_SWITCH.get(cache_key)
+    if last_switch and (now - last_switch).total_seconds() < MIN_SWITCH_DELAY_S:
+        return
+
+    # ── Gửi lệnh MQTT ────────────────────────────────────────────
     CACHED_DEVICE_STATES[cache_key] = should_on
+    DEVICE_LAST_SWITCH[cache_key]   = now
     action = "turn_on" if should_on else "turn_off"
     bus.publish_mqtt(f"home/{room_id}/command", {
         "device": device_id, "action": action, "source": "automation"
     })
     _log_automation(room_id, f"auto_{device_type}",
-                    [f"{device_id} → {action}"],
+                    [f"{device_id} → {action} (value={value:.1f}, thresh={threshold})"],
                     f"sensor_{device_type}")
 
 

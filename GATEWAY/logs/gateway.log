@@ -4515,3 +4515,103 @@ SyntaxError: invalid syntax. Perhaps you forgot a comma?
 2026-04-29 20:27:12 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
 2026-04-29 20:27:12 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "temperature", "value": 2 — 'ts'
 2026-04-29 20:27:12 [WARNING][SYNCER] Bad sensor item: {"room": "living_room_01", "type": "humidity", "value": 42,  — 'ts'
+2026-04-30 09:12:23 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 09:12:23 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 09:12:25 [INFO][SYNCER] =======================================================
+2026-04-30 09:12:25 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 09:12:25 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 09:12:25 [INFO][SYNCER] =======================================================
+2026-04-30 09:12:25 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 09:12:25 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 09:12:25 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 09:12:25 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 09:12:25 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 09:12:25 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[NET] NTP sync error: Command '['sudo', 'hwclock', '-w']' returned non-zero exit status 1.
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[BRIDGE] Realtime bridge started
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 09:12:26 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 09:12:26 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 09:12:26 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 09:12:28 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 09:12:28 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 09:12:29 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 09:12:29 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 09:12:29 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 09:12:29 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 09:12:29 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 09:12:29 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 09:13:52 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 09:13:56 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 09:14:04 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 09:14:06 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 09:14:31 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 09:14:52 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 09:15:30 [INFO][SYNCER] Firestore: Batch flush 140 sensor history rows
+2026-04-30 09:15:30 [INFO][SYNCER] Flushed 140 sensor history rows to Firestore
+2026-04-30 09:17:23 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 09:17:23 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 09:17:23 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:18:31 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 09:18:31 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 09:20:24 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:21:31 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 09:21:31 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 09:23:24 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:24:32 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 09:24:32 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 09:26:25 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:27:33 [INFO][SYNCER] Firestore: Batch flush 148 sensor history rows
+2026-04-30 09:27:33 [INFO][SYNCER] Flushed 148 sensor history rows to Firestore
+2026-04-30 09:29:25 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:30:33 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 09:30:33 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 09:32:25 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:33:34 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 09:33:34 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 09:35:26 [INFO][SYNCER] Flushed 50 sensor rows
+2026-04-30 09:36:34 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 09:36:34 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 09:38:26 [INFO][SYNCER] Flushed 4 sensor rows
+2026-04-30 09:39:35 [INFO][SYNCER] Firestore: Batch flush 128 sensor history rows
+2026-04-30 09:39:35 [INFO][SYNCER] Flushed 128 sensor history rows to Firestore
+2026-04-30 09:45:35 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-04-30 09:45:35 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-04-30 09:48:36 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-04-30 09:48:36 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-04-30 09:51:36 [INFO][SYNCER] Firestore: Batch flush 8 sensor history rows
+2026-04-30 09:51:36 [INFO][SYNCER] Flushed 8 sensor history rows to Firestore

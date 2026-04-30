@@ -55,7 +55,9 @@ logging.basicConfig(
 #  CONFIG — đọc từ .env hoặc dùng default
 # ─────────────────────────────────────────────
 FIREBASE_PROJECT_ID  = os.getenv("FIREBASE_PROJECT_ID",  "nhathongminh-myhome")
-FIREBASE_DB_URL      = os.getenv("FIREBASE_DB_URL",       "")  # https://<project>.firebaseio.com
+# FIX: databaseURL trỏ đúng region asia-southeast1 (không dùng us-central1 mặc định)
+FIREBASE_DB_URL      = os.getenv("FIREBASE_DB_URL",
+                                  "https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app")
 SERVICE_ACCOUNT_FILE = os.getenv("FIREBASE_SERVICE_ACCOUNT",
                                   "/home/pi/smarthome_prj/GATEWAY/firebase-service-account.json")
 
@@ -99,10 +101,10 @@ def init_firebase():
         if FIREBASE_DB_URL:
             options["databaseURL"] = FIREBASE_DB_URL
         else:
-            # Tự suy ra URL nếu không set — convention của Firebase
-            options["databaseURL"] = f"https://{FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com"
+            # Fallback — asia-southeast1 region (khác với default us-central1)
+            options["databaseURL"] = f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
             logger.warning(
-                "FIREBASE_DB_URL chưa set — tự suy ra: %s", options["databaseURL"]
+                "FIREBASE_DB_URL chưa set — dùng region asia-southeast1: %s", options["databaseURL"]
             )
 
         if os.path.exists(SERVICE_ACCOUNT_FILE):
@@ -406,16 +408,19 @@ class RTDBWriter:
     def update_sensor(self, room_id: str, sensor_type: str, value, ts: float):
         """
         Push sensor reading lên RTDB.
-        Được gọi mỗi khi nhận message từ Redis channel realtime_data.
-        Không throttle vì RTDB free tier cho phép nhiều writes hơn Firestore.
+        FIX: luôn dùng int(time.time()) để ts nhất quán 10 chữ số (seconds).
+        Tránh vấn đề timestamp không đồng bộ giữa Pi và Firebase → ts vọt lên năm 2026.
         """
         try:
+            # Validate: bỏ qua nếu value là None hoặc ts=0 (placeholder chưa có data)
+            if value is None:
+                return
+            ts_now = int(time.time())   # luôn dùng server time thực tế
             ref = self.rtdb.reference(f"live/{room_id}/sensors/{sensor_type}")
             ref.set({
                 "value": value,
-                # "ts":    int(ts * 1000),   # milliseconds epoch
-                "ts": int(time.time()),  # dùng timestamp hiện tại để tránh đồng bộ hóa thời gian giữa Pi và Firebase
-                "iso":   datetime.fromtimestamp(ts, tz=timezone.utc).isoformat(),
+                "ts":    ts_now,        # FIX: 10 chữ số (seconds), nhất quán
+                "iso":   datetime.fromtimestamp(ts_now, tz=timezone.utc).isoformat(),
             })
         except Exception as e:
             logger.error("RTDB update_sensor [%s/%s] error: %s", room_id, sensor_type, e)
@@ -423,18 +428,23 @@ class RTDBWriter:
     def update_sensor_bulk(self, room_id: str, sensor_dict: dict, ts: float):
         """
         Push nhiều sensor cùng lúc cho 1 room (atomic update).
-        Hiệu quả hơn gọi update_sensor nhiều lần.
+        FIX: lọc bỏ value=None, dùng server time thực tế làm ts.
         """
         try:
-            ts_ms  = int(ts * 1000)
-            ts_iso = datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+            ts_now = int(time.time())   # FIX: 10 chữ số, không phụ thuộc Pi clock
+            ts_iso = datetime.fromtimestamp(ts_now, tz=timezone.utc).isoformat()
             updates = {}
             for sensor_type, value in sensor_dict.items():
+                # FIX: bỏ qua giá trị None (placeholder chưa có data thật)
+                if value is None:
+                    continue
                 updates[f"sensors/{sensor_type}"] = {
                     "value": value,
-                    "ts":    ts_ms,
+                    "ts":    ts_now,   # FIX: seconds (10 chữ số), nhất quán
                     "iso":   ts_iso,
                 }
+            if not updates:
+                return
             updates["meta/last_seen"] = ts_iso
             updates["meta/online"]    = True
             ref = self.rtdb.reference(f"live/{room_id}")
@@ -724,25 +734,29 @@ class RedisSyncThread(threading.Thread):
     def _on_sensor(self, p: dict):
         """
         Sensor data → RTDB (realtime, không throttle).
-        Hỗ trợ 2 format:
-          1. {room_id, type, value, timestamp}       — từ automation_engine
-          2. {event, room, sensors:{type:value,...}} — từ mqtt_inbound bridge
+        FIX: validate value và ts trước khi push — bỏ qua dirty data (value=0, ts=0).
         """
         room_id = p.get("room_id") or p.get("room")
-        ts      = p.get("ts") or time.time()
+        if not room_id:
+            return
+        ts = p.get("ts") or time.time()
 
-        # Format 1: single sensor
+        # Format 1: single sensor {room_id, type, value, timestamp}
         if p.get("type") and p.get("value") is not None:
-            s_type = p["type"]
-            value  = p["value"]
-            self.rtdb_writer.update_sensor(room_id, s_type, value, float(ts))
+            value = p["value"]
+            # FIX: bỏ qua dirty data — value=0 với ts=0 là placeholder chưa có data
+            if value == 0 and (not ts or ts == 0):
+                return
+            self.rtdb_writer.update_sensor(room_id, p["type"], value, float(ts))
             return
 
-        # Format 2: sensors dict (bulk update từ mqtt envelope)
+        # Format 2: sensors dict (bulk từ mqtt envelope)
         sensors = p.get("sensors") or p.get("payload") or p.get("data")
-        if isinstance(sensors, dict) and room_id:
-            self.rtdb_writer.update_sensor_bulk(room_id, sensors, float(ts))
-            return
+        if isinstance(sensors, dict):
+            # FIX: lọc bỏ giá trị None và dirty data trước khi push bulk
+            clean = {k: v for k, v in sensors.items() if v is not None}
+            if clean:
+                self.rtdb_writer.update_sensor_bulk(room_id, clean, float(ts))
 
     def _on_device(self, p: dict):
         room_id   = p.get("room_id") or p.get("room")

@@ -339,9 +339,29 @@ class SyncWorker:
         for raw in raw_items:
             try:
                 item = json.loads(raw)
-                rows.append((item["room"], item["type"], item["ts"] ,float(item["value"])))
+
+                # ── FIX: Data Sanitization ────────────────────────────────
+                # 1. Nếu thiếu key 'ts' hoặc 'ts' = 0 → gán ts = now
+                ts = item.get("ts")
+                if not ts or ts == 0:
+                    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    log.debug("Sanitized missing ts for %s/%s → %s",
+                              item.get("room"), item.get("type"), ts)
+                else:
+                    # 2. Chuẩn hóa timestamp về định dạng string YYYY-MM-DD HH:MM:SS
+                    # Nếu ts là số (epoch), chuyển về string
+                    if isinstance(ts, (int, float)):
+                        # Nếu ts > 1e11 thì là milliseconds → chuyển về seconds
+                        ts_sec = int(ts / 1000) if ts > 1e11 else int(ts)
+                        # Kiểm tra timestamp có hợp lý không (sau năm 2020)
+                        if ts_sec < 1577836800:
+                            ts_sec = int(time.time())
+                            log.debug("Sanitized invalid ts %s → now", ts)
+                        ts = datetime.fromtimestamp(ts_sec).strftime("%Y-%m-%d %H:%M:%S")
+
+                rows.append((item["room"], item["type"], ts, float(item["value"])))
             except Exception as e:
-                log.warning("Bad sensor item: %s — %s", raw[:60], e)
+                log.warning("Bad sensor item: %s — %s", raw[:80], e)
 
         if rows:
             try:
