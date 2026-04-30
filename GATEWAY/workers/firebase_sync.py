@@ -44,6 +44,15 @@ import redis
 import firebase_admin
 from firebase_admin import credentials, firestore, db as rtdb
 
+
+
+# db = firestore.client() # Đối tượng Firestore Client
+# writer = FirestoreWriter(db)
+# redis_conn = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+# # Cập nhật truyền thêm db vào đây
+# dispatcher = CommandDispatcher(fs_writer=writer, redis_client=redis_conn, db=db)
+
 logger = logging.getLogger("firebase_sync")
 logging.basicConfig(
     level=logging.INFO,
@@ -93,33 +102,44 @@ DEFAULT_ROOMS = [
 # ─────────────────────────────────────────────
 def init_firebase():
     """
-    Khởi tạo Firebase Admin SDK với cả Firestore và Realtime Database.
-    Trả về (firestore_client, rtdb_module).
+    Khởi tạo Firebase Admin SDK một lần duy nhất.
+    Sửa lỗi gọi initialize_app nhiều lần và thứ tự gán credentials.
     """
     if not firebase_admin._apps:
+        # 1. Thiết lập Options
         options = {"projectId": FIREBASE_PROJECT_ID}
-        if FIREBASE_DB_URL:
-            options["databaseURL"] = FIREBASE_DB_URL
-        else:
-            # Fallback — asia-southeast1 region (khác với default us-central1)
-            options["databaseURL"] = f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
-            logger.warning(
-                "FIREBASE_DB_URL chưa set — dùng region asia-southeast1: %s", options["databaseURL"]
-            )
+        db_url = FIREBASE_DB_URL
+        
+        if not db_url:
+            db_url = f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
+            logger.warning("FIREBASE_DB_URL chưa set — dùng region asia-southeast1: %s", db_url)
+        
+        options["databaseURL"] = db_url
 
+        # 2. Xác định Credentials
+        cred = None
         if os.path.exists(SERVICE_ACCOUNT_FILE):
-            cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
-            firebase_admin.initialize_app(cred, options)
-            logger.info("Firebase khởi tạo từ service account file")
-        else:
-            firebase_admin.initialize_app(options=options)
-            logger.warning("Service account không tìm thấy — dùng ADC (Application Default Credentials)")
+            try:
+                cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
+                logger.info("Sử dụng Service Account: %s", SERVICE_ACCOUNT_FILE)
+            except Exception as e:
+                logger.error("Lỗi đọc file service account: %s", e)
 
+        # 3. Khởi tạo DUY NHẤT một lần
+        try:
+            if cred:
+                firebase_admin.initialize_app(cred, options)
+                logger.info("Firebase khởi tạo thành công với Service Account.")
+            else:
+                firebase_admin.initialize_app(options=options)
+                logger.warning("Dùng ADC (Application Default Credentials).")
+        except Exception as e:
+            logger.critical("Không thể khởi tạo Firebase: %s", e)
+            raise
+
+    # Trả về các instance cần thiết
     fs_client = firestore.client()
-    logger.info("Firestore client sẵn sàng")
-    logger.info("RTDB client sẵn sàng (databaseURL: %s)", FIREBASE_DB_URL or "auto")
     return fs_client, rtdb
-
 
 # ─────────────────────────────────────────────
 #  REDIS
@@ -421,6 +441,7 @@ class RTDBWriter:
                 "value": value,
                 "ts":    ts_now,        # FIX: 10 chữ số (seconds), nhất quán
                 "iso":   datetime.fromtimestamp(ts_now, tz=timezone.utc).isoformat(),
+                "unit":  "°C" if sensor_type == "temperature" else "%" # Gán thêm đơn vị nếu cần
             })
         except Exception as e:
             logger.error("RTDB update_sensor [%s/%s] error: %s", room_id, sensor_type, e)
@@ -442,6 +463,7 @@ class RTDBWriter:
                     "value": value,
                     "ts":    ts_now,   # FIX: seconds (10 chữ số), nhất quán
                     "iso":   ts_iso,
+                    "unit":  "°C" if sensor_type == "temperature" else "%" # Gán thêm đơn vị nếu cần
                 }
             if not updates:
                 return
@@ -475,9 +497,18 @@ class RTDBWriter:
             logger.warning("RTDB heartbeat error: %s", e)
 
 
+
 # ─────────────────────────────────────────────
 #  FIRESTORE WRITER — dữ liệu "tĩnh/cấu trúc"
 # ─────────────────────────────────────────────
+def json_serializable(obj):
+    """Chuyển đổi các đối tượng không JSON-serializable sang string."""
+    if hasattr(obj, 'isoformat'):
+        return obj.isoformat()
+    if hasattr(obj, 'to_datetime'): # Xử lý riêng cho Google Timestamp
+        return obj.to_datetime().isoformat()
+    return str(obj)
+
 class FirestoreWriter:
     """
     Ghi dữ liệu cấu trúc lên Firestore.
@@ -560,6 +591,7 @@ class FirestoreWriter:
             batch = self.fs.batch()
             for row in chunk:
                 try:
+                    ts_raw = str(row["timestamp"])
                     ts = datetime.fromisoformat(str(row["timestamp"])).replace(tzinfo=timezone.utc)
                 except Exception:
                     ts = datetime.now(timezone.utc)
@@ -569,6 +601,7 @@ class FirestoreWriter:
                     "type":      row["sensor_type"],
                     "value":     float(row["value"]),
                     "timestamp": ts,
+                    "timestamp_iso": ts.isoformat() # THÊM: Để Web vẽ biểu đồ dễ dàng
                 })
                 synced_ids.append(row["id"])
             try:
@@ -603,10 +636,17 @@ class FirestoreWriter:
     # ── Commands ──────────────────────────────────────────
 
     def delete_command(self, cmd_id: str):
+        """Xóa lệnh ngay lập tức sau khi hoàn thành để tránh loop"""
         try:
             self.fs.collection("commands").document(cmd_id).delete()
+            logger.info(f"Đã xóa lệnh hoàn tất: {cmd_id}")#[cite: 5]
         except Exception as e:
-            logger.error("Firestore delete_command error: %s", e)
+            logger.error(f"Lỗi xóa lệnh: {e}")#[cite: 5]
+    # def delete_command(self, cmd_id: str):
+    #     try:
+    #         self.fs.collection("commands").document(cmd_id).delete()
+    #     except Exception as e:
+    #         logger.error("Firestore delete_command error: %s", e)
 
     def ack_command(self, cmd_id: str, status: str, result=None):
         data: Dict[str, Any] = {
@@ -614,7 +654,25 @@ class FirestoreWriter:
             "ackedAt": firestore.SERVER_TIMESTAMP,
         }
         if result is not None:
-            data["result"] = result
+        #     data["result"] = result
+        # try:
+        #     self.fs.collection("commands").document(cmd_id).update(data)
+        # except Exception as e:
+        #     logger.error("Firestore ack_command error: %s", e)
+
+        # FIX: Kiểm tra nếu result là object không thể serialize, ép kiểu về string
+            try:
+                json.dumps(result) # Thử test xem có serialize được không
+                data["result"] = result
+            except (TypeError, OverflowError):
+                if isinstance(result, dict):
+                    data["result"] = {k: json_serializable(v) for k, v in result.items()}
+                else:
+                    data["result"] = json_serializable(result)
+                logger.warning(f"Result for cmd {cmd_id} was normalized for JSON.")
+                # data["result"] = str(result) # Nếu lỗi (như lỗi Datetime), ép về chuỗi
+                # logger.warning(f"Result for cmd {cmd_id} was not serializable, converted to string")
+
         try:
             self.fs.collection("commands").document(cmd_id).update(data)
         except Exception as e:
@@ -871,10 +929,16 @@ class CommandDispatcher:
 
     REDIS_CHANNEL = "device_commands"
 
-    def __init__(self, fs_writer: FirestoreWriter, redis_client: redis.Redis):
+    # def __init__(self, fs_writer: FirestoreWriter, redis_client: redis.Redis):
+    #     self.fs_writer = fs_writer
+    #     self.r         = redis_client
+    #     self._watcher  = None
+    def __init__(self, fs_writer: FirestoreWriter, redis_client: redis.Redis, db):
         self.fs_writer = fs_writer
         self.r         = redis_client
+        self.fs        = db  # Đây là đối tượng dùng để xóa lệnh
         self._watcher  = None
+        self.REDIS_CHANNEL = "device_commands"#[cite: 3]
 
     def start(self):
         self._watcher = self.fs_writer.listen_commands(self._dispatch)
@@ -887,48 +951,168 @@ class CommandDispatcher:
                 logger.info("CommandDispatcher stopped cleanly")
             except Exception as e:
                 logger.error("CommandDispatcher stop error: %s", e)
+    
 
     def _dispatch(self, cmd_id: str, data: dict):
-        self.fs_writer.ack_command(cmd_id, "processing")
+        """
+        Xử lý lệnh từ Firestore, gửi xuống Redis và dọn dẹp để tránh lặp lệnh.
+        """
+        # 1. Xác định hành động và kênh Redis phù hợp
+        action = data.get("action", "")
+        channel = self.REDIS_CHANNEL # Mặc định là 'device_commands'
 
-        # Normalize field names — Web gửi roomId, Pi đọc room
-        room_id = (data.get("room") or data.get("roomId")
-                   or data.get("room_id") or "")
-        device_id = (data.get("device_id") or data.get("deviceId") or "")
-
-        msg = {
-            **data,
-            "room":      room_id,
-            "roomId":    room_id,
-            "room_id":   room_id,
-            "device_id": device_id,
-            "deviceId":  device_id,
-            "cmd_id":    cmd_id,
-        }
-
-        action  = data.get("action", "")
-        channel = self.REDIS_CHANNEL
-
-        if action in ("turn_on", "turn_off", "toggle"):
-            channel = self.REDIS_CHANNEL
-        elif action == "add_and_connect":
+        if action == "add_and_connect":
             channel = "wifi_setup"
         elif action in ("start_register", "cancel_register"):
             channel = "rfid_register"
 
-        try:
-            self.r.publish(channel, json.dumps(msg))
-            logger.info("Dispatched cmd '%s' [%s] → Redis[%s]", cmd_id, action, channel)
+        # 2. Chuẩn hóa dữ liệu (Normalize)
+        room_id = (data.get("room") or data.get("roomId") or data.get("room_id") or "")
+        device_id = (data.get("device_id") or data.get("deviceId") or "")
 
-            # Nếu là lệnh device → force update Firestore device status ngay
+        msg = {
+            "room":      room_id,
+            "device_id": device_id,
+            "cmd_id":    cmd_id,
+            "action":    action,
+            "payload":   data.get("payload", {})
+        }
+
+        try:
+            # 3. Gửi lệnh vào Redis (Chỉ gửi 1 lần duy nhất)
+            self.r.publish(channel, json.dumps(msg))
+            logger.info(f"==> DISPATCH: {cmd_id} [{action}] -> Redis[{channel}]")
+
+            # 4. Cập nhật trạng thái 'ảo' ngay để Web không bị nhảy nút
             if action in ("turn_on", "turn_off") and room_id and device_id:
                 self.fs_writer.force_update_device(room_id, device_id, {
                     "is_on":  action == "turn_on",
                     "status": "online",
                 })
+
+            # 5. QUAN TRỌNG: Xóa lệnh khỏi Firestore ngay lập tức
+            self.fs.collection("commands").document(cmd_id).delete()
+            logger.info(f"==> CLEANUP: Đã xóa lệnh {cmd_id} khỏi Firestore.")
+
         except Exception as e:
-            logger.error("Dispatch error: %s", e)
-            self.fs_writer.ack_command(cmd_id, "error", str(e))
+            logger.error(f"Critical Dispatch Error cho lệnh {cmd_id}: {e}")
+            try:
+                self.fs_writer.ack_command(cmd_id, "error", str(e))
+            except:
+                pass
+
+
+    # def _dispatch(self, cmd_id: str, data: dict):
+    #     """
+    #     Xử lý lệnh từ Firestore, gửi xuống Redis và dọn dẹp để tránh lặp lệnh.
+    #     """
+    #     # 1. Xác định hành động và kênh Redis phù hợp
+    #     action = data.get("action", "")
+    #     channel = self.REDIS_CHANNEL # Mặc định là 'device_commands'
+
+    #     if action == "add_and_connect":
+    #         channel = "wifi_setup"
+    #     elif action in ("start_register", "cancel_register"):
+    #         channel = "rfid_register"
+
+    #     # 2. Chuẩn hóa dữ liệu để tránh lỗi JSON (loại bỏ DatetimeWithNanoseconds)
+    #     room_id = (data.get("room") or data.get("roomId") or data.get("room_id") or "")
+    #     device_id = (data.get("device_id") or data.get("deviceId") or "")
+
+    #     # Chỉ gửi những trường cần thiết cho phần cứng
+    #     msg = {
+    #         "room":      room_id,
+    #         "device_id": device_id,
+    #         "cmd_id":    cmd_id,
+    #         "action":    action,
+    #         "payload":   data.get("payload", {})
+    #     }
+
+    #     try:
+    #         # 3. Gửi lệnh vào Redis (Chỉ gửi 1 lần duy nhất tại đây)
+    #         self.r.publish(channel, json.dumps(msg))
+    #         logger.info(f"==> DISPATCH: {cmd_id} [{action}] -> Redis[{channel}]")
+
+    #         # 4. Cập nhật trạng thái 'ảo' ngay lập tức để Web đồng bộ (Phản hồi nhanh)
+    #         if action in ("turn_on", "turn_off") and room_id and device_id:
+    #             self.fs_writer.force_update_device(room_id, device_id, {
+    #                 "is_on":  action == "turn_on",
+    #                 "status": "online",
+    #             })
+
+    #         # 5. QUAN TRỌNG: Xóa lệnh khỏi Firestore ngay lập tức
+    #         # Điều này ngăn on_snapshot đọc lại lệnh này và gây ra vòng lặp bật/tắt chu kỳ
+    #         self.fs.collection("commands").document(cmd_id).delete()
+    #         logger.info(f"==> CLEANUP: Đã xóa lệnh {cmd_id} khỏi Firestore.")
+
+    #     except Exception as e:
+    #         logger.error(f"Critical Dispatch Error cho lệnh {cmd_id}: {e}")
+    #         # Nếu có lỗi xảy ra, cố gắng báo lại cho Firestore thay vì xóa
+    #         try:
+    #             self.fs_writer.ack_command(cmd_id, "error", str(e))
+    #         except:
+    #             pass
+
+    
+
+    # def _dispatch(self, cmd_id: str, data: dict):
+    #     self.fs_writer.ack_command(cmd_id, "processing")
+
+    #     # Normalize field names
+    #     room_id = (data.get("room") or data.get("roomId")
+    #                or data.get("room_id") or "")
+    #     device_id = (data.get("device_id") or data.get("deviceId") or "")
+
+    #     # Tạo một bản copy sạch để gửi sang Redis
+    #     msg = {
+    #         "room":      room_id,
+    #         "device_id": device_id,
+    #         "cmd_id":    cmd_id,
+    #         "action":    data.get("action", ""),
+    #         "payload":   data.get("payload", {})
+    #     }
+    #     try:
+    #         self.r.publish(self.REDIS_CHANNEL, json.dumps(msg))
+    #         logger.info(f"Đã đẩy lệnh {cmd_id} vào Redis")[cite: 5]
+            
+    #         # 2. Quan trọng: XÓA LỆNH KHỎI FIRESTORE NGAY
+    #         # Việc xóa này giúp vòng lặp snapshot không bị đọc lại lệnh cũ
+    #         self.fs.collection("commands").document(cmd_id).delete()
+    #         logger.info(f"Đã xóa lệnh {cmd_id} khỏi Firestore để tránh lặp")[cite: 5]
+            
+    #     except Exception as e:
+    #         logger.error(f"Lỗi Dispatch: {e}")[cite: 5]
+
+    #     # FIX: Chỉ lấy những field cần thiết cho phần cứng, 
+    #     # bỏ qua các field Datetime của Firestore (createdAt, updatedAt)
+        
+    #     action  = data.get("action", "")
+    #     channel = self.REDIS_CHANNEL
+
+    #     if action in ("turn_on", "turn_off", "toggle"):
+    #         channel = self.REDIS_CHANNEL
+    #     elif action == "add_and_connect":
+    #         channel = "wifi_setup"
+    #     elif action in ("start_register", "cancel_register"):
+    #         channel = "rfid_register"
+
+    #     try:
+    #         # Gửi msg đã được lọc sạch dữ liệu rác
+    #         self.r.publish(channel, json.dumps(msg))
+    #         logger.info("Dispatched cmd '%s' [%s] → Redis[%s]", cmd_id, action, channel)
+
+    #         if action in ("turn_on", "turn_off") and room_id and device_id:
+    #             self.fs_writer.force_update_device(room_id, device_id, {
+    #                 "is_on":  action == "turn_on",
+    #                 "status": "online",
+    #             })
+    #     except Exception as e:
+    #         # Log chi tiết lỗi để debug nếu còn sót trường nào lạ
+    #         logger.error("Dispatch error for cmd %s: %s", cmd_id, e)
+    #         self.fs_writer.ack_command(cmd_id, "error", str(e))
+
+
+
 
 
 # ─────────────────────────────────────────────
@@ -979,14 +1163,18 @@ def main():
     logger.info("Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)")
     logger.info("=" * 55)
 
-    # 1. Khởi tạo Firebase (Firestore + RTDB)
-    fs_client, rtdb_module = init_firebase()
+    # # 1. Khởi tạo Firebase (Firestore + RTDB)
+    # fs_client, rtdb_module = init_firebase()
 
-    fs_writer   = FirestoreWriter(fs_client)
+    # fs_writer   = FirestoreWriter(fs_client)
+    # rtdb_writer = RTDBWriter(rtdb_module)
+
+    fs_client, rtdb_module = init_firebase() #
+    
+    fs_writer = FirestoreWriter(fs_client)
     rtdb_writer = RTDBWriter(rtdb_module)
-
-    # 2. Kết nối Redis
     r = get_redis()
+
     try:
         r.ping()
         logger.info("Redis connected at %s:%d", REDIS_HOST, REDIS_PORT)
@@ -1017,8 +1205,21 @@ def main():
     mqtt_bridge = MqttInboundBridge(rtdb_writer, r)
     mqtt_bridge.start()
 
-    dispatcher = CommandDispatcher(fs_writer, r)
+    
+
+    # dispatcher = CommandDispatcher(fs_writer, r)
+    # dispatcher.start()
+
+    # Tìm dòng này trong hàm main():
+    # dispatcher = CommandDispatcher(fs_writer, r) 
+    
+    # # Sửa lại thành:
+    # dispatcher = CommandDispatcher(fs_writer=fs_writer, redis_client=r, db=fs_client)
+    # dispatcher.start()
+
+    dispatcher = CommandDispatcher(fs_writer=fs_writer, redis_client=r, db=fs_client) #[cite: 3]
     dispatcher.start()
+
 
     flush_thread = threading.Thread(
         target=run_sensor_flush_loop,

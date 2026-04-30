@@ -1,13 +1,23 @@
 """
-workers/automation_engine.py  — FIXED
-═══════════════════════════════════════
+workers/automation_engine.py  — FIXED v2
+═══════════════════════════════════════════
 FIXES:
-  BUG-H-01: process_sensor() chỉ xử lý temperature → bổ sung humidity, co2, gas
-  BUG-C-05: scheduler_loop() xóa schedule sau 1 lần chạy (enabled=0)
-            Fix: KHÔNG xóa → schedules chạy lại mỗi ngày đúng giờ
-            (Chỉ chạy 1 lần mỗi phút: dùng "last_run" tracking tránh chạy 60 lần/phút)
-  BUG-H-02: command_listener nhận "roomId" từ Firebase/Web nhưng chỉ đọc "room"
-            Fix: chấp nhận cả hai key: data.get("room") or data.get("roomId")
+  BUG-ACK-01:  Sau khi ESP32 phản hồi trạng thái (topic home/{room}/status),
+               publish "command_ack" lên Redis → firebase_sync xóa command
+               khỏi Firestore → Web biết lệnh đã thực thi thành công.
+               (Trước đây thiếu bước này → command_ack loop bị skip,
+                lệnh vẫn còn trong Firestore → trạng thái Web không đồng bộ)
+
+  BUG-DEVICE-SYNC-01: Khi ESP32 phản hồi trạng thái thiết bị,
+               publish lên cả "device_status" channel (cho firebase_sync)
+               để Firestore devices/{id} được cập nhật → Web toggle button
+               hiển thị đúng trạng thái thực tế.
+
+  BUG-COMMAND-PENDING: Khi nhận device_commands, tìm cmd_id trong Redis
+               để sau đó gửi ACK về firebase_sync. Thêm pending_commands dict
+               để track cmd_id → device_id mapping.
+
+  (Giữ nguyên tất cả FIX từ v1: BUG-H-01, BUG-C-05, BUG-H-02)
 """
 
 import time
@@ -17,19 +27,16 @@ import threading
 from datetime import datetime
 
 from bridge.message_bus import MessageBus, CH_INBOUND
-from workers import safety_watchdog   # share CACHED_SENSORS
+from workers import safety_watchdog
 
 DB_PATH                  = "/data/smarthome.db"
-MANUAL_OVERRIDE_DURATION = 120   # giây
-ENROLLMENT_TIMEOUT       = 60    # giây
-CLOCK_WARN_YEAR          = 2024  # nếu năm < này → cảnh báo giờ sai
+MANUAL_OVERRIDE_DURATION = 120
+ENROLLMENT_TIMEOUT       = 60
+CLOCK_WARN_YEAR          = 2024
 
-# ── Hysteresis & Debounce config ─────────────────────────
-# FIX: Ngưỡng bật/tắt tách biệt để tránh relay kích On/Off liên tục
-HYSTERESIS_OFFSET  = 2.0   # °C — bật ở T > threshold, tắt ở T < threshold - offset
-MIN_SWITCH_DELAY_S = 30    # giây tối thiểu giữa 2 lần chuyển relay (debounce phần cứng)
-# Tracking thời điểm chuyển trạng thái gần nhất theo từng device
-DEVICE_LAST_SWITCH: dict = {}   # { f"{room_id}_{device_id}" → datetime }
+HYSTERESIS_OFFSET  = 2.0
+MIN_SWITCH_DELAY_S = 30
+DEVICE_LAST_SWITCH: dict = {}
 
 DEVICE_MAP = {
     "kitchen_01":     {"fan": "fan_kt_1",  "light": "light_kt_1"},
@@ -37,18 +44,17 @@ DEVICE_MAP = {
     "bedroom_01":     {"fan": "fan_bd_1",  "light": "light_bd_1"},
 }
 
-# ── State ──────────────────────────────────────────────────
 CACHED_AUTOMATIONS:   dict = {}
 CACHED_SCHEDULES:     list = []
 CACHED_DEVICE_STATES: dict = {}
-MANUAL_CONTROL_CACHE: dict = {}  # {device_id: datetime}
+MANUAL_CONTROL_CACHE: dict = {}
 ENROLLMENT_STATE:     dict = {"active": False, "start_time": None, "pending_name": ""}
+SCHEDULE_LAST_RUN:    dict = {}
 
-# FIX BUG-C-05: track schedule execution để tránh chạy nhiều lần trong cùng 1 phút
-SCHEDULE_LAST_RUN: dict = {}  # {schedule_id: "HH:MM date"}
+# FIX BUG-ACK-01: Track pending commands để gửi ACK khi ESP32 confirm
+# { device_id: cmd_id } — xóa sau khi nhận status từ ESP32
+PENDING_COMMANDS: dict = {}
 
-
-# ── DB helpers ────────────────────────────────────────────
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -63,13 +69,12 @@ def load_cache():
     try:
         for row in conn.execute("SELECT * FROM automations WHERE enabled=1").fetchall():
             CACHED_AUTOMATIONS[row["room_id"]] = dict(row)
-        CACHED_SCHEDULES = [dict(r) for r in conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
+        CACHED_SCHEDULES = [dict(r) for r in
+                           conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
     finally:
         conn.close()
     print(f"[AUTO] Cache loaded: {len(CACHED_AUTOMATIONS)} rules, {len(CACHED_SCHEDULES)} schedules")
 
-
-# ── Automation logic ──────────────────────────────────────
 
 def _is_safety_locked(room_id: str) -> bool:
     bus = MessageBus.get_instance()
@@ -78,17 +83,6 @@ def _is_safety_locked(room_id: str) -> bool:
 
 def _try_control(bus: MessageBus, room_id: str, device_type: str,
                  value: float, threshold: float):
-    """
-    Kiểm tra rule và bắn lệnh MQTT nếu cần.
-
-    FIX HYSTERESIS: Thay ngưỡng cứng bằng ngưỡng kép:
-      - Bật  khi value > threshold
-      - Tắt  khi value < (threshold - HYSTERESIS_OFFSET)
-      → Tránh relay bật/tắt liên tục khi giá trị dao động quanh ngưỡng.
-
-    FIX DEBOUNCE: Chỉ gửi lệnh khi đã qua MIN_SWITCH_DELAY_S kể từ lần chuyển cuối.
-    FIX STATEFUL: Chỉ gửi lệnh khi trạng thái THỰC SỰ thay đổi.
-    """
     if _is_safety_locked(room_id):
         return
 
@@ -96,43 +90,33 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
     if not device_id:
         return
 
-    # Kiểm tra schedule đang chạy
     for sched in CACHED_SCHEDULES:
         if sched.get("enabled") and sched.get("device_id") == device_id:
             return
 
-    # Kiểm tra manual override
     last_manual = MANUAL_CONTROL_CACHE.get(device_id)
     if last_manual and (datetime.now() - last_manual).total_seconds() < MANUAL_OVERRIDE_DURATION:
         return
 
     cache_key    = f"{room_id}_{device_id}"
-    current_on   = CACHED_DEVICE_STATES.get(cache_key)   # None = chưa biết
+    current_on   = CACHED_DEVICE_STATES.get(cache_key)
 
-    # ── Hysteresis logic ──────────────────────────────────
-    # Xác định trạng thái mong muốn dựa trên giá trị và ngưỡng kép
-    threshold_off = threshold - HYSTERESIS_OFFSET   # ngưỡng TẮT thấp hơn ngưỡng BẬT
+    threshold_off = threshold - HYSTERESIS_OFFSET
     if current_on is True:
-        # Đang BẬT → chỉ tắt khi value xuống DƯỚI ngưỡng TẮT
         should_on = value > threshold_off
     elif current_on is False:
-        # Đang TẮT → chỉ bật khi value vượt TRÊN ngưỡng BẬT
         should_on = value > threshold
     else:
-        # Chưa biết trạng thái → dùng ngưỡng bật bình thường
         should_on = value > threshold
 
-    # ── Stateful check — không gửi lệnh nếu trạng thái không đổi ──
     if current_on == should_on:
         return
 
-    # ── Debounce — bảo vệ relay, không chuyển quá nhanh ──────────
     now = datetime.now()
     last_switch = DEVICE_LAST_SWITCH.get(cache_key)
     if last_switch and (now - last_switch).total_seconds() < MIN_SWITCH_DELAY_S:
         return
 
-    # ── Gửi lệnh MQTT ────────────────────────────────────────────
     CACHED_DEVICE_STATES[cache_key] = should_on
     DEVICE_LAST_SWITCH[cache_key]   = now
     action = "turn_on" if should_on else "turn_off"
@@ -160,20 +144,13 @@ def _log_automation(room_id: str, scenario: str, actions: list, triggered_by: st
 
 
 def process_sensor(room_id: str, sensor_data: dict):
-    """
-    FIX BUG-H-01: Xử lý TẤT CẢ loại cảm biến, không chỉ temperature.
-    - temperature → fan_threshold, light_threshold
-    - humidity    → fan_threshold (quạt khi ẩm cao)
-    - co2         → fan_threshold (quạt khi CO2 cao)
-    - gas         → đã có safety_watchdog xử lý riêng, không xử lý ở đây
-    """
+    """FIX BUG-H-01: Xử lý temperature, humidity, co2."""
     rule = CACHED_AUTOMATIONS.get(room_id)
     if not rule or not rule.get("enabled"):
         return
 
     bus = MessageBus.get_instance()
 
-    # Nhiệt độ → quạt + đèn
     if "temperature" in sensor_data:
         val = float(sensor_data["temperature"])
         if rule.get("fan_threshold"):
@@ -181,27 +158,22 @@ def process_sensor(room_id: str, sensor_data: dict):
         if rule.get("light_threshold"):
             _try_control(bus, room_id, "light", val, float(rule["light_threshold"]))
 
-    # Độ ẩm → quạt (nếu humidity cao thì bật quạt)
     if "humidity" in sensor_data and rule.get("fan_threshold"):
         val = float(sensor_data["humidity"])
         _try_control(bus, room_id, "fan", val, float(rule["fan_threshold"]))
 
-    # CO2 → quạt (nếu CO2 cao thì bật quạt thông gió)
     if "co2" in sensor_data and rule.get("fan_threshold"):
         val = float(sensor_data["co2"])
-        # CO2 threshold thường cao hơn (ppm), dùng riêng nếu có, fallback fan_threshold * 10
         co2_thresh = float(rule.get("co2_threshold") or float(rule["fan_threshold"]) * 10)
         _try_control(bus, room_id, "fan", val, co2_thresh)
 
-
-# ── Scheduler ─────────────────────────────────────────────
 
 def _check_clock_validity() -> bool:
     if datetime.now().year < CLOCK_WARN_YEAR:
         bus = MessageBus.get_instance()
         bus.publish_event("realtime_data", {
             "event":   "system_warning",
-            "message": "Giờ hệ thống chưa được đồng bộ! Kiểm tra module RTC DS3231.",
+            "message": "Giờ hệ thống chưa đồng bộ! Kiểm tra kết nối Internet/NTP.",
             "level":   "warning"
         })
         return False
@@ -209,11 +181,7 @@ def _check_clock_validity() -> bool:
 
 
 def scheduler_loop():
-    """
-    FIX BUG-C-05: KHÔNG set enabled=0 sau khi chạy.
-    Thay vào đó, dùng SCHEDULE_LAST_RUN để đảm bảo mỗi lịch chỉ chạy 1 lần/phút.
-    Schedules có thể lặp lại mỗi ngày đúng giờ.
-    """
+    """FIX BUG-C-05: Không set enabled=0 sau khi chạy."""
     print("[SCHEDULER] Started")
     while True:
         try:
@@ -234,10 +202,9 @@ def scheduler_loop():
                 if not sched.get("device_id"):
                     continue
 
-                # FIX BUG-C-05: kiểm tra đã chạy trong phút này chưa
                 run_key = f"{sched['id']}_{current_hhmm}_{today_key}"
                 if SCHEDULE_LAST_RUN.get(sched["id"]) == run_key:
-                    continue  # Đã chạy trong phút này rồi, bỏ qua
+                    continue
 
                 room_id   = sched["room_id"]
                 device_id = sched["device_id"]
@@ -253,14 +220,11 @@ def scheduler_loop():
                     "source": "schedule"
                 })
                 MANUAL_CONTROL_CACHE[device_id] = datetime.now()
-
-                # FIX BUG-C-05: ghi nhận đã chạy trong phút này (KHÔNG disabled)
-                SCHEDULE_LAST_RUN[sched["id"]] = run_key
+                SCHEDULE_LAST_RUN[sched["id"]]  = run_key
 
                 print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
                 _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
 
-            # Dọn cache SCHEDULE_LAST_RUN mỗi 24h để tránh memory leak
             if len(SCHEDULE_LAST_RUN) > 1000:
                 SCHEDULE_LAST_RUN.clear()
 
@@ -270,8 +234,6 @@ def scheduler_loop():
             print(f"[SCHEDULER] error: {e}")
             time.sleep(1)
 
-
-# ── RFID Enrollment ───────────────────────────────────────
 
 def _check_enrollment_timeout():
     if (ENROLLMENT_STATE["active"] and
@@ -285,8 +247,6 @@ def _check_enrollment_timeout():
         })
 
 
-# ── MQTT inbound handler ──────────────────────────────────
-
 def handle_inbound(envelope: dict):
     topic   = envelope.get("topic", "")
     payload = envelope.get("payload", {})
@@ -298,19 +258,15 @@ def handle_inbound(envelope: dict):
     room_id  = parts[1]
     category = parts[2]
 
-    # ── Dữ liệu cảm biến ──────────────────────────────────
     if category == "sensors":
         bus = MessageBus.get_instance()
         r   = bus.get_redis()
 
-        # Cập nhật CACHED_SENSORS cho safety_watchdog
         cached = safety_watchdog.CACHED_SENSORS.setdefault(room_id, {})
         cached.update(payload)
 
-        # Lưu vào Redis snapshot
         r.setex(f"sensor:{room_id}", 300, json.dumps(payload))
 
-        # Lưu vào SQLite
         conn = get_db()
         try:
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -326,10 +282,8 @@ def handle_inbound(envelope: dict):
         finally:
             conn.close()
 
-        # Automation logic
         process_sensor(room_id, payload)
 
-        # Push lên Firebase via publish
         for s_type, value in payload.items():
             if isinstance(value, (int, float)):
                 bus.publish_event("realtime_data", {
@@ -339,8 +293,13 @@ def handle_inbound(envelope: dict):
                     "timestamp": datetime.now().isoformat()
                 })
 
-    # ── Trạng thái thiết bị phản hồi từ ESP32 ─────────────
     elif category == "status":
+        """
+        FIX BUG-DEVICE-SYNC-01: Khi nhận status từ ESP32:
+          1. Lưu SQLite device_status
+          2. Publish "device_status" channel → firebase_sync cập nhật Firestore devices
+          3. FIX BUG-ACK-01: Gửi command_ack nếu có pending command cho device này
+        """
         bus = MessageBus.get_instance()
         r   = bus.get_redis()
 
@@ -348,13 +307,13 @@ def handle_inbound(envelope: dict):
         is_on     = bool(payload.get("is_on", False))
 
         if device_id:
-            # Cập nhật SQLite device_status
             conn = get_db()
             try:
                 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 conn.execute(
                     "INSERT OR REPLACE INTO device_status (room, device_id, is_on, source, updated_at) VALUES (?,?,?,?,?)",
-                    (room_id, device_id, 1 if is_on else 0, payload.get("source", "esp32"), now)
+                    (room_id, device_id, 1 if is_on else 0,
+                     payload.get("source", "esp32"), now)
                 )
                 conn.commit()
             except Exception as e:
@@ -362,7 +321,8 @@ def handle_inbound(envelope: dict):
             finally:
                 conn.close()
 
-            # Push lên Firebase
+            # FIX BUG-DEVICE-SYNC-01: Publish device_status để firebase_sync
+            # cập nhật Firestore → Web toggle button đúng trạng thái
             bus.publish_event("device_status", {
                 "room_id":   room_id,
                 "device_id": device_id,
@@ -372,7 +332,21 @@ def handle_inbound(envelope: dict):
                 "type":      payload.get("type", "")
             })
 
-    # ── Cảnh báo từ thiết bị ─────────────────────────────
+            # FIX BUG-ACK-01: Nếu đây là response của một web command,
+            # publish command_ack để firebase_sync xóa command khỏi Firestore
+            pending_cmd_id = PENDING_COMMANDS.pop(device_id, None)
+            if pending_cmd_id:
+                r.publish("command_ack", json.dumps({
+                    "cmd_id": pending_cmd_id,
+                    "status": "done",
+                    "result": f"ESP32 confirmed: {device_id} is {'ON' if is_on else 'OFF'}"
+                }))
+                print(f"[AUTO] ACK sent for cmd {pending_cmd_id}: {device_id} → {is_on}")
+
+            # Update local state cache
+            cache_key = f"{room_id}_{device_id}"
+            CACHED_DEVICE_STATES[cache_key] = is_on
+
     elif category == "alert":
         bus = MessageBus.get_instance()
         bus.publish_event("realtime_data", {
@@ -384,7 +358,6 @@ def handle_inbound(envelope: dict):
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
 
-    # ── Xác thực RFID/vân tay ─────────────────────────────
     elif category == "auth":
         _check_enrollment_timeout()
         _handle_auth(room_id, payload)
@@ -426,7 +399,7 @@ def _handle_auth(room_id: str, payload: dict):
             print(f"[AUTH] enrollment error: {e}")
         return
 
-    conn     = get_db()
+    conn = get_db()
     try:
         card_row = conn.execute(
             "SELECT * FROM rfid_cards WHERE uid=? AND is_active=1", (uid,)
@@ -442,9 +415,7 @@ def _handle_auth(room_id: str, payload: dict):
         _log_access(room_id, uid, owner, "open_door", True)
         print(f"[AUTH] {room_id}: GRANTED -> {owner}")
     else:
-        bus.publish_mqtt(f"home/{room_id}/command", {
-            "action": "access_denied"
-        })
+        bus.publish_mqtt(f"home/{room_id}/command", {"action": "access_denied"})
         _log_access(room_id, uid, "Khách lạ", "attempt_failed", False)
         print(f"[AUTH] {room_id}: DENIED -> {uid}")
 
@@ -461,7 +432,8 @@ def _log_access(room_id, uid, user_name, action, success):
             conn.execute(
                 "INSERT INTO notifications (type, title, message, room, created_at) VALUES (?,?,?,?,?)",
                 ("access", "ACCESS LOGS",
-                 f"{'thanh cong' if success else 'that bai'} {user_name} - {room_id}", room_id, now)
+                 f"{'thanh cong' if success else 'that bai'} {user_name} - {room_id}",
+                 room_id, now)
             )
             conn.commit()
         finally:
@@ -477,12 +449,11 @@ def _log_access(room_id, uid, user_name, action, success):
         print(f"[AUTH] log error: {e}")
 
 
-# ── Redis command listener ────────────────────────────────
-
 def command_listener():
     """
-    FIX BUG-H-02: Chấp nhận cả "room" và "roomId" từ Web/Firebase
-    để tránh lệnh bị bỏ qua do sai tên trường.
+    FIX BUG-H-02: Chấp nhận cả "room" và "roomId".
+    FIX BUG-ACK-01: Lưu cmd_id vào PENDING_COMMANDS[device_id]
+                    để gửi ACK khi ESP32 xác nhận.
     """
     bus    = MessageBus.get_instance()
     r      = bus.get_redis()
@@ -510,6 +481,7 @@ def command_listener():
                 room_id   = data.get("room") or data.get("roomId") or data.get("room_id", "")
                 device_id = data.get("device_id") or data.get("deviceId", "")
                 is_on     = data.get("is_on", False)
+                cmd_id    = data.get("cmd_id", "")
 
                 if not room_id or not device_id:
                     print(f"[AUTO] device_commands: missing room or device_id: {data}")
@@ -526,11 +498,16 @@ def command_listener():
                     continue
 
                 MANUAL_CONTROL_CACHE[device_id] = datetime.now()
+
+                # FIX BUG-ACK-01: Lưu cmd_id để gửi ACK khi ESP32 confirm
+                if cmd_id:
+                    PENDING_COMMANDS[device_id] = cmd_id
+
                 bus.publish_mqtt(f"home/{room_id}/command", {
                     "device": device_id,
                     "action": "turn_on" if is_on else "turn_off",
                     "source": data.get("source", "web"),
-                    "cmd_id": data.get("cmd_id", "")
+                    "cmd_id": cmd_id
                 })
 
             elif channel == "automation_commands":
@@ -555,7 +532,6 @@ def command_listener():
                     })
 
             elif channel == "rfid_register":
-                # Lệnh từ Firebase qua firebase_sync (start_register / cancel_register)
                 action = data.get("action")
                 if action == "start_register":
                     ENROLLMENT_STATE["active"]       = True
@@ -583,10 +559,9 @@ def command_listener():
 
 
 def run():
-    """Entry point – khởi động automation engine."""
     load_cache()
-    threading.Thread(target=scheduler_loop,    daemon=True).start()
-    threading.Thread(target=command_listener,  daemon=False).start()  # blocking
+    threading.Thread(target=scheduler_loop,   daemon=True).start()
+    threading.Thread(target=command_listener, daemon=False).start()
 
 
 if __name__ == "__main__":

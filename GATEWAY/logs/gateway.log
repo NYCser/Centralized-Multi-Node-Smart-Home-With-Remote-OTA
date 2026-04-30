@@ -4615,3 +4615,1245 @@ SyntaxError: invalid syntax. Perhaps you forgot a comma?
 2026-04-30 09:48:36 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
 2026-04-30 09:51:36 [INFO][SYNCER] Firestore: Batch flush 8 sensor history rows
 2026-04-30 09:51:36 [INFO][SYNCER] Flushed 8 sensor history rows to Firestore
+2026-04-30 11:36:14 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 11:36:14 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 11:36:14 [INFO][SYNCER] =======================================================
+2026-04-30 11:36:14 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 11:36:14 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 11:36:14 [INFO][SYNCER] =======================================================
+2026-04-30 11:36:15 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 11:36:15 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 11:36:15 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 11:36:15 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 11:36:15 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 11:36:15 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] RTC read error: Command '['sudo', 'hwclock', '-s']' returned non-zero exit status 1.
+[NET] Network watchdog started
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[API] Registered /api: sensors
+[SCHEDULER] Started
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 11:36:15 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 11:36:15 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 11:36:16 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 11:36:17 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 11:36:17 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 11:36:18 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 11:36:19 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 11:36:19 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 11:36:19 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 11:36:19 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 11:36:19 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 11:39:19 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-04-30 11:39:19 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-04-30 11:39:38 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 11:39:39 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 11:39:41 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 11:39:43 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 11:41:14 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 11:41:14 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 11:42:19 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-04-30 11:42:19 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-04-30 11:45:20 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-04-30 11:45:20 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-04-30 11:48:20 [INFO][SYNCER] Firestore: Batch flush 56 sensor history rows
+2026-04-30 11:48:20 [INFO][SYNCER] Flushed 56 sensor history rows to Firestore
+2026-04-30 11:53:21 [WARNING][SYNCER] Retrying (Retry(total=9, connect=1, read=0, redirect=None, status=4)) after connection broken by 'RemoteDisconnected('Remote end closed connection without response')': /gateway_status.json?print=silent
+2026-04-30 17:22:49 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 17:22:49 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 17:22:51 [INFO][SYNCER] =======================================================
+2026-04-30 17:22:51 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 17:22:51 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 17:22:51 [INFO][SYNCER] =======================================================
+2026-04-30 17:22:51 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 17:22:51 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 17:22:51 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 17:22:51 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 17:22:51 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 17:22:51 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MQTT connected & subscribed
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 17:22:51 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 17:22:51 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 17:22:52 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:22:52 [INFO][SYNCER] Firestore: Tạo rooms/bedroom_01
+2026-04-30 17:22:53 [INFO][SYNCER]   Firestore: Tạo device bedroom_01/fan_bd_1
+2026-04-30 17:22:53 [INFO][SYNCER]   Firestore: Tạo device bedroom_01/light_bd_1
+2026-04-30 17:22:53 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:22:53 [INFO][SYNCER] Firestore: Tạo rooms/kitchen_01
+2026-04-30 17:22:53 [INFO][SYNCER]   Firestore: Tạo device kitchen_01/fan_kt_1
+2026-04-30 17:22:53 [INFO][SYNCER]   Firestore: Tạo device kitchen_01/light_kt_1
+2026-04-30 17:22:54 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:22:54 [INFO][SYNCER] Firestore: Tạo rooms/living_room_01
+2026-04-30 17:22:54 [INFO][SYNCER]   Firestore: Tạo device living_room_01/fan_lv_1
+2026-04-30 17:22:54 [INFO][SYNCER]   Firestore: Tạo device living_room_01/light_lv_1
+2026-04-30 17:22:54 [INFO][SYNCER] Firestore: Tạo system_status/wifi
+2026-04-30 17:22:54 [INFO][SYNCER] Firestore: Tạo system_status/available_wifi
+2026-04-30 17:22:54 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 17:22:54 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 17:22:54 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 17:22:54 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 17:22:54 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 17:22:54 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 17:23:21 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:23:27 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:23:32 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:23:37 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:24:17 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:25:55 [INFO][SYNCER] Firestore: Batch flush 148 sensor history rows
+2026-04-30 17:25:55 [INFO][SYNCER] Flushed 148 sensor history rows to Firestore
+2026-04-30 17:27:49 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 17:27:49 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 17:28:56 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 17:28:56 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 17:31:56 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 17:31:56 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 17:34:57 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 17:34:57 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 17:37:57 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 17:37:57 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 17:40:58 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 17:40:58 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 17:42:12 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 17:42:12 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 17:42:13 [INFO][SYNCER] =======================================================
+2026-04-30 17:42:13 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 17:42:13 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 17:42:13 [INFO][SYNCER] =======================================================
+2026-04-30 17:42:13 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 17:42:13 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 17:42:13 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 17:42:13 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 17:42:13 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 17:42:13 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 17:42:13 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 17:42:13 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 17:42:14 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:42:15 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:42:16 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:42:16 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 17:42:17 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 17:42:17 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 17:42:17 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 17:42:17 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 17:42:17 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 17:42:32 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:42:39 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:42:44 [ERROR][SYNCER] Dispatch error: Object of type DatetimeWithNanoseconds is not JSON serializable
+2026-04-30 17:46:41 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 17:46:41 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 17:46:41 [INFO][SYNCER] =======================================================
+2026-04-30 17:46:41 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 17:46:41 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 17:46:41 [INFO][SYNCER] =======================================================
+2026-04-30 17:46:42 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 17:46:42 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 17:46:42 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 17:46:42 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 17:46:42 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 17:46:42 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Command listener started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 17:46:42 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 17:46:42 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 17:46:42 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:46:44 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:46:44 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:46:45 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 17:46:45 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 17:46:45 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 17:46:45 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 17:46:45 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 17:46:45 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 17:49:46 [INFO][SYNCER] Firestore: Batch flush 292 sensor history rows
+2026-04-30 17:49:46 [INFO][SYNCER] Flushed 292 sensor history rows to Firestore
+2026-04-30 17:51:41 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 17:51:41 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 17:52:47 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-04-30 17:52:47 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-04-30 17:59:16 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 17:59:16 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 17:59:17 [INFO][SYNCER] =======================================================
+2026-04-30 17:59:17 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 17:59:17 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 17:59:17 [INFO][SYNCER] =======================================================
+2026-04-30 17:59:17 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 17:59:17 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 17:59:17 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 17:59:17 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 17:59:17 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 17:59:17 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Command listener started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 17:59:17 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 17:59:17 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 17:59:23 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:59:24 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:59:24 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 17:59:24 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 17:59:24 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 17:59:24 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 17:59:24 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 17:59:24 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 17:59:24 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 17:59:24 [INFO][SYNCER] Dispatched cmd 'Dk1lVofZc0S1iGjhiQNM' [turn_on] → Redis[device_commands]
+2026-04-30 17:59:25 [INFO][SYNCER] Dispatched cmd '3ztJcsSiKHCMspD3jrIo' [turn_off] → Redis[device_commands]
+2026-04-30 17:59:28 [INFO][SYNCER] Dispatched cmd 'ENUSkTyidtV8l66FvyGf' [turn_on] → Redis[device_commands]
+2026-04-30 17:59:30 [INFO][SYNCER] Dispatched cmd 'KOVdpfhZj7EHR9fmxxs0' [turn_off] → Redis[device_commands]
+2026-04-30 17:59:32 [INFO][SYNCER] Dispatched cmd 'a8bCRce6V23069KiSheS' [turn_on] → Redis[device_commands]
+2026-04-30 17:59:35 [INFO][SYNCER] Dispatched cmd 'nw1VBsSqpDCrTKfy8WuA' [turn_off] → Redis[device_commands]
+2026-04-30 17:59:42 [INFO][SYNCER] Dispatched cmd 'C338rwaA3g4Cug0IRSTj' [turn_on] → Redis[device_commands]
+2026-04-30 17:59:45 [INFO][SYNCER] Dispatched cmd 'suuefeKiB0OKWR29d6zU' [turn_off] → Redis[device_commands]
+2026-04-30 18:00:05 [INFO][SYNCER] Dispatched cmd 'pD4ZDI6DA7O90Iy9z6er' [turn_on] → Redis[device_commands]
+2026-04-30 18:00:09 [INFO][SYNCER] Dispatched cmd 'PkOgkebmFQafoClTcHZr' [turn_off] → Redis[device_commands]
+2026-04-30 18:00:15 [INFO][SYNCER] Dispatched cmd '9wiYBr4SKNf0h2HqNKM4' [turn_on] → Redis[device_commands]
+2026-04-30 18:00:18 [INFO][SYNCER] Dispatched cmd 'yuYENaENnRW1UCvI6Uyz' [turn_off] → Redis[device_commands]
+2026-04-30 18:00:22 [INFO][SYNCER] Dispatched cmd 'kPEz2zQp3j4RVLIej3Md' [turn_on] → Redis[device_commands]
+2026-04-30 18:00:28 [INFO][SYNCER] Dispatched cmd 'u2tOqfczEdlGWIMld6qJ' [turn_off] → Redis[device_commands]
+2026-04-30 18:00:33 [INFO][SYNCER] Dispatched cmd 'guyI63R5IoJEb8EXSYIr' [turn_on] → Redis[device_commands]
+2026-04-30 18:00:39 [INFO][SYNCER] Dispatched cmd 'AqoJq9YxQjdixNBlNZ5H' [turn_off] → Redis[device_commands]
+2026-04-30 18:02:25 [INFO][SYNCER] Firestore: Batch flush 152 sensor history rows
+2026-04-30 18:02:25 [INFO][SYNCER] Flushed 152 sensor history rows to Firestore
+2026-04-30 18:04:16 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 18:04:16 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 18:05:25 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:05:25 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 18:09:20 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 18:09:20 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 18:09:20 [INFO][SYNCER] =======================================================
+2026-04-30 18:09:20 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 18:09:20 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 18:09:20 [INFO][SYNCER] =======================================================
+2026-04-30 18:09:20 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 18:09:20 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 18:09:20 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 18:09:20 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 18:09:20 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 18:09:20 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MQTT connected & subscribed
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Command listener started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 18:09:21 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 18:09:21 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 18:09:21 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:09:22 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:09:22 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:09:23 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 18:09:23 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 18:09:23 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 18:09:23 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 18:09:23 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 18:09:23 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 18:09:45 [INFO][SYNCER] Dispatched cmd 'bcKHoRP1WUh7cKcXRHLR' [turn_on] → Redis[device_commands]
+2026-04-30 18:09:51 [INFO][SYNCER] Dispatched cmd 'LilZlpbTMWV7TXhNEg1e' [turn_off] → Redis[device_commands]
+2026-04-30 18:09:53 [INFO][SYNCER] Dispatched cmd 'JT7Xqpsd0tcm5K9kzzTW' [turn_on] → Redis[device_commands]
+2026-04-30 18:09:58 [INFO][SYNCER] Dispatched cmd 'rgrZ8onn6cT2Pqy0s3lz' [turn_off] → Redis[device_commands]
+2026-04-30 18:10:03 [INFO][SYNCER] Dispatched cmd '3lVmvluvP1YvraH1xGC3' [turn_on] → Redis[device_commands]
+2026-04-30 18:10:07 [INFO][SYNCER] Dispatched cmd '7dLMdraND70hfUNc6oO5' [turn_off] → Redis[device_commands]
+2026-04-30 18:10:15 [INFO][SYNCER] Dispatched cmd 'PFh3vKa4dqIRSTFTHP6H' [turn_on] → Redis[device_commands]
+2026-04-30 18:10:17 [INFO][SYNCER] Dispatched cmd '0G3kSztz4kCLpXAMhQB8' [turn_off] → Redis[device_commands]
+2026-04-30 18:10:24 [INFO][SYNCER] Dispatched cmd 'BfNNR3amVQEI4Tx8ARJt' [turn_on] → Redis[device_commands]
+2026-04-30 18:10:30 [INFO][SYNCER] Dispatched cmd 'aMao9rX14yFevvWXG0Lp' [turn_on] → Redis[device_commands]
+2026-04-30 18:18:52 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 18:18:52 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 18:18:53 [INFO][SYNCER] =======================================================
+2026-04-30 18:18:53 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 18:18:53 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 18:18:53 [INFO][SYNCER] =======================================================
+2026-04-30 18:18:53 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 18:18:53 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 18:18:53 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 18:18:53 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 18:18:53 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 18:18:53 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Command listener started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 18:18:53 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 18:18:53 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 18:18:54 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:18:54 [INFO][SYNCER] Firestore: Tạo rooms/bedroom_01
+2026-04-30 18:18:55 [INFO][SYNCER]   Firestore: Tạo device bedroom_01/fan_bd_1
+2026-04-30 18:18:55 [INFO][SYNCER]   Firestore: Tạo device bedroom_01/light_bd_1
+2026-04-30 18:18:55 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:18:55 [INFO][SYNCER] Firestore: Tạo rooms/kitchen_01
+2026-04-30 18:18:56 [INFO][SYNCER]   Firestore: Tạo device kitchen_01/fan_kt_1
+2026-04-30 18:18:56 [INFO][SYNCER]   Firestore: Tạo device kitchen_01/light_kt_1
+2026-04-30 18:18:56 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:18:56 [INFO][SYNCER] Firestore: Tạo rooms/living_room_01
+2026-04-30 18:18:56 [INFO][SYNCER]   Firestore: Tạo device living_room_01/fan_lv_1
+2026-04-30 18:18:57 [INFO][SYNCER]   Firestore: Tạo device living_room_01/light_lv_1
+2026-04-30 18:18:57 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 18:18:57 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 18:18:57 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 18:18:57 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 18:18:57 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 18:18:57 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 18:21:27 [INFO][SYNCER] Dispatched cmd 's8Rn3EkRJzUvyQjdHJix' [turn_on] → Redis[device_commands]
+2026-04-30 18:21:31 [INFO][SYNCER] Dispatched cmd '7xmufpAbCpBM8bbcHoiI' [turn_off] → Redis[device_commands]
+2026-04-30 18:21:33 [INFO][SYNCER] Dispatched cmd 'qd5OetPwN2OzICSHQxFi' [turn_on] → Redis[device_commands]
+2026-04-30 18:21:37 [INFO][SYNCER] Dispatched cmd 'BpihjG9rdUJYdSWKKNQz' [turn_on] → Redis[device_commands]
+2026-04-30 18:21:41 [INFO][SYNCER] Dispatched cmd 'N2kAm86QXPkk6SoFW3pr' [turn_off] → Redis[device_commands]
+2026-04-30 18:21:58 [INFO][SYNCER] Firestore: Batch flush 264 sensor history rows
+2026-04-30 18:21:58 [INFO][SYNCER] Flushed 264 sensor history rows to Firestore
+2026-04-30 18:23:52 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 18:23:52 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 18:24:59 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:24:59 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 18:27:27 [INFO][SYNCER] Dispatched cmd 'bdB2yOwXLHpofLfevQsC' [turn_off] → Redis[device_commands]
+2026-04-30 18:27:37 [INFO][SYNCER] Dispatched cmd 'Op9Jf0UMryTVKwZD3tqd' [turn_on] → Redis[device_commands]
+2026-04-30 18:28:00 [INFO][SYNCER] Firestore: Batch flush 148 sensor history rows
+2026-04-30 18:28:00 [INFO][SYNCER] Flushed 148 sensor history rows to Firestore
+2026-04-30 18:31:01 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:31:01 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 18:33:17 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 18:33:17 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 18:33:17 [INFO][SYNCER] =======================================================
+2026-04-30 18:33:17 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 18:33:17 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 18:33:17 [INFO][SYNCER] =======================================================
+2026-04-30 18:33:18 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 18:33:18 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 18:33:18 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 18:33:18 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 18:33:18 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 18:33:18 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] Network watchdog started (NTP-only, no RTC)
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[AUTO] Command listener started
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 18:33:18 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 18:33:18 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 18:33:19 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:33:19 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:33:20 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:33:21 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 18:33:21 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 18:33:21 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 18:33:21 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 18:33:21 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 18:33:21 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 18:33:31 [INFO][SYNCER] Dispatched cmd 'QpmTU1h1Kvl9CmCDJ4if' [turn_off] → Redis[device_commands]
+2026-04-30 18:33:40 [INFO][SYNCER] Dispatched cmd 'h9FuIfDQE0mUrv3sOPfB' [turn_on] → Redis[device_commands]
+2026-04-30 18:33:45 [INFO][SYNCER] Dispatched cmd 'hhyvCoLcWmygskoCEbDs' [turn_on] → Redis[device_commands]
+2026-04-30 18:33:49 [INFO][SYNCER] Dispatched cmd '6CS6wHg5DVRTZe1xSrHW' [turn_off] → Redis[device_commands]
+2026-04-30 18:33:56 [INFO][SYNCER] Dispatched cmd 'cuHvJdgPxbrWM00UM0do' [turn_on] → Redis[device_commands]
+2026-04-30 18:34:06 [INFO][SYNCER] Dispatched cmd 'HXGwsV3bMVIZBMRJVtuA' [turn_off] → Redis[device_commands]
+2026-04-30 18:34:07 [INFO][SYNCER] Dispatched cmd 'TnZOeii6ChN91tjBslwa' [turn_off] → Redis[device_commands]
+2026-04-30 18:35:03 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 18:35:03 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 18:35:04 [INFO][SYNCER] =======================================================
+2026-04-30 18:35:04 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 18:35:04 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 18:35:04 [INFO][SYNCER] =======================================================
+2026-04-30 18:35:04 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 18:35:04 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 18:35:04 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 18:35:04 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 18:35:04 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 18:35:04 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[BRIDGE] Realtime bridge started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 18:35:04 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 18:35:04 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 18:35:05 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:35:06 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:35:06 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 18:35:07 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 18:35:07 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 18:35:07 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 18:35:07 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 18:35:07 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 18:35:07 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 18:36:05 [INFO][SYNCER] Dispatched cmd '2cwsjBoD1Xr4GvZRGDqt' [turn_on] → Redis[device_commands]
+2026-04-30 18:36:24 [INFO][SYNCER] Dispatched cmd 'D5C5bCEMSffAWeG87Kqf' [turn_off] → Redis[device_commands]
+2026-04-30 18:36:34 [INFO][SYNCER] Dispatched cmd 'Sf9s72c6VPDqJruybHXR' [turn_on] → Redis[device_commands]
+2026-04-30 18:36:36 [INFO][SYNCER] Dispatched cmd 'bEaMr0XitPCT7QHFrsMs' [turn_off] → Redis[device_commands]
+2026-04-30 18:37:07 [INFO][SYNCER] Dispatched cmd 'bVFATS4lyhsFLHjc3FSL' [turn_on] → Redis[device_commands]
+2026-04-30 18:37:13 [INFO][SYNCER] Dispatched cmd 'OfGrMPaGvpUdjltcT0sd' [turn_off] → Redis[device_commands]
+2026-04-30 18:37:16 [INFO][SYNCER] Dispatched cmd 'qyCCCrnJMQa4XbSCtufQ' [turn_on] → Redis[device_commands]
+2026-04-30 18:38:08 [INFO][SYNCER] Firestore: Batch flush 276 sensor history rows
+2026-04-30 18:38:08 [INFO][SYNCER] Flushed 276 sensor history rows to Firestore
+2026-04-30 18:40:03 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 18:40:03 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 18:41:09 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:41:09 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 18:44:10 [INFO][SYNCER] Firestore: Batch flush 148 sensor history rows
+2026-04-30 18:44:10 [INFO][SYNCER] Flushed 148 sensor history rows to Firestore
+2026-04-30 18:47:10 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:47:10 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 18:50:11 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:50:11 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 18:53:12 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 18:53:12 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 19:00:56 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 19:00:56 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 19:00:57 [INFO][SYNCER] =======================================================
+2026-04-30 19:00:57 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 19:00:57 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 19:00:57 [INFO][SYNCER] =======================================================
+2026-04-30 19:00:57 [INFO][SYNCER] Firebase khởi tạo từ service account file
+2026-04-30 19:00:57 [INFO][SYNCER] Firestore client sẵn sàng
+2026-04-30 19:00:57 [INFO][SYNCER] RTDB client sẵn sàng (databaseURL: https://nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app)
+2026-04-30 19:00:57 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 19:00:57 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 19:00:57 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 19:00:57 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 19:00:57 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 19:00:58 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:00:58 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:00:59 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:00:59 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 19:00:59 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 19:00:59 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 19:00:59 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 19:00:59 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 19:00:59 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 19:01:00 [INFO][SYNCER] ==> DISPATCH: XMpP7U2Ix14RBMZmrM1V [turn_off] -> Redis[device_commands]
+2026-04-30 19:01:00 [ERROR][SYNCER] Critical Dispatch Error cho lệnh XMpP7U2Ix14RBMZmrM1V: 'CommandDispatcher' object has no attribute 'fs'
+2026-04-30 19:01:27 [INFO][SYNCER] ==> DISPATCH: MJAlFAYyssDWlZ1o3e8a [turn_on] -> Redis[device_commands]
+2026-04-30 19:01:27 [ERROR][SYNCER] Critical Dispatch Error cho lệnh MJAlFAYyssDWlZ1o3e8a: 'CommandDispatcher' object has no attribute 'fs'
+2026-04-30 19:01:30 [INFO][SYNCER] ==> DISPATCH: wI3xnSnXtIGacYYYVGVI [turn_on] -> Redis[device_commands]
+2026-04-30 19:01:30 [ERROR][SYNCER] Critical Dispatch Error cho lệnh wI3xnSnXtIGacYYYVGVI: 'CommandDispatcher' object has no attribute 'fs'
+2026-04-30 19:01:34 [INFO][SYNCER] ==> DISPATCH: g0AlNXagrKu5pldfLXUt [turn_off] -> Redis[device_commands]
+2026-04-30 19:01:34 [ERROR][SYNCER] Critical Dispatch Error cho lệnh g0AlNXagrKu5pldfLXUt: 'CommandDispatcher' object has no attribute 'fs'
+2026-04-30 19:01:37 [INFO][SYNCER] ==> DISPATCH: e97mXnIWisVaSen7oimA [turn_off] -> Redis[device_commands]
+2026-04-30 19:01:37 [ERROR][SYNCER] Critical Dispatch Error cho lệnh e97mXnIWisVaSen7oimA: 'CommandDispatcher' object has no attribute 'fs'
+2026-04-30 19:48:02 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 19:48:02 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 19:48:02 [INFO][SYNCER] =======================================================
+2026-04-30 19:48:02 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 19:48:02 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 19:48:02 [INFO][SYNCER] =======================================================
+2026-04-30 19:48:03 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 19:48:03 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 19:48:03 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 19:48:03 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 19:48:03 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[AUTO] Command listener started
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 19:48:03 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 19:48:03 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 19:48:04 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:48:05 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:48:05 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:48:06 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 19:48:07 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 19:48:07 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 19:48:07 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 19:48:07 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 19:48:07 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 19:48:20 [INFO][SYNCER] ==> DISPATCH: nn3tkGlQhPsZ6IeMehbf [turn_on] -> Redis[device_commands]
+2026-04-30 19:48:20 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh nn3tkGlQhPsZ6IeMehbf khỏi Firestore.
+2026-04-30 19:48:22 [INFO][SYNCER] ==> DISPATCH: xEzw4l9Uwdjv4iGtOvav [turn_off] -> Redis[device_commands]
+2026-04-30 19:48:22 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh xEzw4l9Uwdjv4iGtOvav khỏi Firestore.
+2026-04-30 19:48:25 [INFO][SYNCER] ==> DISPATCH: jnAMwa4yJAj5o0XYNuOy [turn_on] -> Redis[device_commands]
+2026-04-30 19:48:25 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh jnAMwa4yJAj5o0XYNuOy khỏi Firestore.
+2026-04-30 19:48:28 [INFO][SYNCER] ==> DISPATCH: sfhRdW8zobldM5XCY2ty [turn_off] -> Redis[device_commands]
+2026-04-30 19:48:28 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh sfhRdW8zobldM5XCY2ty khỏi Firestore.
+2026-04-30 19:48:31 [INFO][SYNCER] ==> DISPATCH: 2VNUqOIreKjBB7S6YzQr [turn_on] -> Redis[device_commands]
+2026-04-30 19:48:31 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 2VNUqOIreKjBB7S6YzQr khỏi Firestore.
+2026-04-30 19:48:34 [INFO][SYNCER] ==> DISPATCH: 44AVvzcIH9gw8UAkisqb [turn_off] -> Redis[device_commands]
+2026-04-30 19:48:35 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 44AVvzcIH9gw8UAkisqb khỏi Firestore.
+2026-04-30 19:49:35 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 19:49:35 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 19:49:35 [INFO][SYNCER] =======================================================
+2026-04-30 19:49:35 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 19:49:35 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 19:49:35 [INFO][SYNCER] =======================================================
+2026-04-30 19:49:36 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 19:49:36 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 19:49:36 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 19:49:36 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 19:49:36 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] Network watchdog started (NTP-only, no RTC)
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Command listener started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 19:49:36 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 19:49:36 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 19:49:36 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:49:37 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:49:38 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:49:39 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 19:49:39 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 19:49:39 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 19:49:39 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 19:49:39 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 19:49:39 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 19:49:57 [INFO][SYNCER] ==> DISPATCH: jCmp3g0AxMn7HcsrD0MB [turn_on] -> Redis[device_commands]
+2026-04-30 19:49:57 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh jCmp3g0AxMn7HcsrD0MB khỏi Firestore.
+2026-04-30 19:50:00 [INFO][SYNCER] ==> DISPATCH: AAVgRfctgY10YVr6zQdn [turn_off] -> Redis[device_commands]
+2026-04-30 19:50:00 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh AAVgRfctgY10YVr6zQdn khỏi Firestore.
+2026-04-30 19:50:06 [INFO][SYNCER] ==> DISPATCH: 2luU4QqDE6RD10qpZcPT [turn_on] -> Redis[device_commands]
+2026-04-30 19:50:06 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 2luU4QqDE6RD10qpZcPT khỏi Firestore.
+2026-04-30 19:50:09 [INFO][SYNCER] ==> DISPATCH: ZNe23QBlCMI84Mu5yZAE [turn_on] -> Redis[device_commands]
+2026-04-30 19:50:10 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh ZNe23QBlCMI84Mu5yZAE khỏi Firestore.
+2026-04-30 19:51:49 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 19:51:49 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 19:51:50 [INFO][SYNCER] =======================================================
+2026-04-30 19:51:50 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 19:51:50 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 19:51:50 [INFO][SYNCER] =======================================================
+2026-04-30 19:51:50 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 19:51:50 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 19:51:50 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 19:51:50 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 19:51:50 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] Network watchdog started (NTP-only, no RTC)
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[AUTO] Command listener started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 19:51:50 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 19:51:50 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 19:51:51 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:51:52 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:51:53 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:51:53 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 19:51:54 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 19:51:54 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 19:51:54 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 19:51:54 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 19:51:54 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 19:54:24 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 19:54:24 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 19:54:25 [INFO][SYNCER] =======================================================
+2026-04-30 19:54:25 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 19:54:25 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 19:54:25 [INFO][SYNCER] =======================================================
+2026-04-30 19:54:25 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 19:54:25 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 19:54:25 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 19:54:25 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 19:54:25 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[API] Registered /api: auth
+[SCHEDULER] Started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 19:54:25 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 19:54:25 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 19:54:26 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:54:26 [INFO][SYNCER] Firestore: Tạo rooms/bedroom_01
+2026-04-30 19:54:27 [INFO][SYNCER]   Firestore: Tạo device bedroom_01/fan_bd_1
+2026-04-30 19:54:27 [INFO][SYNCER]   Firestore: Tạo device bedroom_01/light_bd_1
+2026-04-30 19:54:27 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:54:27 [INFO][SYNCER] Firestore: Tạo rooms/kitchen_01
+2026-04-30 19:54:27 [INFO][SYNCER]   Firestore: Tạo device kitchen_01/fan_kt_1
+2026-04-30 19:54:27 [INFO][SYNCER]   Firestore: Tạo device kitchen_01/light_kt_1
+2026-04-30 19:54:27 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 19:54:27 [INFO][SYNCER] Firestore: Tạo rooms/living_room_01
+2026-04-30 19:54:28 [INFO][SYNCER]   Firestore: Tạo device living_room_01/fan_lv_1
+2026-04-30 19:54:28 [INFO][SYNCER]   Firestore: Tạo device living_room_01/light_lv_1
+2026-04-30 19:54:28 [INFO][SYNCER] Firestore: Tạo system_status/wifi
+2026-04-30 19:54:28 [INFO][SYNCER] Firestore: Tạo system_status/available_wifi
+2026-04-30 19:54:28 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 19:54:28 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 19:54:28 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 19:54:28 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 19:54:28 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 19:54:28 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 19:54:42 [INFO][SYNCER] ==> DISPATCH: Z2gB6acrjo9W3X3e0u5X [turn_on] -> Redis[device_commands]
+2026-04-30 19:54:42 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh Z2gB6acrjo9W3X3e0u5X khỏi Firestore.
+2026-04-30 19:54:44 [INFO][SYNCER] ==> DISPATCH: h08aIKwGuvzbFN8hFX6q [turn_on] -> Redis[device_commands]
+2026-04-30 19:54:44 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh h08aIKwGuvzbFN8hFX6q khỏi Firestore.
+2026-04-30 19:54:46 [INFO][SYNCER] ==> DISPATCH: aN77Q2cNXsnPpzFYYKLz [turn_off] -> Redis[device_commands]
+2026-04-30 19:54:46 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh aN77Q2cNXsnPpzFYYKLz khỏi Firestore.
+2026-04-30 19:54:47 [INFO][SYNCER] ==> DISPATCH: yResiNCdWxu3vKmJwssA [turn_off] -> Redis[device_commands]
+2026-04-30 19:54:47 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh yResiNCdWxu3vKmJwssA khỏi Firestore.
+2026-04-30 19:55:25 [INFO][SYNCER] ==> DISPATCH: otUgE1eNJwFN52ABEfYU [turn_on] -> Redis[device_commands]
+2026-04-30 19:55:25 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh otUgE1eNJwFN52ABEfYU khỏi Firestore.
+2026-04-30 19:55:32 [INFO][SYNCER] ==> DISPATCH: ZuyfYYygt76E9GgiXaie [turn_on] -> Redis[device_commands]
+2026-04-30 19:55:32 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh ZuyfYYygt76E9GgiXaie khỏi Firestore.
+2026-04-30 19:55:38 [INFO][SYNCER] ==> DISPATCH: 2uU9oVbmuTbsYxzl2d5d [turn_off] -> Redis[device_commands]
+2026-04-30 19:55:38 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 2uU9oVbmuTbsYxzl2d5d khỏi Firestore.
+2026-04-30 19:55:40 [INFO][SYNCER] ==> DISPATCH: FpoyLH5sFflMnzwnuxpv [turn_off] -> Redis[device_commands]
+2026-04-30 19:55:40 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh FpoyLH5sFflMnzwnuxpv khỏi Firestore.
+2026-04-30 19:57:29 [INFO][SYNCER] Firestore: Batch flush 412 sensor history rows
+2026-04-30 19:57:29 [INFO][SYNCER] Flushed 412 sensor history rows to Firestore
+2026-04-30 19:59:24 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-04-30 19:59:24 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-04-30.db (mode: sd2)
+2026-04-30 20:00:30 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 20:00:30 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 20:01:38 [INFO][SYNCER] ==> DISPATCH: pRZcyJLbOb69sOfjS8P3 [turn_on] -> Redis[device_commands]
+2026-04-30 20:01:39 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh pRZcyJLbOb69sOfjS8P3 khỏi Firestore.
+2026-04-30 20:01:39 [INFO][SYNCER] ==> DISPATCH: GdTXO49AZVuOjEVY1ptH [turn_on] -> Redis[device_commands]
+2026-04-30 20:01:40 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh GdTXO49AZVuOjEVY1ptH khỏi Firestore.
+2026-04-30 20:03:31 [INFO][SYNCER] Firestore: Batch flush 144 sensor history rows
+2026-04-30 20:03:31 [INFO][SYNCER] Flushed 144 sensor history rows to Firestore
+2026-04-30 20:06:31 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-04-30 20:06:31 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-04-30 20:07:39 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 20:07:39 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 20:07:39 [INFO][SYNCER] =======================================================
+2026-04-30 20:07:39 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 20:07:39 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 20:07:39 [INFO][SYNCER] =======================================================
+2026-04-30 20:07:40 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 20:07:40 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 20:07:40 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 20:07:40 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 20:07:40 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Command listener started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 20:07:40 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 20:07:40 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 20:07:40 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 20:07:41 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 20:07:41 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 20:07:42 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 20:07:42 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 20:07:42 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 20:07:42 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 20:07:42 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 20:07:42 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 20:08:13 [INFO][SYNCER] ==> DISPATCH: qJIfXdFMYWI9qUxKttVx [turn_off] -> Redis[device_commands]
+2026-04-30 20:08:13 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh qJIfXdFMYWI9qUxKttVx khỏi Firestore.
+2026-04-30 20:08:16 [INFO][SYNCER] ==> DISPATCH: akRVGIvJKn1nJWgQ0q3x [turn_off] -> Redis[device_commands]
+2026-04-30 20:08:16 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh akRVGIvJKn1nJWgQ0q3x khỏi Firestore.
+2026-04-30 20:09:00 [INFO][SYNCER] ==> DISPATCH: b7liRwEJ92ipvMpXpmV9 [turn_on] -> Redis[device_commands]
+2026-04-30 20:09:00 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh b7liRwEJ92ipvMpXpmV9 khỏi Firestore.
+2026-04-30 20:09:01 [INFO][SYNCER] ==> DISPATCH: bky5EIRvETgHIXVtLqrx [turn_off] -> Redis[device_commands]
+2026-04-30 20:09:01 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh bky5EIRvETgHIXVtLqrx khỏi Firestore.
+2026-04-30 20:09:03 [INFO][SYNCER] ==> DISPATCH: WaYfDDBQDxUc81DUQFgu [turn_on] -> Redis[device_commands]
+2026-04-30 20:09:03 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh WaYfDDBQDxUc81DUQFgu khỏi Firestore.
+2026-04-30 20:09:04 [INFO][SYNCER] ==> DISPATCH: Bl6yD8UtOvP81l5SU1qg [turn_off] -> Redis[device_commands]
+2026-04-30 20:09:04 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh Bl6yD8UtOvP81l5SU1qg khỏi Firestore.
+2026-04-30 23:15:55 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 23:15:55 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 23:15:57 [INFO][SYNCER] =======================================================
+2026-04-30 23:15:57 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 23:15:57 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 23:15:57 [INFO][SYNCER] =======================================================
+2026-04-30 23:15:57 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 23:15:57 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 23:15:57 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 23:15:57 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 23:15:57 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] MQTT connected & subscribed
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[AUTO] Command listener started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 23:15:58 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 23:15:58 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 23:15:58 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:16:00 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:16:00 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:16:01 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 23:16:01 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 23:16:01 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 23:16:01 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 23:16:01 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 23:16:01 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 23:16:19 [INFO][SYNCER] ==> DISPATCH: jB7EttP1cSwBbeUOXCUt [turn_on] -> Redis[device_commands]
+2026-04-30 23:16:19 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh jB7EttP1cSwBbeUOXCUt khỏi Firestore.
+2026-04-30 23:16:20 [INFO][SYNCER] ==> DISPATCH: m0dGWuuifm6RpLK7yRzF [turn_off] -> Redis[device_commands]
+2026-04-30 23:16:20 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh m0dGWuuifm6RpLK7yRzF khỏi Firestore.
+2026-04-30 23:16:22 [INFO][SYNCER] ==> DISPATCH: WkXc8VgCFH6ru0hnTlpk [turn_on] -> Redis[device_commands]
+2026-04-30 23:16:22 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh WkXc8VgCFH6ru0hnTlpk khỏi Firestore.
+2026-04-30 23:16:23 [INFO][SYNCER] ==> DISPATCH: W5rU08zKpPLobG3oysER [turn_off] -> Redis[device_commands]
+2026-04-30 23:16:23 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh W5rU08zKpPLobG3oysER khỏi Firestore.
+2026-04-30 23:16:43 [INFO][SYNCER] ==> DISPATCH: juCUlyYd9FISRTTA3NDR [turn_on] -> Redis[device_commands]
+2026-04-30 23:16:43 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh juCUlyYd9FISRTTA3NDR khỏi Firestore.
+2026-04-30 23:16:48 [INFO][SYNCER] ==> DISPATCH: rNOISAX3ODKAkpZxBzE2 [turn_off] -> Redis[device_commands]
+2026-04-30 23:16:48 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh rNOISAX3ODKAkpZxBzE2 khỏi Firestore.
+2026-04-30 23:16:49 [INFO][SYNCER] ==> DISPATCH: sGK3kNFZAD9eyRxGiROU [turn_on] -> Redis[device_commands]
+2026-04-30 23:16:49 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh sGK3kNFZAD9eyRxGiROU khỏi Firestore.
+2026-04-30 23:16:57 [INFO][SYNCER] ==> DISPATCH: 90mKD1EvayLqcH4YKrTo [turn_off] -> Redis[device_commands]
+2026-04-30 23:16:57 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 90mKD1EvayLqcH4YKrTo khỏi Firestore.
+2026-04-30 23:17:00 [INFO][SYNCER] ==> DISPATCH: 0WC7PwzS3acb79FL3BM9 [turn_on] -> Redis[device_commands]
+2026-04-30 23:17:00 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 0WC7PwzS3acb79FL3BM9 khỏi Firestore.
+2026-04-30 23:17:03 [INFO][SYNCER] ==> DISPATCH: dVqdKESMs4HxUmkeWCDR [turn_off] -> Redis[device_commands]
+2026-04-30 23:17:03 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh dVqdKESMs4HxUmkeWCDR khỏi Firestore.
+2026-04-30 23:17:05 [INFO][SYNCER] ==> DISPATCH: PZs8aCEKAlcI87IVTMKq [turn_on] -> Redis[device_commands]
+2026-04-30 23:17:06 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh PZs8aCEKAlcI87IVTMKq khỏi Firestore.
+2026-04-30 23:17:10 [INFO][SYNCER] ==> DISPATCH: s7ueFQpB9bYyrEauLkkS [turn_off] -> Redis[device_commands]
+2026-04-30 23:17:10 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh s7ueFQpB9bYyrEauLkkS khỏi Firestore.
+2026-04-30 23:19:02 [INFO][SYNCER] Firestore: Batch flush 204 sensor history rows
+2026-04-30 23:19:02 [INFO][SYNCER] Flushed 204 sensor history rows to Firestore
+2026-04-30 23:21:35 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 23:21:35 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 23:21:36 [INFO][SYNCER] =======================================================
+2026-04-30 23:21:36 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 23:21:36 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 23:21:36 [INFO][SYNCER] =======================================================
+2026-04-30 23:21:36 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 23:21:36 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 23:21:36 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 23:21:36 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 23:21:36 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[NET] Network watchdog started (NTP-only, no RTC)
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Command listener started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 23:21:36 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 23:21:36 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 23:21:37 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:21:38 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:21:39 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:21:39 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 23:21:40 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 23:21:40 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 23:21:40 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 23:21:40 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 23:21:40 [INFO][SYNCER] MQTT inbound bridge started
