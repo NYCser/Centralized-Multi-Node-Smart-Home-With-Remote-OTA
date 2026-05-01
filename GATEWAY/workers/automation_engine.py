@@ -1,23 +1,33 @@
 """
-workers/automation_engine.py  — FIXED v2
-═══════════════════════════════════════════
-FIXES:
-  BUG-ACK-01:  Sau khi ESP32 phản hồi trạng thái (topic home/{room}/status),
-               publish "command_ack" lên Redis → firebase_sync xóa command
-               khỏi Firestore → Web biết lệnh đã thực thi thành công.
-               (Trước đây thiếu bước này → command_ack loop bị skip,
-                lệnh vẫn còn trong Firestore → trạng thái Web không đồng bộ)
+workers/automation_engine.py  — v2.1
+══════════════════════════════════════
+THAY ĐỔI SO VỚI v2.0:
 
-  BUG-DEVICE-SYNC-01: Khi ESP32 phản hồi trạng thái thiết bị,
-               publish lên cả "device_status" channel (cho firebase_sync)
-               để Firestore devices/{id} được cập nhật → Web toggle button
-               hiển thị đúng trạng thái thực tế.
+  [B] SMART MANUAL OVERRIDE (State-based thay vì đếm ngược 120s)
+      ─────────────────────────────────────────────────────────
+      Trước đây (v2.0):
+        - Người dùng bật quạt thủ công → MANUAL_CONTROL_CACHE[device] = now()
+        - Automation ngừng tác động 120 giây (đếm ngược cứng)
+        - Sau 120s: Automation lại bật quạt nếu nhiệt độ vẫn cao (OK)
+        - Nhưng: Người dùng tắt quạt để ngủ, 2 phút sau quạt tự bật lại (BAD)
 
-  BUG-COMMAND-PENDING: Khi nhận device_commands, tìm cmd_id trong Redis
-               để sau đó gửi ACK về firebase_sync. Thêm pending_commands dict
-               để track cmd_id → device_id mapping.
+      Bây giờ (v2.1):
+        - Người dùng điều khiển thủ công → device vào trạng thái "Manual" (User-Locked)
+          MANUAL_STATE[device_id] = {"mode": "manual", "is_on": True/False, ...}
+        - Automation KHÔNG được tác động khi device đang ở mode "manual"
+        - Người dùng chuyển về mode "auto" trên Web → Automation tiếp tục
+        - Nếu người dùng không chuyển, trạng thái manual được giữ cho đến khi:
+          a) User bấm nút "Auto" trên Web (ưu tiên)
+          b) Điều kiện an toàn nguy hiểm (safety_lock override)
+        - Lợi ích: Không còn bực bội vì quạt tự bật lại sau 2 phút.
 
-  (Giữ nguyên tất cả FIX từ v1: BUG-H-01, BUG-C-05, BUG-H-02)
+  [C] PER-ROOM THRESHOLDS từ DB (Dynamic thay vì Hard-code)
+      ─────────────────────────────────────────────────────
+      _try_control() giờ đọc threshold từ CACHED_AUTOMATIONS (SQLite bảng
+      automations) thay vì dùng hằng số cứng. Mỗi phòng có thể có ngưỡng
+      nhiệt độ khác nhau qua Web Settings → POST /automations.
+
+  (Giữ nguyên: BUG-ACK-01, BUG-DEVICE-SYNC-01, BUG-H-01, BUG-C-05, BUG-H-02)
 """
 
 import time
@@ -29,14 +39,16 @@ from datetime import datetime
 from bridge.message_bus import MessageBus, CH_INBOUND
 from workers import safety_watchdog
 
-DB_PATH                  = "/data/smarthome.db"
-MANUAL_OVERRIDE_DURATION = 120
-ENROLLMENT_TIMEOUT       = 60
-CLOCK_WARN_YEAR          = 2024
+DB_PATH            = "/data/smarthome.db"
+ENROLLMENT_TIMEOUT = 60
+CLOCK_WARN_YEAR    = 2024
 
 HYSTERESIS_OFFSET  = 2.0
 MIN_SWITCH_DELAY_S = 30
 DEVICE_LAST_SWITCH: dict = {}
+
+# [v2.1] Xóa MANUAL_OVERRIDE_DURATION — không còn đếm ngược 120s
+# MANUAL_OVERRIDE_DURATION = 120  ← ĐÃ XÓA
 
 DEVICE_MAP = {
     "kitchen_01":     {"fan": "fan_kt_1",  "light": "light_kt_1"},
@@ -47,7 +59,13 @@ DEVICE_MAP = {
 CACHED_AUTOMATIONS:   dict = {}
 CACHED_SCHEDULES:     list = []
 CACHED_DEVICE_STATES: dict = {}
-MANUAL_CONTROL_CACHE: dict = {}
+
+# [v2.1] MANUAL_STATE thay cho MANUAL_CONTROL_CACHE + timestamp
+# { device_id: {"mode": "manual"|"auto", "is_on": bool, "set_at": datetime} }
+# mode="manual" → Automation bị vô hiệu hóa cho thiết bị này cho đến khi user chọn "auto"
+# mode="auto"   → Automation hoạt động bình thường
+MANUAL_STATE:         dict = {}
+
 ENROLLMENT_STATE:     dict = {"active": False, "start_time": None, "pending_name": ""}
 SCHEDULE_LAST_RUN:    dict = {}
 
@@ -94,9 +112,10 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
         if sched.get("enabled") and sched.get("device_id") == device_id:
             return
 
-    last_manual = MANUAL_CONTROL_CACHE.get(device_id)
-    if last_manual and (datetime.now() - last_manual).total_seconds() < MANUAL_OVERRIDE_DURATION:
-        return
+    # [v2.1] Smart Manual Override: kiểm tra mode thay vì đếm ngược thời gian
+    manual = MANUAL_STATE.get(device_id)
+    if manual and manual.get("mode") == "manual":
+        return  # User đang ở mode manual → Automation không can thiệp
 
     cache_key    = f"{room_id}_{device_id}"
     current_on   = CACHED_DEVICE_STATES.get(cache_key)
@@ -219,7 +238,7 @@ def scheduler_loop():
                     "action": action,
                     "source": "schedule"
                 })
-                MANUAL_CONTROL_CACHE[device_id] = datetime.now()
+                # Schedule override không đặt manual state — vẫn theo schedule
                 SCHEDULE_LAST_RUN[sched["id"]]  = run_key
 
                 print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
@@ -482,6 +501,23 @@ def command_listener():
                 device_id = data.get("device_id") or data.get("deviceId", "")
                 is_on     = data.get("is_on", False)
                 cmd_id    = data.get("cmd_id", "")
+                action    = data.get("action", "")
+
+                if not room_id or not device_id:
+                    print(f"[AUTO] device_commands: missing room or device_id: {data}")
+                    continue
+
+                # [v2.1] Lệnh chuyển về Auto mode từ Web
+                if action == "set_auto_mode":
+                    MANUAL_STATE.pop(device_id, None)
+                    print(f"[AUTO] {device_id} → Auto mode (Automation re-enabled)")
+                    bus.publish_event("realtime_data", {
+                        "event":     "auto_mode_restored",
+                        "room":      room_id,
+                        "device_id": device_id,
+                        "message":   f"{device_id} đã trở về chế độ tự động"
+                    })
+                    continue
 
                 if not room_id or not device_id:
                     print(f"[AUTO] device_commands: missing room or device_id: {data}")
@@ -497,7 +533,14 @@ def command_listener():
                     })
                     continue
 
-                MANUAL_CONTROL_CACHE[device_id] = datetime.now()
+                # [v2.1] Smart Manual Override: đặt mode="manual" cho thiết bị
+                # Automation sẽ không tác động cho đến khi user chuyển về "auto"
+                MANUAL_STATE[device_id] = {
+                    "mode":   "manual",
+                    "is_on":  data.get("is_on", False),
+                    "set_at": datetime.now(),
+                    "source": data.get("source", "web"),
+                }
 
                 # FIX BUG-ACK-01: Lưu cmd_id để gửi ACK khi ESP32 confirm
                 if cmd_id:

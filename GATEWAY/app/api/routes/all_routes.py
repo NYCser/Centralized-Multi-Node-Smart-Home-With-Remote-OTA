@@ -1,11 +1,34 @@
 """
-app/api/routes/all_routes.py  — FIXED
-═══════════════════════════════════════
-Fixes:
-  BUG-01: conn leak trong register() — không close trước khi return 409
-  BUG-02: conn leak trong require_auth / require_admin — không close trước return 401/403
-  BUG-05: wifi_connect block Flask thread 50s — chuyển sang async với timeout ngắn hơn
-  BUG-06: Tạo MQTT client thứ 2 ở module level — loại bỏ, dùng MessageBus singleton
+app/api/routes/all_routes.py  — v2.1
+══════════════════════════════════════
+THAY ĐỔI SO VỚI v2.0 (BUG-01/02/05/06 đã fix):
+
+  [C] ZERO TRUST API SECURITY
+      ────────────────────────
+      1. require_auth trên TẤT CẢ endpoint có thể leak dữ liệu nhà:
+           /latest, /history, /dashboard, /chart, /rooms,
+           /device_status, /automations GET, /schedules GET,
+           /alerts GET, /wifi/status, /wifi/scan_result,
+           /system/clock, /system/snapshots, /system/safety_status,
+           /sd2/status, /data, /health (vẫn public — cho ESP32)
+         Lý do: Các endpoint này trả về sơ đồ phòng, dữ liệu sinh hoạt,
+         vị trí thiết bị — rủi ro cao nếu để mở trong mạng LAN.
+
+      2. Redis Token Blacklist khi logout:
+           POST /auth/logout → thêm token vào Redis set "token_blacklist"
+           với TTL bằng SESSION_EXPIRE.
+           require_auth kiểm tra blacklist TRƯỚC khi check SQLite session.
+           Đảm bảo phiên làm việc bị hủy HOÀN TOÀN sau logout
+           (không thể dùng token cũ để truy cập sau khi đăng xuất).
+
+      3. ESP32 exception: /health và /firmware/<file> không cần auth.
+         Nếu ESP32 cần auth riêng, dùng API Key header X-Device-Key
+         (có thể thêm trong phiên bản sau).
+
+  [D] SMART MANUAL OVERRIDE ENDPOINT
+      ────────────────────────────────
+      POST /control với action="set_auto_mode" → publish lên Redis
+      device_commands để AutomationEngine reset MANUAL_STATE[device_id].
 """
 
 import hashlib, secrets, json, os, time, uuid, sqlite3
@@ -91,11 +114,23 @@ def get_current_user(token: str):
 
 
 # FIX BUG-02: dùng get_current_user() — conn luôn được close trong finally
+# [v2.1] require_auth kiểm tra Redis blacklist TRƯỚC — đảm bảo logout hoàn toàn
 def require_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "").strip()
-        user  = get_current_user(token)
+        if not token:
+            return jsonify({"error": "unauthorized"}), 401
+
+        # [v2.1] Kiểm tra token blacklist trong Redis — O(1), nhanh hơn SQLite
+        try:
+            _r = get_r()
+            if _r.sismember("token_blacklist", token):
+                return jsonify({"error": "token_revoked", "message": "Phiên đã hết hạn. Vui lòng đăng nhập lại."}), 401
+        except Exception:
+            pass  # Redis lỗi → không block, tiếp tục check SQLite
+
+        user = get_current_user(token)
         if not user:
             return jsonify({"error": "unauthorized"}), 401
         request.current_user = user
@@ -223,6 +258,16 @@ def logout():
     finally:
         conn.close()
     r.delete(f"session:{token}")
+
+    # [v2.1] Redis blacklist — đảm bảo token không thể dùng lại sau logout
+    # TTL = SESSION_EXPIRE để tự dọn dẹp sau khi token đã hết hạn tự nhiên
+    try:
+        _r = get_r()
+        _r.sadd("token_blacklist", token)
+        _r.expire("token_blacklist", SESSION_EXPIRE)
+    except Exception:
+        pass  # Không block logout nếu Redis lỗi
+
     return jsonify({"status": "ok"})
 
 
@@ -232,6 +277,7 @@ def logout():
 sensors_bp = Blueprint("sensors", __name__)
 
 @sensors_bp.route("/latest")
+@require_auth
 def latest():
     room  = request.args.get("room")
     limit = min(int(request.args.get("limit", 50)), 200)
@@ -257,6 +303,7 @@ def latest():
 
 
 @sensors_bp.route("/history")
+@require_auth
 def history():
     room  = request.args.get("room")
     type_ = request.args.get("type")
@@ -275,6 +322,7 @@ def history():
 
 
 @sensors_bp.route("/dashboard")
+@require_auth
 def dashboard():
     room = request.args.get("room")
     conn = get_db()
@@ -308,6 +356,7 @@ def dashboard():
 
 
 @sensors_bp.route("/chart")
+@require_auth
 def chart():
     room  = request.args.get("room")
     type_ = request.args.get("type")
@@ -326,6 +375,7 @@ def chart():
 
 
 @sensors_bp.route("/rooms")
+@require_auth
 def rooms():
     conn = get_db()
     try:
@@ -341,6 +391,7 @@ def rooms():
 devices_bp = Blueprint("devices", __name__)
 
 @devices_bp.route("/device_status")
+@require_auth
 def device_status():
     room = request.args.get("room")
     conn = get_db()
@@ -366,15 +417,26 @@ def control():
     room      = data.get("room")
     device_id = data.get("device_id")
     is_on     = data.get("is_on", False)
+    action    = data.get("action", "")
 
     if not room or not device_id:
         return jsonify({"error": "room và device_id là bắt buộc"}), 400
+
+    # [v2.1] Smart Manual Override: chuyển thiết bị về Auto mode
+    if action == "set_auto_mode":
+        r.publish("device_commands", json.dumps({
+            "room": room, "device_id": device_id,
+            "action": "set_auto_mode", "source": "web"
+        }))
+        return jsonify({"status": "ok", "mode": "auto", "message": f"{device_id} đã về chế độ tự động"})
 
     if r.exists(f"safety_lock:{room}"):
         return jsonify({"error": "Hệ thống đang trong trạng thái khẩn cấp!", "locked": True}), 423
 
     r.publish("device_commands", json.dumps({
-        "room": room, "device_id": device_id, "is_on": is_on, "source": "web"
+        "room": room, "device_id": device_id, "is_on": is_on,
+        "action": "turn_on" if is_on else "turn_off",
+        "source": "web"
     }))
     return jsonify({"status": "ok"})
 
@@ -385,6 +447,7 @@ def control():
 automation_bp = Blueprint("automation", __name__)
 
 @automation_bp.route("/automations", methods=["GET"])
+@require_auth
 def get_automations():
     conn = get_db()
     try:
@@ -431,6 +494,7 @@ def del_automation(room_id):
 
 
 @automation_bp.route("/schedules", methods=["GET"])
+@require_auth
 def get_schedules():
     room = request.args.get("room")
     conn = get_db()
@@ -620,6 +684,7 @@ def logs_feed():
 
 
 @logs_bp.route("/alerts")
+@require_auth
 def get_alerts():
     room  = request.args.get("room")
     limit = int(request.args.get("limit", 20))
@@ -795,6 +860,7 @@ def rfid_enroll():
 wifi_bp = Blueprint("wifi", __name__)
 
 @wifi_bp.route("/wifi/status")
+@require_auth
 def wifi_status():
     raw = r.get("system_status:wifi")
     return jsonify(json.loads(raw) if raw else {"status": "unknown", "ssid": "N/A"})
@@ -809,6 +875,7 @@ def wifi_scan():
 
 
 @wifi_bp.route("/wifi/scan_result")
+@require_auth
 def wifi_scan_result():
     status  = r.get("wifi_scan_status") or "idle"
     result_ = r.get("wifi_scan_result")
@@ -834,6 +901,7 @@ def wifi_connect():
 
 
 @wifi_bp.route("/wifi/connect_result")
+@require_auth
 def wifi_connect_result():
     """Client poll endpoint để lấy kết quả wifi connect (không block Flask)."""
     req_id = request.args.get("id", "")
@@ -906,6 +974,7 @@ def health():
 
 
 @system_bp.route("/sd2/status")
+@require_auth
 def sd2_status():
     mount = "/mnt/sd2"
     is_ok = os.path.ismount(mount)
@@ -921,6 +990,7 @@ def sd2_status():
 
 
 @system_bp.route("/data")
+@require_auth
 def daily_data():
     date_param  = request.args.get("date", "")
     dates_param = request.args.get("dates", "")
@@ -971,6 +1041,7 @@ def sd2_export():
 
 
 @system_bp.route("/system/clock")
+@require_auth
 def system_clock():
     now      = datetime.now()
     is_valid = now.year >= 2024
@@ -983,6 +1054,7 @@ def system_clock():
 
 
 @system_bp.route("/system/snapshots")
+@require_auth
 def system_snapshots():
     hours = int(request.args.get("hours", 24))
     since = (datetime.now() - timedelta(hours=hours)).strftime("%Y-%m-%d %H:%M:%S")
@@ -1000,6 +1072,7 @@ def system_snapshots():
 
 
 @system_bp.route("/system/safety_status")
+@require_auth
 def safety_status():
     keys   = r.keys("active_alert:*")
     alerts = {}

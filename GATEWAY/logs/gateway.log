@@ -5857,3 +5857,382 @@ SyntaxError: invalid syntax. Perhaps you forgot a comma?
 2026-04-30 23:21:40 [INFO][SYNCER] CommandDispatcher started
 2026-04-30 23:21:40 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
 2026-04-30 23:21:40 [INFO][SYNCER] MQTT inbound bridge started
+2026-04-30 23:59:16 [INFO][SYNCER] SyncWorker starting...
+2026-04-30 23:59:16 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-04-30 23:59:17 [INFO][SYNCER] =======================================================
+2026-04-30 23:59:17 [INFO][SYNCER] firebase_sync v2 starting — project: nhathongminh-myhome
+2026-04-30 23:59:17 [INFO][SYNCER] Storage: RTDB=sensors (hot) | Firestore=rooms/devices/alerts (structured)
+2026-04-30 23:59:17 [INFO][SYNCER] =======================================================
+2026-04-30 23:59:17 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-04-30 23:59:17 [INFO][SYNCER] Firebase khởi tạo thành công với Service Account.
+2026-04-30 23:59:17 [INFO][SYNCER] Redis connected at localhost:6379
+2026-04-30 23:59:17 [INFO][SYNCER] Chạy auto-provisioning...
+2026-04-30 23:59:17 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[NET] Network watchdog started (NTP-only, no RTC)
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[API] Registered /api: devices
+[SCHEDULER] Started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-04-30 23:59:17 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-04-30 23:59:17 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-04-30 23:59:28 [INFO][SYNCER] RTDB: Node live/bedroom_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:59:29 [INFO][SYNCER] RTDB: Node live/kitchen_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:59:29 [INFO][SYNCER] RTDB: Node live/living_room_01 đã tồn tại — bỏ qua provision
+2026-04-30 23:59:30 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-04-30 23:59:30 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-04-30 23:59:30 [INFO][SYNCER] Redis subscriber started (channels: ['realtime_data', 'device_status', 'safety_alert', 'wifi_status'])
+2026-04-30 23:59:30 [INFO][SYNCER] CommandDispatcher started
+2026-04-30 23:59:30 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-04-30 23:59:30 [INFO][SYNCER] MQTT inbound bridge started
+2026-05-01 00:01:04 [INFO][SYNCER] ==> DISPATCH: LpdJYwdXrbTlCbmIM00P [turn_on] -> Redis[device_commands]
+2026-05-01 00:01:05 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh LpdJYwdXrbTlCbmIM00P khỏi Firestore.
+2026-05-01 00:01:08 [INFO][SYNCER] ==> DISPATCH: NHzxh6Fl3PgkPg1gTc3y [turn_off] -> Redis[device_commands]
+2026-05-01 00:01:09 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh NHzxh6Fl3PgkPg1gTc3y khỏi Firestore.
+2026-05-01 00:01:20 [INFO][SYNCER] ==> DISPATCH: GxHCSTW502I17j6Ifd1E [turn_on] -> Redis[device_commands]
+2026-05-01 00:01:20 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh GxHCSTW502I17j6Ifd1E khỏi Firestore.
+2026-05-01 00:01:52 [INFO][SYNCER] ==> DISPATCH: imXFZ1WdUjmulpuNSgXS [turn_on] -> Redis[device_commands]
+2026-05-01 00:01:52 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh imXFZ1WdUjmulpuNSgXS khỏi Firestore.
+2026-05-01 00:01:54 [INFO][SYNCER] ==> DISPATCH: RyUdCsBfY0mfEOkTDjv8 [turn_off] -> Redis[device_commands]
+2026-05-01 00:01:54 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh RyUdCsBfY0mfEOkTDjv8 khỏi Firestore.
+2026-05-01 00:01:55 [INFO][SYNCER] ==> DISPATCH: 9qdZnA09WCz3EtMm8bQt [turn_on] -> Redis[device_commands]
+2026-05-01 00:01:56 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh 9qdZnA09WCz3EtMm8bQt khỏi Firestore.
+2026-05-01 00:01:57 [INFO][SYNCER] ==> DISPATCH: qbFr5qbIIOy9NQpyUmka [turn_off] -> Redis[device_commands]
+2026-05-01 00:01:57 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh qbFr5qbIIOy9NQpyUmka khỏi Firestore.
+2026-05-01 00:01:58 [INFO][SYNCER] ==> DISPATCH: cFfrrDpTLHyDuK0ja29u [turn_on] -> Redis[device_commands]
+2026-05-01 00:01:58 [INFO][SYNCER] ==> CLEANUP: Đã xóa lệnh cFfrrDpTLHyDuK0ja29u khỏi Firestore.
+2026-05-01 09:34:27 [INFO][SYNCER] SyncWorker starting...
+2026-05-01 09:34:27 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-01 09:34:29 [INFO][SYNCER] =======================================================
+2026-05-01 09:34:29 [INFO][SYNCER] firebase_sync v2.1 starting — project: nhathongminh-myhome
+2026-05-01 09:34:29 [INFO][SYNCER] Uplink: On-Change (no throttle) | Downlink: Firestore listener
+2026-05-01 09:34:29 [INFO][SYNCER] =======================================================
+2026-05-01 09:34:29 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-01 09:34:29 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-01 09:34:29 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-01 09:34:29 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started
+[BUS] MQTT connected & subscribed
+[NET] Network watchdog started (NTP-only, no RTC)
+[BUS] Outbound loop started
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-01 09:34:29 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-05-01 09:34:29 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-01 09:34:32 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-01 09:34:32 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-01 09:34:32 [INFO][SYNCER] [Uplink] Stream started — channels: sensor/device/alert/wifi/ack/mqtt
+2026-05-01 09:34:32 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-01 09:34:32 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-05-01 09:34:53 [INFO][SYNCER] [Downlink] DISPATCH: CalWffvwVui1wfLu4tvr [turn_off] → Redis[device_commands]
+2026-05-01 09:34:53 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → OFF (On-Change write)
+2026-05-01 09:34:53 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh CalWffvwVui1wfLu4tvr
+2026-05-01 09:34:57 [INFO][SYNCER] [Downlink] DISPATCH: YO6Ne0ykY2SorF2eneWm [turn_on] → Redis[device_commands]
+2026-05-01 09:34:57 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → ON (On-Change write)
+2026-05-01 09:34:57 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh YO6Ne0ykY2SorF2eneWm
+2026-05-01 09:35:31 [INFO][SYNCER] [Downlink] DISPATCH: ay5MSXcvj8ZQk9bhrNe9 [turn_off] → Redis[device_commands]
+2026-05-01 09:35:31 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → OFF (On-Change write)
+2026-05-01 09:35:31 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh ay5MSXcvj8ZQk9bhrNe9
+2026-05-01 09:35:33 [INFO][SYNCER] [Downlink] DISPATCH: O8YaNgPGQPm2GdMDyEX2 [turn_on] → Redis[device_commands]
+2026-05-01 09:35:33 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → ON (On-Change write)
+2026-05-01 09:35:33 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh O8YaNgPGQPm2GdMDyEX2
+2026-05-01 09:35:55 [INFO][SYNCER] [Downlink] DISPATCH: xW0ApysjIDi5B99kwCUv [turn_off] → Redis[device_commands]
+2026-05-01 09:35:55 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → OFF (On-Change write)
+2026-05-01 09:35:55 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh xW0ApysjIDi5B99kwCUv
+2026-05-01 09:35:58 [INFO][SYNCER] [Downlink] DISPATCH: m52B4YNyOcdnYDPxVL09 [turn_off] → Redis[device_commands]
+2026-05-01 09:35:58 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → OFF (On-Change write)
+2026-05-01 09:35:58 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh m52B4YNyOcdnYDPxVL09
+2026-05-01 09:36:16 [INFO][SYNCER] [Downlink] DISPATCH: TpsUt28DGC62qdaCUlrX [turn_on] → Redis[device_commands]
+2026-05-01 09:36:16 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → ON (On-Change write)
+2026-05-01 09:36:16 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TpsUt28DGC62qdaCUlrX
+2026-05-01 09:36:18 [INFO][SYNCER] [Downlink] DISPATCH: 1gntK4R83UqzI7D1ZNFA [turn_off] → Redis[device_commands]
+2026-05-01 09:36:18 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → OFF (On-Change write)
+2026-05-01 09:36:18 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 1gntK4R83UqzI7D1ZNFA
+2026-05-01 09:37:33 [INFO][SYNCER] Firestore: Batch flush 276 sensor history rows
+2026-05-01 09:37:33 [INFO][SYNCER] Flushed 276 sensor history rows to Firestore
+2026-05-01 09:39:27 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-01 09:39:27 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-01.db (mode: sd2)
+2026-05-01 09:40:33 [INFO][SYNCER] Firestore: Batch flush 148 sensor history rows
+2026-05-01 09:40:33 [INFO][SYNCER] Flushed 148 sensor history rows to Firestore
+2026-05-01 09:41:15 [INFO][SYNCER] [Downlink] DISPATCH: c9ktcxKet5ztKTvIFxHB [turn_on] → Redis[device_commands]
+2026-05-01 09:41:15 [INFO][SYNCER] Firestore device [living_room_01/fan_lv_1] → ON (On-Change write)
+2026-05-01 09:41:16 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh c9ktcxKet5ztKTvIFxHB
+2026-05-01 09:41:17 [INFO][SYNCER] [Downlink] DISPATCH: 7Gn4OhDxuBkb4v7rpwam [turn_off] → Redis[device_commands]
+2026-05-01 09:41:17 [INFO][SYNCER] Firestore device [living_room_01/fan_lv_1] → OFF (On-Change write)
+2026-05-01 09:41:17 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 7Gn4OhDxuBkb4v7rpwam
+2026-05-01 09:41:19 [INFO][SYNCER] [Downlink] DISPATCH: cB77655t02GeHImAmah6 [turn_on] → Redis[device_commands]
+2026-05-01 09:41:19 [INFO][SYNCER] Firestore device [living_room_01/light_lv_1] → ON (On-Change write)
+2026-05-01 09:41:19 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh cB77655t02GeHImAmah6
+2026-05-01 09:41:20 [INFO][SYNCER] [Downlink] DISPATCH: mcB15sOxaQ2eKIysMD2p [turn_off] → Redis[device_commands]
+2026-05-01 09:41:20 [INFO][SYNCER] Firestore device [living_room_01/light_lv_1] → OFF (On-Change write)
+2026-05-01 09:41:20 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh mcB15sOxaQ2eKIysMD2p
+2026-05-01 09:43:34 [INFO][SYNCER] Firestore: Batch flush 76 sensor history rows
+2026-05-01 09:43:34 [INFO][SYNCER] Flushed 76 sensor history rows to Firestore
+2026-05-01 09:43:58 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:03 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:08 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:13 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:18 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:23 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:28 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:33 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:38 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:43 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:48 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:53 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:44:58 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:03 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:08 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:13 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:18 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:23 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:28 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] flush_events error: disk I/O error
+2026-05-01 09:45:28 [ERROR][SYNCER] snapshot error: disk I/O error
+2026-05-01 09:45:33 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:38 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:43 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:48 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:53 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:45:58 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:46:03 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:46:08 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:46:13 [WARNING][SYNCER] SD2 write-test failed: [Errno 5] Input/output error: '/mnt/sd2/data/.health_check'
+2026-05-01 09:46:24 [INFO][SYNCER] SyncWorker starting...
+2026-05-01 09:46:24 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-01 09:46:25 [INFO][SYNCER] =======================================================
+2026-05-01 09:46:25 [INFO][SYNCER] firebase_sync v2.1 starting — project: nhathongminh-myhome
+2026-05-01 09:46:25 [INFO][SYNCER] Uplink: On-Change (no throttle) | Downlink: Firestore listener
+2026-05-01 09:46:25 [INFO][SYNCER] =======================================================
+2026-05-01 09:46:25 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-01 09:46:25 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-01 09:46:25 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-01 09:46:25 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started
+[BUS] Outbound loop started
+[NET] Network watchdog started (NTP-only, no RTC)
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Cache loaded: 3 rules, 0 schedules
+[SCHEDULER] Started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-01 09:46:26 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.11:5000
+2026-05-01 09:46:26 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-01 09:46:28 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-01 09:46:28 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-01 09:46:28 [INFO][SYNCER] [Uplink] Stream started — channels: sensor/device/alert/wifi/ack/mqtt
+2026-05-01 09:46:28 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-01 09:46:28 [INFO][SYNCER] Sensor history flush loop started (interval: 180s)
+2026-05-01 09:47:43 [INFO][SYNCER] [Downlink] DISPATCH: 6bBYMVvhYxjiBAAQdKyL [turn_on] → Redis[device_commands]
+2026-05-01 09:47:43 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → ON (On-Change write)
+2026-05-01 09:47:43 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 6bBYMVvhYxjiBAAQdKyL
+2026-05-01 09:47:48 [INFO][SYNCER] [Downlink] DISPATCH: QIuYnYfDSZoE7O2tb0k8 [turn_on] → Redis[device_commands]
+2026-05-01 09:47:48 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → ON (On-Change write)
+2026-05-01 09:47:48 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh QIuYnYfDSZoE7O2tb0k8
+2026-05-01 09:48:54 [INFO][SYNCER] [Downlink] DISPATCH: Z1OQlxmQMFlha3aOD4nz [turn_off] → Redis[device_commands]
+2026-05-01 09:48:54 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → OFF (On-Change write)
+2026-05-01 09:48:54 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Z1OQlxmQMFlha3aOD4nz
+2026-05-01 09:48:56 [INFO][SYNCER] [Downlink] DISPATCH: JHGZTq4zyP35a4oiaR1i [turn_on] → Redis[device_commands]
+2026-05-01 09:48:56 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → ON (On-Change write)
+2026-05-01 09:48:56 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh JHGZTq4zyP35a4oiaR1i
+2026-05-01 09:48:58 [INFO][SYNCER] [Downlink] DISPATCH: f17dY5YW0E9ML410xVVt [turn_off] → Redis[device_commands]
+2026-05-01 09:48:58 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → OFF (On-Change write)
+2026-05-01 09:48:58 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh f17dY5YW0E9ML410xVVt
+2026-05-01 09:48:59 [INFO][SYNCER] [Downlink] DISPATCH: TFjjR5ha9yVdCFOXBGG9 [turn_on] → Redis[device_commands]
+2026-05-01 09:48:59 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → ON (On-Change write)
+2026-05-01 09:49:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TFjjR5ha9yVdCFOXBGG9
+2026-05-01 09:49:28 [INFO][SYNCER] Firestore: Batch flush 114 sensor history rows
+2026-05-01 09:49:28 [INFO][SYNCER] Flushed 114 sensor history rows to Firestore
+2026-05-01 09:49:40 [INFO][SYNCER] [Downlink] DISPATCH: aJBfRsWzbzZJrgOtnkyp [turn_off] → Redis[device_commands]
+2026-05-01 09:49:41 [INFO][SYNCER] Firestore device [bedroom_01/fan_bd_1] → OFF (On-Change write)
+2026-05-01 09:49:41 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh aJBfRsWzbzZJrgOtnkyp
+2026-05-01 09:49:41 [INFO][SYNCER] [Downlink] DISPATCH: oiQANFrldLCpxMMhVGdT [turn_off] → Redis[device_commands]
+2026-05-01 09:49:41 [INFO][SYNCER] Firestore device [bedroom_01/light_bd_1] → OFF (On-Change write)
+2026-05-01 09:49:41 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh oiQANFrldLCpxMMhVGdT
