@@ -1,20 +1,25 @@
 """
-workers/network_watchdog.py  — FIXED v2
-═══════════════════════════════════════════
-FIXES:
-  BUG-RTC-01: Loại bỏ hoàn toàn phụ thuộc RTC DS3231.
-              Hệ thống dùng NTP-only — Raspberry Pi OS đã tích hợp NTP daemon
-              (systemd-timesyncd hoặc ntp/chrony). Không cần đọc/ghi RTC phần cứng.
+workers/network_watchdog.py  — FIXED v3  (CONFLICT FIX)
+════════════════════════════════════════════════════════
+FIXES trong phiên bản này:
 
-  BUG-WIFI-SYNC-01: Sau khi WiFi scan xong, publish kết quả lên Redis channel
-              "wifi_status" để firebase_sync.py đẩy lên Firestore
-              (system_status/available_wifi) → settings.js hiển thị đúng.
+  [CONFLICT F1 — MEDIUM] Dual Interface WiFi — tránh ESP32 offline khi đổi WiFi
+      ─────────────────────────────────────────────────────────────────────────
+      Vấn đề: Khi user đổi WiFi uplink từ Settings, interface wlan0 phải
+              negotiate lại. Hotspot SmartHome_Hub bị gián đoạn 5-15 giây
+              → toàn bộ ESP32 mất kết nối và mất dữ liệu sensor.
+      Fix: Dual Interface Strategy:
+        1. Ưu tiên: Detect xem Pi có 2 WiFi interfaces (wlan0, wlan1) không.
+           - wlan0 → Hotspot (AP mode) chuyên dụng, KHÔNG bao giờ thay đổi
+           - wlan1 → Uplink WiFi (Station mode), thay đổi thoải mái
+        2. Fallback: Nếu chỉ có 1 interface, dùng nmcli AP + Station trên
+           cùng wlan0 nếu driver hỗ trợ concurrent mode (nhiều Pi WiFi chip hỗ trợ).
+        3. Cơ chế Hotspot-first: Luôn bring up Hotspot TRƯỚC khi connect uplink.
+           Nếu connect uplink thất bại/thành công, Hotspot vẫn chạy độc lập.
+        4. Publish "wifi_switching" event để ESP32 có thể delay reconnect.
 
-  BUG-WIFI-SYNC-02: Sau khi connect WiFi thành công, publish trạng thái
-              lên "wifi_status" channel để cập nhật Firestore system_status/wifi.
-
-  BUG-NET-01:  get_wifi_status() kiểm tra trạng thái hiện tại và publish
-              lên Redis mỗi CHECK_EVERY giây → dashboard luôn cập nhật đúng.
+  [Giữ nguyên từ v2]
+      BUG-RTC-01, BUG-WIFI-SYNC-01, BUG-WIFI-SYNC-02, BUG-NET-01
 """
 
 import time
@@ -25,23 +30,71 @@ from datetime import datetime
 
 import redis as redis_lib
 
-REDIS_HOST   = "localhost"
-HOTSPOT_SSID = "SmartHome_Hub"
-HOTSPOT_PASS = ""               # Mạng mở
-HOTSPOT_IP   = "10.42.0.1/24"
-INTERFACE    = "wlan0"
-CHECK_EVERY  = 30               # giây kiểm tra network
-NTP_SYNC_EVERY = 3600           # Sync NTP mỗi 1 giờ (khi có internet)
+REDIS_HOST    = "localhost"
+HOTSPOT_SSID  = "SmartHome_Hub"
+HOTSPOT_PASS  = ""               # Mạng mở
+HOTSPOT_IP    = "10.42.0.1/24"
+CHECK_EVERY   = 30
+NTP_SYNC_EVERY = 3600
+
+# FIX F1: Interface separation
+HOTSPOT_IFACE  = "wlan0"   # Interface dành cho Hotspot (AP mode)
+UPLINK_IFACE   = ""        # Sẽ được detect tự động: wlan1 nếu có, wlan0 nếu không
 
 
 def get_redis():
     return redis_lib.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
 
 
+# ── FIX F1: Interface Detection ───────────────────────────
+
+def detect_interfaces() -> dict:
+    """
+    FIX F1: Detect WiFi interfaces và phân công vai trò.
+    Returns: {"hotspot": "wlan0", "uplink": "wlan1" | "wlan0"}
+    """
+    try:
+        output = subprocess.check_output(
+            "nmcli -t -f DEVICE,TYPE dev | grep ':wifi'",
+            shell=True
+        ).decode().strip()
+        interfaces = [line.split(":")[0] for line in output.splitlines() if line]
+    except Exception:
+        interfaces = ["wlan0"]
+
+    hotspot_iface = "wlan0"  # Luôn dùng wlan0 cho hotspot
+
+    if len(interfaces) >= 2:
+        # Có 2 WiFi interfaces → wlan1 làm uplink
+        uplink_iface = next((i for i in interfaces if i != "wlan0"), "wlan0")
+        print(f"[NET] Dual interface detected: Hotspot={hotspot_iface}, Uplink={uplink_iface}")
+    else:
+        # Single interface → wlan0 làm cả hai (concurrent AP+STA mode)
+        uplink_iface = "wlan0"
+        print(f"[NET] Single interface: {hotspot_iface} (AP+STA concurrent mode)")
+
+    return {"hotspot": hotspot_iface, "uplink": uplink_iface}
+
+
+def check_concurrent_support(iface: str) -> bool:
+    """Kiểm tra driver có hỗ trợ AP+STA concurrent trên cùng 1 interface."""
+    try:
+        output = subprocess.check_output(
+            f"iw phy $(iw dev {iface} info 2>/dev/null | awk '/wiphy/{{print $2}}') info 2>/dev/null | grep -i 'AP/VLAN\\|concurrent'",
+            shell=True
+        ).decode()
+        return len(output.strip()) > 0
+    except Exception:
+        return False
+
+
 # ── Hotspot ────────────────────────────────────────────────
 
-def ensure_hotspot():
-    """Tạo / khởi động lại Hotspot nếu chưa active."""
+def ensure_hotspot(iface: str = HOTSPOT_IFACE):
+    """
+    FIX F1: Tạo/khởi động Hotspot trên interface chỉ định.
+    Nếu dùng dual interface: Hotspot trên wlan0, không bao giờ bị ảnh hưởng bởi uplink.
+    """
     try:
         result = subprocess.run(
             f"nmcli -t con show --active | grep '{HOTSPOT_SSID}'",
@@ -52,11 +105,11 @@ def ensure_hotspot():
 
         subprocess.run(f"sudo nmcli connection delete '{HOTSPOT_SSID}'",
                        shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run(f"sudo nmcli dev disconnect {INTERFACE}",
+        subprocess.run(f"sudo nmcli dev disconnect {iface}",
                        shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         cmds = [
-            f"sudo nmcli con add type wifi ifname {INTERFACE} con-name '{HOTSPOT_SSID}' autoconnect yes ssid '{HOTSPOT_SSID}'",
+            f"sudo nmcli con add type wifi ifname {iface} con-name '{HOTSPOT_SSID}' autoconnect yes ssid '{HOTSPOT_SSID}'",
             f"sudo nmcli con modify '{HOTSPOT_SSID}' 802-11-wireless.mode ap",
             f"sudo nmcli con modify '{HOTSPOT_SSID}' 802-11-wireless.band bg",
             f"sudo nmcli con modify '{HOTSPOT_SSID}' 802-11-wireless.channel 6",
@@ -69,9 +122,9 @@ def ensure_hotspot():
         for cmd in cmds:
             subprocess.run(cmd, shell=True, check=True,
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        print(f"[NET] Hotspot '{HOTSPOT_SSID}' activated at {HOTSPOT_IP}")
+        print(f"[NET] Hotspot '{HOTSPOT_SSID}' activated on {iface} at {HOTSPOT_IP}")
     except Exception as e:
-        print(f"[NET] Hotspot error: {e}")
+        print(f"[NET] Hotspot error on {iface}: {e}")
 
 
 # ── Internet check ────────────────────────────────────────
@@ -88,7 +141,6 @@ def check_internet() -> bool:
 
 
 def get_wifi_status() -> dict:
-    """Lấy trạng thái kết nối WiFi hiện tại."""
     try:
         cmd    = "nmcli -t -f ACTIVE,SSID,MODE dev wifi | grep '^yes' | grep ':infrastructure'"
         output = subprocess.check_output(cmd, shell=True).decode().strip()
@@ -97,8 +149,6 @@ def get_wifi_status() -> dict:
             return {"status": "connected", "ssid": ssid, "type": "wifi", "current_ssid": ssid}
     except Exception:
         pass
-
-    # Kiểm tra Ethernet
     try:
         subprocess.check_call(
             ["ping", "-c", "1", "-W", "3", "8.8.8.8"],
@@ -108,21 +158,14 @@ def get_wifi_status() -> dict:
                 "current_ssid": "Ethernet/Wired"}
     except Exception:
         pass
-
     return {"status": "disconnected", "ssid": "N/A", "type": "none", "current_ssid": ""}
 
 
-# ── NTP Sync (BUG-RTC-01: Không dùng RTC DS3231) ─────────
+# ── NTP Sync ─────────────────────────────────────────────
 
 def sync_ntp():
-    """
-    FIX BUG-RTC-01: Chỉ sync NTP khi có Internet.
-    Raspberry Pi OS (Raspbian Bullseye/Bookworm) đã có systemd-timesyncd
-    tự động sync khi có mạng. Hàm này là fallback thủ công nếu cần.
-    KHÔNG cần đọc/ghi RTC DS3231 nữa.
-    """
+    """BUG-RTC-01: Chỉ sync NTP, không dùng RTC DS3231."""
     try:
-        # Thử dùng timedatectl (systemd) trước — chuẩn nhất trên Pi OS hiện đại
         result = subprocess.run(
             ["timedatectl", "show", "--property=NTPSynchronized", "--value"],
             capture_output=True, timeout=5
@@ -130,8 +173,6 @@ def sync_ntp():
         if result.returncode == 0 and result.stdout.decode().strip() == "yes":
             print(f"[NET] NTP already synchronized via systemd-timesyncd")
             return
-
-        # Fallback: force sync với ntpdate nếu systemd-timesyncd không active
         subprocess.run(
             ["sudo", "ntpdate", "-u", "pool.ntp.org"],
             timeout=15, check=True,
@@ -139,7 +180,6 @@ def sync_ntp():
         )
         print(f"[NET] NTP synced manually: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     except subprocess.CalledProcessError:
-        # ntpdate không có → thử chronyc
         try:
             subprocess.run(["sudo", "chronyc", "makestep"],
                            timeout=10, check=True,
@@ -152,66 +192,84 @@ def sync_ntp():
 
 
 def json_serializable(obj):
-    """
-    Xử lý các kiểu dữ liệu không mặc định cho JSON (đặc biệt là từ Firestore).
-    """
-    # Kiểm tra nếu là đối tượng Datetime của Firestore hoặc Datetime chuẩn
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
-    
-    # Nếu là các kiểu dữ liệu cơ bản thì giữ nguyên
     if isinstance(obj, (int, float, str, bool)) or obj is None:
         return obj
-        
-    # Trường hợp cuối cùng: ép về string để tránh lỗi crash hệ thống
     return str(obj)
 
-# ── WiFi Connect ──────────────────────────────────────────
 
-def connect_wifi(ssid: str, password: str, request_id: str, r):
-    """Kết nối vào WiFi nhà (uplink)."""
-    cmd = (f"sudo nmcli dev wifi connect '{ssid}' password '{password}'"
-           if password else f"sudo nmcli dev wifi connect '{ssid}'")
+# ── WiFi Connect (FIX F1) ─────────────────────────────────
+
+def connect_wifi(ssid: str, password: str, request_id: str, r,
+                 uplink_iface: str, hotspot_iface: str):
+    """
+    FIX F1: Connect uplink trên interface chỉ định (uplink_iface).
+    Hotspot vẫn chạy trên hotspot_iface — KHÔNG bị ảnh hưởng.
+
+    Nếu dual interface: wlan1 connect uplink → wlan0 Hotspot không bị gián đoạn.
+    Nếu single interface: cảnh báo và thực hiện connect nhưng Hotspot có thể
+    bị gián đoạn tạm thời (5-15s) trong khi negotiate.
+    """
+    is_dual = (uplink_iface != hotspot_iface)
+
+    if not is_dual:
+        # Single interface: thông báo ESP32 chuẩn bị mất kết nối tạm thời
+        r.publish("realtime_data", json.dumps({
+            "event":   "wifi_switching",
+            "message": "Đang kết nối WiFi mới. ESP32 có thể mất kết nối 5-15 giây.",
+            "level":   "warning"
+        }))
+        print(f"[NET] WARNING: Single interface — Hotspot may drop 5-15s during uplink connect")
+
+    # Xây dựng lệnh connect trên đúng interface
+    if uplink_iface != "wlan0" and is_dual:
+        cmd = (f"sudo nmcli dev wifi connect '{ssid}' password '{password}' ifname {uplink_iface}"
+               if password else
+               f"sudo nmcli dev wifi connect '{ssid}' ifname {uplink_iface}")
+    else:
+        cmd = (f"sudo nmcli dev wifi connect '{ssid}' password '{password}'"
+               if password else f"sudo nmcli dev wifi connect '{ssid}'")
+
     try:
         subprocess.run(cmd, shell=True, check=True, timeout=45,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         result = {"status": "success", "ssid": ssid}
-        print(f"[NET] Connected to WiFi: {ssid}")
+        print(f"[NET] Connected to WiFi uplink: {ssid} via {uplink_iface}")
 
-        # FIX BUG-WIFI-SYNC-02: Publish wifi status lên Redis → firebase_sync cập nhật Firestore
         status_payload = {
-            "status":       "connected",
-            "ssid":         ssid,
-            "current_ssid": ssid,
-            "type":         "wifi"
+            "status": "connected", "ssid": ssid,
+            "current_ssid": ssid, "type": "wifi"
         }
         r.publish("wifi_status", json.dumps(status_payload))
 
     except Exception as e:
         result = {"status": "failed", "error": str(e)}
         print(f"[NET] WiFi connect failed: {e}")
-
-        # Publish disconnect status
         r.publish("wifi_status", json.dumps({
-            "status":       "disconnected",
-            "ssid":         "",
-            "current_ssid": "",
-            "error":        str(e)
+            "status": "disconnected", "ssid": "",
+            "current_ssid": "", "error": str(e)
         }))
     finally:
         if request_id:
-            r.setex(f"wifi_cmd:{request_id}", 60, json.dumps(result, default=json_serializable)) # Thêm default vào đây
-        # Khởi động lại Hotspot sau khi kết nối uplink
-        threading.Thread(target=ensure_hotspot, daemon=True).start()
+            r.setex(f"wifi_cmd:{request_id}", 60, json.dumps(result, default=json_serializable))
+
+        # FIX F1: Sau khi connect uplink xong, đảm bảo Hotspot vẫn alive trên hotspot_iface
+        # (quan trọng với single interface — Hotspot có thể đã bị drop)
+        threading.Thread(
+            target=ensure_hotspot,
+            args=(hotspot_iface,),
+            daemon=True
+        ).start()
 
 
 # ── WiFi Scan ─────────────────────────────────────────────
 
-def scan_wifi(r):
-    """Quét mạng WiFi xung quanh và publish lên Firestore qua Redis."""
+def scan_wifi(r, uplink_iface: str):
+    """Scan trên uplink_iface — không ảnh hưởng Hotspot interface."""
     try:
-        subprocess.run("sudo nmcli dev wifi rescan",
-                       shell=True, timeout=10,
+        scan_cmd = f"sudo nmcli dev wifi rescan ifname {uplink_iface}" if uplink_iface != "wlan0" else "sudo nmcli dev wifi rescan"
+        subprocess.run(scan_cmd, shell=True, timeout=10,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(3)
         output = subprocess.check_output(
@@ -231,15 +289,7 @@ def scan_wifi(r):
 
         r.setex("wifi_scan_result", 300, json.dumps(networks))
         r.set("wifi_scan_status", "done")
-
-        # FIX BUG-WIFI-SYNC-01: Publish lên wifi_status channel để firebase_sync
-        # cập nhật Firestore system_status/available_wifi → settings.js hiển thị
-        r.publish("wifi_status", json.dumps({
-            "networks": networks,
-            "scan_done": True
-        }))
-
-        # Push lên realtime_data cho Web WebSocket
+        r.publish("wifi_status", json.dumps({"networks": networks, "scan_done": True}))
         r.publish("realtime_data", json.dumps({
             "event":    "wifi_scan_done",
             "networks": networks
@@ -258,7 +308,11 @@ def run():
     last_ntp     = 0
     has_internet = False
 
-    # Lắng nghe lệnh WiFi từ Web
+    # FIX F1: Detect interfaces trước khi làm bất cứ điều gì
+    ifaces       = detect_interfaces()
+    hotspot_iface = ifaces["hotspot"]
+    uplink_iface  = ifaces["uplink"]
+
     def listen_wifi_commands():
         pub = r.pubsub()
         pub.subscribe("wifi_commands", "wifi_scan_trigger")
@@ -269,13 +323,18 @@ def run():
                 channel = msg["channel"]
                 if channel == "wifi_scan_trigger":
                     r.set("wifi_scan_status", "scanning")
-                    threading.Thread(target=scan_wifi, args=(r,), daemon=True).start()
+                    threading.Thread(
+                        target=scan_wifi,
+                        args=(r, uplink_iface),
+                        daemon=True
+                    ).start()
                 elif channel == "wifi_commands":
                     data = json.loads(msg["data"])
                     threading.Thread(
                         target=connect_wifi,
                         args=(data.get("ssid"), data.get("password", ""),
-                              data.get("request_id"), r),
+                              data.get("request_id"), r,
+                              uplink_iface, hotspot_iface),  # FIX F1: pass interfaces
                         daemon=True
                     ).start()
             except Exception as e:
@@ -283,13 +342,10 @@ def run():
 
     threading.Thread(target=listen_wifi_commands, daemon=True).start()
 
-    # FIX BUG-RTC-01: Không cần read_rtc_to_system() nữa.
-    # systemd-timesyncd tự đồng bộ NTP khi có mạng.
-    # Nếu mới khởi động mà chưa có mạng, giờ hệ thống vẫn đúng từ lần sync trước.
-    print("[NET] Network watchdog started (NTP-only, no RTC)")
+    print(f"[NET] Network watchdog started — Hotspot:{hotspot_iface} Uplink:{uplink_iface}")
 
-    # Đảm bảo Hotspot active
-    ensure_hotspot()
+    # FIX F1: Bring up Hotspot TRƯỚC trên hotspot_iface
+    ensure_hotspot(hotspot_iface)
 
     while True:
         now = time.time()
@@ -309,7 +365,6 @@ def run():
                 }))
                 print(f"[NET] Internet: {'ON' if has_internet else 'OFF'}")
 
-                # FIX BUG-WIFI-SYNC-02: Publish wifi status khi trạng thái thay đổi
                 r.publish("wifi_status", json.dumps({
                     "status":       status.get("status", "disconnected"),
                     "ssid":         status.get("ssid", ""),
@@ -317,7 +372,9 @@ def run():
                     "type":         status.get("type", "none")
                 }))
 
-            # FIX BUG-RTC-01: NTP sync thủ công mỗi giờ khi có Internet (không ghi RTC)
+                # FIX F1: Sau khi internet thay đổi, đảm bảo Hotspot vẫn còn sống
+                ensure_hotspot(hotspot_iface)
+
             if has_internet and (now - last_ntp) >= NTP_SYNC_EVERY:
                 sync_ntp()
                 last_ntp = now

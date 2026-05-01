@@ -1085,3 +1085,4 @@ def safety_status():
             except Exception:
                 pass
     return jsonify({"active_alerts": alerts})
+

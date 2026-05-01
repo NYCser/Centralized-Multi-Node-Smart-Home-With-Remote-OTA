@@ -1,32 +1,35 @@
 """
-workers/firebase_sync.py  — v2.1  (Thiết kế đề xuất)
-═══════════════════════════════════════════════════════
-THAY ĐỔI SO VỚI v2.0:
+workers/firebase_sync.py  — v2.2  (CONFLICT FIX)
+═════════════════════════════════════════════════
+FIXES trong phiên bản này:
 
-  [A] PHÂN RÃ UPLINK / DOWNLINK STREAM
-      ─────────────────────────────────
-      Uplink   = UplinkStream  (Producer) — chỉ đẩy dữ liệu lên Firebase.
-      Downlink = CommandDispatcher        — chỉ nhận lệnh từ Firestore xuống.
-      Hai luồng hoàn toàn độc lập, lỗi ở một luồng không block luồng kia.
+  [CONFLICT A1 — HIGH] Single Writer cho RTDB Sensor
+      ─────────────────────────────────────────────
+      Vấn đề: Cả _on_sensor() (từ "realtime_data") lẫn _on_mqtt_inbound()
+              (từ "mqtt_inbound") đều gọi rtdb_writer.update_sensor_bulk()
+              → mỗi reading ESP32 bị ghi 2 lần lên RTDB, tốn quota Firebase
+                và tạo race condition giữa 2 lần ghi.
+      Fix: UplinkStream CHỈ subscribe "mqtt_inbound" làm nguồn dữ liệu sensor.
+           _on_sensor() (từ "realtime_data") KHÔNG ghi RTDB nữa — chỉ xử lý
+           các sự kiện khác (alert, metadata).
+           Luồng chuẩn: ESP32 → MQTT → MessageBus → mqtt_inbound → UplinkStream → RTDB
+           automation_engine.publish_event("realtime_data") chỉ dùng cho SocketIO/Web,
+           không ghi Firebase.
 
-  [B] ON-CHANGE DEVICE STATUS (Bỏ Throttle 30s)
-      ─────────────────────────────────────────
-      FirestoreWriter.update_device() không còn Throttle 30s nữa.
-      Thay vào đó dùng cơ chế STATE CACHE:
-        - Chỉ ghi lên Firestore khi trạng thái THỰC SỰ THAY ĐỔI.
-        - Ví dụ: quạt đang ON → nhận status ON lần nữa → KHÔNG ghi.
-        - Khi bật/tắt bằng nút vật lý: ESP32 gửi status → Pi nhận →
-          Firestore cập nhật NGAY LẬP TỨC (< 500ms) → Web đồng bộ.
-      Lợi ích:
-        - Không còn "khoảng tối" 30s → Race condition không còn xảy ra.
-        - Số lượng Firestore writes thực tế KHÔNG tăng nhiều vì chỉ
-          write khi thay đổi (On = 1 write, Off = 1 write).
+  [CONFLICT B1 — HIGH] Bỏ force_update_device() trong CommandDispatcher
+      ─────────────────────────────────────────────────────────────────
+      Vấn đề: CommandDispatcher.force_update_device() ghi Firestore ngay khi
+              dispatch lệnh, trong khi FirebaseSync cũng ghi lại sau khi nhận
+              feedback từ ESP32 qua "device_status" channel.
+              Hai lần ghi với giá trị có thể KHÁC NHAU → UI nhấp nháy.
+      Fix: Xóa force_update_device() khỏi _dispatch().
+           Luồng chuẩn duy nhất:
+             ESP32 → MQTT status → automation_engine → "device_status" → FirebaseSync → Firestore
+           Web UI cập nhật sau khi ESP32 confirm (~200-500ms), không cập nhật optimistic.
 
-  [C] GIỮ NGUYÊN
-      ──────────
-      - RTDB sensors: push realtime, không throttle (giữ nguyên v2.0)
-      - Auto-provisioning, sensor history flush, heartbeat (giữ nguyên)
-      - CommandDispatcher: Firestore listener → Redis (giữ nguyên)
+  [Giữ nguyên từ v2.1]
+      On-Change device status cache (bỏ throttle 30s), auto-provisioning,
+      sensor history flush, heartbeat, CommandDispatcher Firestore listener.
 """
 
 import json
@@ -65,16 +68,14 @@ SQLITE_PATH = os.getenv("SQLITE_PATH", "/data/smarthome.db")
 PI_OWNER_UID = os.getenv("PI_OWNER_UID", "")
 
 # Redis channels
-CHANNEL_SENSOR      = "realtime_data"
+# FIX A1: Bỏ "realtime_data" khỏi sensor path — chỉ dùng "mqtt_inbound" cho sensor
 CHANNEL_DEVICE      = "device_status"
 CHANNEL_ALERT       = "safety_alert"
 CHANNEL_WIFI        = "wifi_status"
 CHANNEL_COMMAND_ACK = "command_ack"
+# CHANNEL_SENSOR = "realtime_data"  ← KHÔNG subscribe nữa cho RTDB write
 
-# v2.1: Không còn DEVICE_STATUS_THROTTLE_S — thay bằng On-Change cache
-# DEVICE_STATUS_THROTTLE_S = 30  ← ĐÃ XÓA
-
-SENSOR_FLUSH_INTERVAL_S = 180  # 3 phút: flush lịch sử sensor vào Firestore
+SENSOR_FLUSH_INTERVAL_S = 180
 
 DEFAULT_ROOMS = [
     {"id": "bedroom_01",     "name": "Phòng Ngủ",   "icon": "bed"},
@@ -197,7 +198,7 @@ def json_serializable(obj):
 
 
 # ─────────────────────────────────────────────
-#  AUTO PROVISIONER (giữ nguyên từ v2.0)
+#  AUTO PROVISIONER
 # ─────────────────────────────────────────────
 class AutoProvisioner:
     def __init__(self, fs_client, rtdb_module, owner_uid: str):
@@ -293,24 +294,11 @@ class AutoProvisioner:
 
 
 # ─────────────────────────────────────────────
-#  RTDB WRITER — sensors realtime (không đổi)
+#  RTDB WRITER
 # ─────────────────────────────────────────────
 class RTDBWriter:
     def __init__(self, rtdb_module):
         self.rtdb = rtdb_module
-
-    def update_sensor(self, room_id: str, sensor_type: str, value, ts: float):
-        if value is None:
-            return
-        try:
-            ts_now = int(time.time())
-            self.rtdb.reference(f"live/{room_id}/sensors/{sensor_type}").set({
-                "value": value, "ts": ts_now,
-                "iso": datetime.fromtimestamp(ts_now, tz=timezone.utc).isoformat(),
-                "unit": "°C" if sensor_type == "temperature" else "%",
-            })
-        except Exception as e:
-            logger.error("RTDB update_sensor [%s/%s] error: %s", room_id, sensor_type, e)
 
     def update_sensor_bulk(self, room_id: str, sensor_dict: dict, ts: float):
         try:
@@ -354,48 +342,32 @@ class RTDBWriter:
 
 # ─────────────────────────────────────────────
 #  FIRESTORE WRITER
-#  v2.1: Bỏ Throttle 30s → On-Change State Cache
 # ─────────────────────────────────────────────
 class FirestoreWriter:
     """
-    Ghi dữ liệu cấu trúc lên Firestore.
-
-    v2.1 THAY ĐỔI QUAN TRỌNG — update_device():
-      - Bỏ Throttle 30s (DEVICE_STATUS_THROTTLE_S)
-      - Thay bằng On-Change cache: chỉ ghi Firestore khi isOn THỰC SỰ THAY ĐỔI
-        hoặc khi status (online/offline) thay đổi.
-      - Kết quả: Web cập nhật NGAY khi bật/tắt thiết bị (kể cả bằng nút vật lý),
-        đồng thời số Firestore writes KHÔNG tăng đáng kể vì không write trùng.
+    v2.2: Bỏ force_update_device() — FirebaseSync là writer DUY NHẤT
+    cho device status, chỉ khi nhận feedback từ ESP32 qua "device_status".
     """
 
     def __init__(self, fs_client):
         self.fs = fs_client
-        # v2.1: State cache thay cho throttle timer
-        # { "room_device_key": {"isOn": bool, "status": str} }
+        # On-Change cache: chỉ ghi Firestore khi trạng thái thực sự thay đổi
         self._device_state_cache: Dict[str, dict] = {}
-
-    # ── Device Status (On-Change) ──────────────────────────
 
     def update_device(self, room_id: str, device_id: str, payload: dict):
         """
-        [v2.1] Cập nhật trạng thái thiết bị lên Firestore theo On-Change.
-        Chỉ ghi khi isOn hoặc status THỰC SỰ THAY ĐỔI — không throttle 30s.
-
-        Điều này giải quyết 2 vấn đề:
-          1. Race condition: Web biết trạng thái thực tế NGAY LẬP TỨC (<500ms).
-          2. Nút bật/tắt vật lý: ESP32 báo về → cập nhật Firestore trong < 1s.
+        [v2.2] Cập nhật trạng thái thiết bị lên Firestore theo On-Change.
+        Chỉ ghi khi isOn hoặc status THỰC SỰ THAY ĐỔI.
+        Writer duy nhất — không còn force_update (fix B1).
         """
         key    = f"{room_id}_{device_id}"
         is_on  = bool(payload.get("is_on", payload.get("isOn", False)))
         status = payload.get("status", "online")
 
-        # Lấy state hiện tại từ cache
         cached = self._device_state_cache.get(key)
-
-        # Chỉ ghi nếu có thay đổi (hoặc lần đầu chưa có cache)
         if cached is not None:
             if cached.get("isOn") == is_on and cached.get("status") == status:
-                return   # Không thay đổi → bỏ qua, tiết kiệm Firestore write
+                return   # Không thay đổi → bỏ qua
 
         try:
             ref = (self.fs.collection("rooms").document(room_id)
@@ -412,28 +384,14 @@ class FirestoreWriter:
                 data["type"] = payload["type"]
 
             ref.set(data, merge=True)
-
-            # Cập nhật cache SAU KHI ghi thành công
             self._device_state_cache[key] = {"isOn": is_on, "status": status}
             logger.info("Firestore device [%s/%s] → %s (On-Change write)",
                         room_id, device_id, "ON" if is_on else "OFF")
         except Exception as e:
             logger.error("Firestore update_device [%s/%s] error: %s", room_id, device_id, e)
 
-    def force_update_device(self, room_id: str, device_id: str, payload: dict):
-        """
-        Force update — bỏ qua On-Change cache.
-        Dùng khi nhận lệnh từ Web (cần phản hồi ngay lập tức cho UI).
-        """
-        key = f"{room_id}_{device_id}"
-        self._device_state_cache.pop(key, None)   # Xóa cache để force ghi
-        self.update_device(room_id, device_id, payload)
-
     def invalidate_device_cache(self, room_id: str, device_id: str):
-        """Xóa cache cho thiết bị — dùng sau khi biết trạng thái không đáng tin cậy."""
         self._device_state_cache.pop(f"{room_id}_{device_id}", None)
-
-    # ── Alerts ────────────────────────────────────────────
 
     def push_alert(self, alert_type: str, message: str,
                    level: str = "warning", location: str = ""):
@@ -445,8 +403,6 @@ class FirestoreWriter:
             })
         except Exception as e:
             logger.error("Firestore push_alert error: %s", e)
-
-    # ── Sensor history (batch flush) ──────────────────────
 
     def batch_push_sensor_history(self, rows: list) -> list:
         if not rows:
@@ -477,8 +433,6 @@ class FirestoreWriter:
                 logger.error("Firestore batch commit failed: %s", e)
         return synced_ids
 
-    # ── WiFi status ───────────────────────────────────────
-
     def update_wifi_status(self, status: str, ssid: str = "", ip: str = ""):
         try:
             self.fs.collection("system_status").document("wifi").set({
@@ -496,12 +450,9 @@ class FirestoreWriter:
         except Exception as e:
             logger.error("Firestore update_available_wifi error: %s", e)
 
-    # ── Commands ──────────────────────────────────────────
-
     def delete_command(self, cmd_id: str):
         try:
             self.fs.collection("commands").document(cmd_id).delete()
-            logger.info("Đã xóa lệnh hoàn tất: %s", cmd_id)
         except Exception as e:
             logger.error("Lỗi xóa lệnh: %s", e)
 
@@ -536,7 +487,6 @@ class FirestoreWriter:
 
     def sync_rooms_from_sqlite(self, owner_uid: str):
         if not owner_uid:
-            logger.warning("PI_OWNER_UID chưa được cấu hình")
             return
         rooms = get_rooms_from_sqlite()
         for room in rooms:
@@ -554,24 +504,26 @@ class FirestoreWriter:
 
 
 # ─────────────────────────────────────────────
-#  UPLINK STREAM (Producer)
-#  v2.1: Tách rõ thành UplinkStream độc lập
-#  Chỉ đẩy dữ liệu lên Firebase — không làm gì khác
+#  UPLINK STREAM (Producer) — FIX A1
+#  Chỉ subscribe "mqtt_inbound" cho sensor RTDB.
+#  "realtime_data" không còn trigger RTDB write.
 # ─────────────────────────────────────────────
 class UplinkStream(threading.Thread):
     """
-    [v2.1] Uplink Stream — Producer duy nhất đẩy dữ liệu lên Firebase.
+    [v2.2] FIX A1: Single Writer Pattern cho RTDB sensor.
 
-    Subscribe các Redis channel:
-      - realtime_data  → sensor → RTDB (không throttle)
-      - device_status  → On-Change → Firestore
-      - safety_alert   → Firestore system_alerts
-      - wifi_status    → Firestore system_status
-      - command_ack    → Firestore commands (ACK/delete)
-      - mqtt_inbound   → sensor bulk → RTDB (trực tiếp từ MQTT envelope)
+    Trước đây subscribe cả "realtime_data" VÀ "mqtt_inbound" → 2 lần ghi/reading.
+    Bây giờ:
+      - Sensor RTDB: CHỈ từ "mqtt_inbound" (MessageBus MQTT envelope)
+      - "realtime_data": chỉ dùng cho alert, device status thông qua SocketIO —
+        KHÔNG ghi RTDB sensor nữa.
 
-    Hoàn toàn độc lập với Downlink (CommandDispatcher).
-    Nếu Cloud chậm, chỉ Uplink bị trễ — Downlink vẫn nhận lệnh bình thường.
+    Channels:
+      - mqtt_inbound    → sensor → RTDB (single writer, không trùng lặp)
+      - device_status   → On-Change → Firestore (feedback từ ESP32)
+      - safety_alert    → Firestore system_alerts
+      - wifi_status     → Firestore system_status/wifi
+      - command_ack     → Firestore commands (ACK/delete)
     """
 
     def __init__(self, rtdb_writer: RTDBWriter,
@@ -586,14 +538,20 @@ class UplinkStream(threading.Thread):
     def stop(self):
         self._stop_event.set()
 
+    def is_alive(self):
+        return super().is_alive()
+
     def run(self):
         pubsub = self.r.pubsub()
+        # FIX A1: Không subscribe "realtime_data" cho sensor RTDB
         pubsub.subscribe(
-            CHANNEL_SENSOR, CHANNEL_DEVICE,
-            CHANNEL_ALERT,  CHANNEL_WIFI, CHANNEL_COMMAND_ACK,
-            "mqtt_inbound",
+            "mqtt_inbound",        # Sensor realtime → RTDB (single writer)
+            CHANNEL_DEVICE,        # device_status → Firestore (On-Change)
+            CHANNEL_ALERT,         # safety_alert → Firestore alerts
+            CHANNEL_WIFI,          # wifi_status → Firestore
+            CHANNEL_COMMAND_ACK,   # command_ack → Firestore
         )
-        logger.info("[Uplink] Stream started — channels: sensor/device/alert/wifi/ack/mqtt")
+        logger.info("[Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)")
 
         while not self._stop_event.is_set():
             try:
@@ -617,9 +575,8 @@ class UplinkStream(threading.Thread):
         except json.JSONDecodeError:
             return
         try:
-            if channel == CHANNEL_SENSOR:
-                self._on_sensor(payload)
-            elif channel == "mqtt_inbound":
+            if channel == "mqtt_inbound":
+                # FIX A1: Đây là nguồn SENSOR DUY NHẤT ghi lên RTDB
                 self._on_mqtt_inbound(payload)
             elif channel == CHANNEL_DEVICE:
                 self._on_device(payload)
@@ -632,25 +589,11 @@ class UplinkStream(threading.Thread):
         except Exception as e:
             logger.error("[Uplink] Handle [%s] error: %s", channel, e)
 
-    def _on_sensor(self, p: dict):
-        room_id = p.get("room_id") or p.get("room")
-        if not room_id:
-            return
-        ts = p.get("ts") or time.time()
-        if p.get("type") and p.get("value") is not None:
-            value = p["value"]
-            if value == 0 and (not ts or ts == 0):
-                return
-            self.rtdb_writer.update_sensor(room_id, p["type"], value, float(ts))
-            return
-        sensors = p.get("sensors") or p.get("payload") or p.get("data")
-        if isinstance(sensors, dict):
-            clean = {k: v for k, v in sensors.items() if v is not None}
-            if clean:
-                self.rtdb_writer.update_sensor_bulk(room_id, clean, float(ts))
-
     def _on_mqtt_inbound(self, envelope: dict):
-        """MQTT envelope từ MessageBus: {topic, payload, ts}"""
+        """
+        FIX A1: MQTT envelope từ MessageBus là nguồn SENSOR DUY NHẤT ghi RTDB.
+        Format: {topic: "home/{room}/sensors", payload: {...sensor data...}, ts: float}
+        """
         topic   = envelope.get("topic", "")
         payload = envelope.get("payload", {})
         ts      = envelope.get("ts", time.time())
@@ -660,12 +603,15 @@ class UplinkStream(threading.Thread):
         room_id  = parts[1]
         category = parts[2]
         if category == "sensors" and isinstance(payload, dict):
-            self.rtdb_writer.update_sensor_bulk(room_id, payload, float(ts))
+            clean = {k: v for k, v in payload.items() if v is not None}
+            if clean:
+                self.rtdb_writer.update_sensor_bulk(room_id, clean, float(ts))
+                logger.debug("[Uplink] RTDB sensor write: %s → %s", room_id, list(clean.keys()))
 
     def _on_device(self, p: dict):
         """
-        [v2.1] Device status từ ESP32/AutomationEngine → Firestore On-Change.
-        Không còn throttle 30s — cập nhật ngay khi trạng thái thay đổi.
+        [v2.2] Device status từ ESP32 feedback → Firestore On-Change.
+        Đây là writer DUY NHẤT cho device status — không còn force_update từ Dispatcher.
         """
         room_id   = p.get("room_id") or p.get("room")
         device_id = p.get("device_id")
@@ -700,18 +646,21 @@ class UplinkStream(threading.Thread):
 
 
 # ─────────────────────────────────────────────
-#  DOWNLINK STREAM (Consumer)
-#  v2.1: CommandDispatcher là Downlink Stream
-#  Chỉ nhận lệnh từ Firestore → Redis
+#  DOWNLINK STREAM — FIX B1
+#  Xóa force_update_device() khỏi _dispatch()
 # ─────────────────────────────────────────────
 class CommandDispatcher:
     """
-    [v2.1] Downlink Stream — Consumer nhận lệnh từ Firestore.
+    [v2.2] FIX B1: Bỏ force_update_device() trong _dispatch().
 
-    Firestore /commands (on_snapshot listener) → normalize → Redis channel
-    Tách biệt hoàn toàn với UplinkStream:
-      - Cloud upload chậm không ảnh hưởng nhận lệnh
-      - Lệnh điều khiển được xử lý ngay lập tức
+    Luồng chuẩn duy nhất:
+      Web → Firestore/commands → CommandDispatcher → Redis "device_commands"
+      → automation_engine → MQTT → ESP32
+      → ESP32 gửi status về → automation_engine → "device_status"
+      → UplinkStream → Firestore (update_device On-Change)
+
+    Không còn ghi Firestore TRƯỚC khi ESP32 confirm → không nhấp nháy.
+    Web UI cập nhật sau khi ESP32 confirm (~200-500ms delay nhỏ nhưng chính xác).
     """
 
     REDIS_CHANNEL = "device_commands"
@@ -730,7 +679,6 @@ class CommandDispatcher:
         if self._watcher:
             try:
                 self._watcher.unsubscribe()
-                logger.info("[Downlink] CommandDispatcher stopped cleanly")
             except Exception as e:
                 logger.error("[Downlink] Stop error: %s", e)
 
@@ -750,6 +698,8 @@ class CommandDispatcher:
             "device_id": device_id,
             "cmd_id":    cmd_id,
             "action":    action,
+            "is_on":     data.get("isOn", action == "turn_on"),
+            "source":    "web",
             "payload":   data.get("payload", {}),
         }
 
@@ -757,12 +707,9 @@ class CommandDispatcher:
             self.r.publish(channel, json.dumps(msg))
             logger.info("[Downlink] DISPATCH: %s [%s] → Redis[%s]", cmd_id, action, channel)
 
-            # Cập nhật "optimistic state" ngay lập tức để Web không lag
-            # (force_update bỏ qua On-Change cache vì đây là lệnh mới từ user)
-            if action in ("turn_on", "turn_off") and room_id and device_id:
-                self.fs_writer.force_update_device(room_id, device_id, {
-                    "is_on": action == "turn_on", "status": "online",
-                })
+            # FIX B1: KHÔNG còn gọi force_update_device() ở đây.
+            # Firestore chỉ được cập nhật SAU KHI ESP32 confirm qua "device_status" channel.
+            # Điều này đảm bảo UI Web luôn phản ánh đúng trạng thái thực tế.
 
             # Xóa lệnh khỏi Firestore ngay để tránh dispatch lặp
             self.fs.collection("commands").document(cmd_id).delete()
@@ -777,7 +724,7 @@ class CommandDispatcher:
 
 
 # ─────────────────────────────────────────────
-#  BACKGROUND LOOPS (giữ nguyên từ v2.0)
+#  BACKGROUND LOOPS
 # ─────────────────────────────────────────────
 def run_sensor_flush_loop(fs_writer: FirestoreWriter, stop_event: threading.Event):
     logger.info("Sensor history flush loop started (interval: %ds)", SENSOR_FLUSH_INTERVAL_S)
@@ -809,10 +756,11 @@ def run_heartbeat_loop(rtdb_writer: RTDBWriter, stop_event: threading.Event):
 #  MAIN
 # ─────────────────────────────────────────────
 def main():
-    logger.info("=" * 55)
-    logger.info("firebase_sync v2.1 starting — project: %s", FIREBASE_PROJECT_ID)
-    logger.info("Uplink: On-Change (no throttle) | Downlink: Firestore listener")
-    logger.info("=" * 55)
+    logger.info("=" * 60)
+    logger.info("firebase_sync v2.2 starting — project: %s", FIREBASE_PROJECT_ID)
+    logger.info("FIX A1: Single Writer RTDB (mqtt_inbound only)")
+    logger.info("FIX B1: No force_update — ESP32 feedback is source of truth")
+    logger.info("=" * 60)
 
     fs_client, rtdb_module = init_firebase()
     fs_writer   = FirestoreWriter(fs_client)
@@ -826,7 +774,6 @@ def main():
         logger.critical("Redis connection failed: %s", e)
         raise SystemExit(1)
 
-    # Auto-provisioning
     logger.info("Chạy auto-provisioning...")
     AutoProvisioner(fs_client, rtdb_module, PI_OWNER_UID).provision_all()
 
@@ -837,15 +784,12 @@ def main():
 
     stop_event = threading.Event()
 
-    # [v2.1] Uplink Stream — Producer
     uplink = UplinkStream(rtdb_writer, fs_writer, r)
     uplink.start()
 
-    # [v2.1] Downlink Stream — Consumer (CommandDispatcher)
     dispatcher = CommandDispatcher(fs_writer=fs_writer, redis_client=r, db=fs_client)
     dispatcher.start()
 
-    # Background loops
     threading.Thread(target=run_sensor_flush_loop, args=(fs_writer, stop_event),
                      daemon=True, name="sensor-flush").start()
     threading.Thread(target=run_heartbeat_loop,    args=(rtdb_writer, stop_event),
@@ -853,7 +797,7 @@ def main():
 
     fs_writer.push_alert(
         alert_type="system",
-        message="firebase_sync v2.1 started (On-Change device sync, split Uplink/Downlink)",
+        message="firebase_sync v2.2 started (FIX A1: single RTDB writer, FIX B1: no force_update)",
         level="info", location="Pi Gateway",
     )
 
@@ -871,7 +815,6 @@ def main():
         except ValueError:
             logger.warning("Signal registration failed (not main thread)")
 
-    # Keep-alive loop với Redis health check
     try:
         while True:
             time.sleep(30)
@@ -894,7 +837,6 @@ def main():
 
 
 def run():
-    """Alias cho gateway_main.py."""
     main()
 
 

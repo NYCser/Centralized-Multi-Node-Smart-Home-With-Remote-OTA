@@ -1,33 +1,30 @@
 """
-workers/automation_engine.py  — v2.1
-══════════════════════════════════════
-THAY ĐỔI SO VỚI v2.0:
+workers/automation_engine.py  — v2.2  (CONFLICT FIX)
+══════════════════════════════════════════════════════
+FIXES trong phiên bản này:
 
-  [B] SMART MANUAL OVERRIDE (State-based thay vì đếm ngược 120s)
-      ─────────────────────────────────────────────────────────
-      Trước đây (v2.0):
-        - Người dùng bật quạt thủ công → MANUAL_CONTROL_CACHE[device] = now()
-        - Automation ngừng tác động 120 giây (đếm ngược cứng)
-        - Sau 120s: Automation lại bật quạt nếu nhiệt độ vẫn cao (OK)
-        - Nhưng: Người dùng tắt quạt để ngủ, 2 phút sau quạt tự bật lại (BAD)
+  [CONFLICT D1 — CRITICAL] Priority Command Queue
+      ─────────────────────────────────────────────
+      Vấn đề: Schedule, Automation, Manual Web đều gửi MQTT tới cùng 1 relay
+              mà không có cơ chế phân quyền cứng.
+      Fix: Thêm hàm dispatch_command(source, room_id, device_id, action)
+           - source priority: "safety" > "manual" > "schedule" > "automation"
+           - Safety lock: từ chối MỌI lệnh ngoại trừ safety action
+           - Manual override: MANUAL_STATE[device] block schedule VÀ automation
+           - Schedule không ghi MANUAL_STATE nhưng bị block khi device ở manual mode
+             (trước đây chỉ block automation, không block schedule)
 
-      Bây giờ (v2.1):
-        - Người dùng điều khiển thủ công → device vào trạng thái "Manual" (User-Locked)
-          MANUAL_STATE[device_id] = {"mode": "manual", "is_on": True/False, ...}
-        - Automation KHÔNG được tác động khi device đang ở mode "manual"
-        - Người dùng chuyển về mode "auto" trên Web → Automation tiếp tục
-        - Nếu người dùng không chuyển, trạng thái manual được giữ cho đến khi:
-          a) User bấm nút "Auto" trên Web (ưu tiên)
-          b) Điều kiện an toàn nguy hiểm (safety_lock override)
-        - Lợi ích: Không còn bực bội vì quạt tự bật lại sau 2 phút.
+  [CONFLICT C1 — MEDIUM] Thread-safe CACHED_SENSORS
+      ─────────────────────────────────────────────
+      Vấn đề: AutomationEngine ghi (MQTT thread) và SafetyWatchdog đọc (loop
+              thread riêng) CACHED_SENSORS dict mà không có threading.Lock().
+      Fix: Dùng threading.RLock() bảo vệ tất cả đọc/ghi CACHED_SENSORS.
+           SafetyWatchdog đọc qua get_cached_sensors(room_id) — không truy cập
+           trực tiếp dict nữa.
 
-  [C] PER-ROOM THRESHOLDS từ DB (Dynamic thay vì Hard-code)
-      ─────────────────────────────────────────────────────
-      _try_control() giờ đọc threshold từ CACHED_AUTOMATIONS (SQLite bảng
-      automations) thay vì dùng hằng số cứng. Mỗi phòng có thể có ngưỡng
-      nhiệt độ khác nhau qua Web Settings → POST /automations.
-
-  (Giữ nguyên: BUG-ACK-01, BUG-DEVICE-SYNC-01, BUG-H-01, BUG-C-05, BUG-H-02)
+  [Giữ nguyên từ v2.1]
+      BUG-ACK-01, BUG-DEVICE-SYNC-01, BUG-H-01, BUG-H-02, BUG-C-05,
+      Smart Manual Override (state-based), Per-room thresholds
 """
 
 import time
@@ -47,9 +44,6 @@ HYSTERESIS_OFFSET  = 2.0
 MIN_SWITCH_DELAY_S = 30
 DEVICE_LAST_SWITCH: dict = {}
 
-# [v2.1] Xóa MANUAL_OVERRIDE_DURATION — không còn đếm ngược 120s
-# MANUAL_OVERRIDE_DURATION = 120  ← ĐÃ XÓA
-
 DEVICE_MAP = {
     "kitchen_01":     {"fan": "fan_kt_1",  "light": "light_kt_1"},
     "living_room_01": {"fan": "fan_lv_1",  "light": "light_lv_1"},
@@ -61,21 +55,114 @@ CACHED_SCHEDULES:     list = []
 CACHED_DEVICE_STATES: dict = {}
 
 # [v2.1] MANUAL_STATE thay cho MANUAL_CONTROL_CACHE + timestamp
-# { device_id: {"mode": "manual"|"auto", "is_on": bool, "set_at": datetime} }
-# mode="manual" → Automation bị vô hiệu hóa cho thiết bị này cho đến khi user chọn "auto"
-# mode="auto"   → Automation hoạt động bình thường
 MANUAL_STATE:         dict = {}
 
 ENROLLMENT_STATE:     dict = {"active": False, "start_time": None, "pending_name": ""}
 SCHEDULE_LAST_RUN:    dict = {}
 
-# FIX BUG-ACK-01: Track pending commands để gửi ACK khi ESP32 confirm
-# { device_id: cmd_id } — xóa sau khi nhận status từ ESP32
+# FIX BUG-ACK-01
 PENDING_COMMANDS: dict = {}
+
+# ══════════════════════════════════════════════════════
+# FIX CONFLICT C1: Thread-safe lock cho CACHED_SENSORS
+# ══════════════════════════════════════════════════════
+_SENSORS_LOCK = threading.RLock()
+
+# CACHED_SENSORS được truy cập qua hàm get/set bên dưới —
+# KHÔNG truy cập trực tiếp từ bên ngoài module này.
+# SafetyWatchdog dùng get_cached_sensors() thay vì safety_watchdog.CACHED_SENSORS
+CACHED_SENSORS: dict = {}
+
+
+def get_cached_sensors(room_id: str) -> dict:
+    """Thread-safe read cho CACHED_SENSORS (fix C1)."""
+    with _SENSORS_LOCK:
+        return dict(CACHED_SENSORS.get(room_id, {}))
+
+
+def update_cached_sensors(room_id: str, payload: dict):
+    """Thread-safe write cho CACHED_SENSORS (fix C1)."""
+    with _SENSORS_LOCK:
+        room_cache = CACHED_SENSORS.setdefault(room_id, {})
+        room_cache.update(payload)
+        # Đồng bộ sang safety_watchdog.CACHED_SENSORS để backward compat
+        safety_watchdog.CACHED_SENSORS[room_id] = dict(room_cache)
+
+
+# ══════════════════════════════════════════════════════
+# FIX CONFLICT D1: Centralized Priority Dispatcher
+# ══════════════════════════════════════════════════════
+
+# Thứ tự ưu tiên: số nhỏ hơn = ưu tiên cao hơn
+SOURCE_PRIORITY = {
+    "safety":     0,
+    "manual":     1,
+    "web":        1,   # Web lệnh thủ công = manual
+    "schedule":   2,
+    "automation": 3,
+}
+
+
+def dispatch_command(bus: MessageBus, source: str, room_id: str,
+                     device_id: str, action: str, cmd_id: str = "",
+                     extra: dict = None) -> bool:
+    """
+    FIX CONFLICT D1: Điểm phát lệnh duy nhất cho tất cả nguồn.
+
+    Luật ưu tiên:
+      1. Safety lock → chặn MỌI nguồn ngoại trừ "safety"
+      2. "manual"/"web" → được phép, set MANUAL_STATE
+      3. "schedule" → bị chặn nếu device đang ở manual mode
+      4. "automation" → bị chặn nếu device đang ở manual mode
+                         hoặc đang có schedule cho device này
+
+    Returns: True nếu lệnh được gửi, False nếu bị chặn.
+    """
+    priority = SOURCE_PRIORITY.get(source, 99)
+
+    # ── Rule 1: Safety lock chặn tất cả trừ "safety" ─────────────────
+    if _is_safety_locked(room_id) and source != "safety":
+        print(f"[DISPATCH] BLOCKED (safety_lock): {source} → {room_id}/{device_id} {action}")
+        bus.publish_event("realtime_data", {
+            "event":   "command_blocked",
+            "room":    room_id,
+            "reason":  "safety_lock",
+            "message": "Hệ thống đang trong trạng thái khẩn cấp — lệnh bị từ chối!"
+        })
+        return False
+
+    # ── Rule 2: Schedule/Automation bị chặn khi device ở manual mode ──
+    if source in ("schedule", "automation"):
+        manual = MANUAL_STATE.get(device_id)
+        if manual and manual.get("mode") == "manual":
+            print(f"[DISPATCH] BLOCKED (manual_override): {source} → {device_id}")
+            return False
+
+    # ── Rule 3: Automation bị chặn khi có schedule active cho device ──
+    if source == "automation":
+        for sched in CACHED_SCHEDULES:
+            if sched.get("enabled") and sched.get("device_id") == device_id:
+                print(f"[DISPATCH] BLOCKED (schedule_active): automation → {device_id}")
+                return False
+
+    # ── Gửi lệnh MQTT ─────────────────────────────────────────────────
+    mqtt_payload = {
+        "device": device_id,
+        "action": action,
+        "source": source,
+    }
+    if cmd_id:
+        mqtt_payload["cmd_id"] = cmd_id
+    if extra:
+        mqtt_payload.update(extra)
+
+    bus.publish_mqtt(f"home/{room_id}/command", mqtt_payload)
+    print(f"[DISPATCH] SENT [{source}|p={priority}]: {room_id}/{device_id} → {action}")
+    return True
 
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     return conn
@@ -101,21 +188,13 @@ def _is_safety_locked(room_id: str) -> bool:
 
 def _try_control(bus: MessageBus, room_id: str, device_type: str,
                  value: float, threshold: float):
-    if _is_safety_locked(room_id):
-        return
-
+    """
+    FIX D1: Dùng dispatch_command() thay vì gọi publish_mqtt() trực tiếp.
+    dispatch_command() sẽ tự kiểm tra priority và manual state.
+    """
     device_id = DEVICE_MAP.get(room_id, {}).get(device_type)
     if not device_id:
         return
-
-    for sched in CACHED_SCHEDULES:
-        if sched.get("enabled") and sched.get("device_id") == device_id:
-            return
-
-    # [v2.1] Smart Manual Override: kiểm tra mode thay vì đếm ngược thời gian
-    manual = MANUAL_STATE.get(device_id)
-    if manual and manual.get("mode") == "manual":
-        return  # User đang ở mode manual → Automation không can thiệp
 
     cache_key    = f"{room_id}_{device_id}"
     current_on   = CACHED_DEVICE_STATES.get(cache_key)
@@ -136,15 +215,14 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
     if last_switch and (now - last_switch).total_seconds() < MIN_SWITCH_DELAY_S:
         return
 
-    CACHED_DEVICE_STATES[cache_key] = should_on
-    DEVICE_LAST_SWITCH[cache_key]   = now
     action = "turn_on" if should_on else "turn_off"
-    bus.publish_mqtt(f"home/{room_id}/command", {
-        "device": device_id, "action": action, "source": "automation"
-    })
-    _log_automation(room_id, f"auto_{device_type}",
-                    [f"{device_id} → {action} (value={value:.1f}, thresh={threshold})"],
-                    f"sensor_{device_type}")
+    sent = dispatch_command(bus, "automation", room_id, device_id, action)
+    if sent:
+        CACHED_DEVICE_STATES[cache_key] = should_on
+        DEVICE_LAST_SWITCH[cache_key]   = now
+        _log_automation(room_id, f"auto_{device_type}",
+                        [f"{device_id} → {action} (value={value:.1f}, thresh={threshold})"],
+                        f"sensor_{device_type}")
 
 
 def _log_automation(room_id: str, scenario: str, actions: list, triggered_by: str):
@@ -200,7 +278,11 @@ def _check_clock_validity() -> bool:
 
 
 def scheduler_loop():
-    """FIX BUG-C-05: Không set enabled=0 sau khi chạy."""
+    """
+    FIX D1: Scheduler dùng dispatch_command() — tự động bị block
+            khi device đang ở manual mode (không cần kiểm tra thủ công).
+    FIX BUG-C-05: Không set enabled=0 sau khi chạy.
+    """
     print("[SCHEDULER] Started")
     while True:
         try:
@@ -229,20 +311,12 @@ def scheduler_loop():
                 device_id = sched["device_id"]
                 action    = sched["action"]
 
-                if _is_safety_locked(room_id):
-                    print(f"[SCHEDULER] {room_id} is safety-locked, skip schedule")
-                    continue
-
-                bus.publish_mqtt(f"home/{room_id}/command", {
-                    "device": device_id,
-                    "action": action,
-                    "source": "schedule"
-                })
-                # Schedule override không đặt manual state — vẫn theo schedule
-                SCHEDULE_LAST_RUN[sched["id"]]  = run_key
-
-                print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
-                _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
+                # FIX D1: dispatch_command tự kiểm tra safety_lock và manual_state
+                sent = dispatch_command(bus, "schedule", room_id, device_id, action)
+                if sent:
+                    SCHEDULE_LAST_RUN[sched["id"]] = run_key
+                    print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
+                    _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
 
             if len(SCHEDULE_LAST_RUN) > 1000:
                 SCHEDULE_LAST_RUN.clear()
@@ -281,8 +355,8 @@ def handle_inbound(envelope: dict):
         bus = MessageBus.get_instance()
         r   = bus.get_redis()
 
-        cached = safety_watchdog.CACHED_SENSORS.setdefault(room_id, {})
-        cached.update(payload)
+        # FIX C1: Dùng update_cached_sensors() thay vì ghi trực tiếp vào dict
+        update_cached_sensors(room_id, payload)
 
         r.setex(f"sensor:{room_id}", 300, json.dumps(payload))
 
@@ -340,8 +414,8 @@ def handle_inbound(envelope: dict):
             finally:
                 conn.close()
 
-            # FIX BUG-DEVICE-SYNC-01: Publish device_status để firebase_sync
-            # cập nhật Firestore → Web toggle button đúng trạng thái
+            # FIX BUG-DEVICE-SYNC-01 + FIX B1: Publish device_status để firebase_sync
+            # cập nhật Firestore — đây là writer DUY NHẤT, không dùng force_update nữa
             bus.publish_event("device_status", {
                 "room_id":   room_id,
                 "device_id": device_id,
@@ -470,9 +544,9 @@ def _log_access(room_id, uid, user_name, action, success):
 
 def command_listener():
     """
+    FIX D1: Tất cả device commands đi qua dispatch_command().
     FIX BUG-H-02: Chấp nhận cả "room" và "roomId".
-    FIX BUG-ACK-01: Lưu cmd_id vào PENDING_COMMANDS[device_id]
-                    để gửi ACK khi ESP32 xác nhận.
+    FIX BUG-ACK-01: Lưu cmd_id vào PENDING_COMMANDS[device_id].
     """
     bus    = MessageBus.get_instance()
     r      = bus.get_redis()
@@ -519,22 +593,7 @@ def command_listener():
                     })
                     continue
 
-                if not room_id or not device_id:
-                    print(f"[AUTO] device_commands: missing room or device_id: {data}")
-                    continue
-
-                if _is_safety_locked(room_id) and data.get("source") in ("web", None):
-                    print(f"[AUTO] {room_id} is safety-locked, web command blocked")
-                    bus.publish_event("realtime_data", {
-                        "event":   "command_blocked",
-                        "room":    room_id,
-                        "reason":  "safety_lock",
-                        "message": "Hệ thống đang trong trạng thái khẩn cấp!"
-                    })
-                    continue
-
                 # [v2.1] Smart Manual Override: đặt mode="manual" cho thiết bị
-                # Automation sẽ không tác động cho đến khi user chuyển về "auto"
                 MANUAL_STATE[device_id] = {
                     "mode":   "manual",
                     "is_on":  data.get("is_on", False),
@@ -546,12 +605,11 @@ def command_listener():
                 if cmd_id:
                     PENDING_COMMANDS[device_id] = cmd_id
 
-                bus.publish_mqtt(f"home/{room_id}/command", {
-                    "device": device_id,
-                    "action": "turn_on" if is_on else "turn_off",
-                    "source": data.get("source", "web"),
-                    "cmd_id": cmd_id
-                })
+                # FIX D1: Dùng dispatch_command() — tự kiểm tra safety_lock
+                mqtt_action = "turn_on" if is_on else "turn_off"
+                dispatch_command(bus, "manual", room_id, device_id, mqtt_action,
+                                 cmd_id=cmd_id,
+                                 extra={"source": data.get("source", "web")})
 
             elif channel == "automation_commands":
                 action  = data.get("action")

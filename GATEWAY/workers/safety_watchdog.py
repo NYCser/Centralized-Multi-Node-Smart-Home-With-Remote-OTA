@@ -1,11 +1,21 @@
 """
-workers/safety_watchdog.py  — FIXED
-═════════════════════════════════════
-Fixes:
-  BUG-10: _trigger_safety_action() bị gọi mỗi 1 giây khi is_dangerous=True
-          → spam MQTT (lệnh bật quạt, buzz) + spam Redis pub
-          Fix: chỉ trigger hardware action khi trạng thái THAY ĐỔI
-               (lần đầu phát hiện nguy hiểm, hoặc sau khi đã an toàn rồi nguy hiểm lại)
+workers/safety_watchdog.py  — FIXED v2 (CONFLICT FIX)
+══════════════════════════════════════════════════════
+FIXES trong phiên bản này:
+
+  [CONFLICT C1 — MEDIUM] Thread-safe CACHED_SENSORS
+      ─────────────────────────────────────────────
+      Vấn đề: safety_watchdog đọc CACHED_SENSORS trực tiếp từ dict Python
+              trong khi automation_engine đang ghi từ MQTT thread khác.
+              Python GIL bảo vệ atomic ops nhưng KHÔNG bảo vệ dict.update()
+              đang thực thi giữa chừng.
+      Fix: Đọc sensor data qua automation_engine.get_cached_sensors(room_id)
+           — hàm này dùng threading.RLock() và trả về copy của dict.
+           CACHED_SENSORS trong file này vẫn giữ để backward compat nhưng
+           KHÔNG ĐỌC TRỰC TIẾP nữa trong vòng lặp watchdog.
+
+  [Giữ nguyên]
+      BUG-10: was_dangerous flag để chặn spam MQTT
 """
 
 import time
@@ -30,11 +40,14 @@ DEVICE_MAP = {
 
 # ── State ─────────────────────────────────────────────────
 SAFETY_STATE: dict   = {}
-CACHED_SENSORS: dict = {}   # shared với automation_engine
+
+# CACHED_SENSORS: vẫn giữ để backward compat với code khác có thể import
+# NHƯNG safety watchdog KHÔNG đọc trực tiếp — dùng get_cached_sensors() thay thế
+CACHED_SENSORS: dict = {}
 
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     return conn
@@ -85,9 +98,8 @@ def _set_safety_lock(room_id: str, locked: bool):
 
 def _trigger_safety_action(bus: MessageBus, room_id: str, alert_type: str, value: float):
     """
-    FIX BUG-10: Hàm này chỉ được gọi khi TRẠNG THÁI THAY ĐỔI
-    (không phải mỗi tick), do caller kiểm soát qua was_dangerous flag.
-    Bật quạt + còi + lock.
+    FIX BUG-10: Chỉ gọi khi trạng thái THAY ĐỔI (was_dangerous flag).
+    FIX D1: Safety action dùng source="safety" — vượt qua mọi lock khác.
     """
     fan_id = DEVICE_MAP.get(room_id, {}).get("fan")
     if fan_id:
@@ -95,7 +107,7 @@ def _trigger_safety_action(bus: MessageBus, room_id: str, alert_type: str, value
             "device": fan_id, "action": "turn_on", "source": "safety"
         })
     bus.publish_mqtt(f"home/{room_id}/command", {
-        "action": "buzz_alarm", "type": alert_type, "value": value
+        "action": "buzz_alarm", "type": alert_type, "value": value, "source": "safety"
     })
     _set_safety_lock(room_id, True)
 
@@ -107,6 +119,22 @@ def _mute_safety_action(bus: MessageBus, room_id: str):
 def run():
     bus   = MessageBus.get_instance()
     redis = bus.get_redis()
+
+    # Import ở đây để tránh circular import
+    # automation_engine phải được import SAU KHI đã load
+    import importlib
+
+    def _get_sensors(room_id: str) -> dict:
+        """
+        FIX C1: Đọc sensor data qua thread-safe API của automation_engine.
+        Fallback về CACHED_SENSORS local nếu import thất bại.
+        """
+        try:
+            ae = importlib.import_module("workers.automation_engine")
+            return ae.get_cached_sensors(room_id)
+        except Exception:
+            # Fallback: dùng local dict (ít an toàn hơn nhưng không crash)
+            return dict(CACHED_SENSORS.get(room_id, {}))
 
     def listen_mute():
         pubsub = redis.pubsub()
@@ -128,7 +156,7 @@ def run():
                 print(f"[WATCHDOG] mute listener error: {e}")
 
     threading.Thread(target=listen_mute, daemon=True).start()
-    print("[WATCHDOG] Safety watchdog started")
+    print("[WATCHDOG] Safety watchdog started (thread-safe sensor read)")
 
     while True:
         try:
@@ -142,12 +170,15 @@ def run():
             for rule_row in rules:
                 rule    = dict(rule_row)
                 room_id = rule["room_id"]
-                sensors = CACHED_SENSORS.get(room_id, {})
+
+                # FIX C1: Dùng _get_sensors() thay vì đọc trực tiếp CACHED_SENSORS
+                sensors = _get_sensors(room_id)
+
                 state   = SAFETY_STATE.setdefault(room_id, {
                     "muted":        False,
                     "mute_time":    None,
                     "last_alert":   None,
-                    "was_dangerous": False,   # FIX BUG-10: track previous state
+                    "was_dangerous": False,
                 })
 
                 gas_threshold = float(rule.get("gas_threshold") or GAS_DEFAULT_THRESHOLD)
@@ -162,17 +193,15 @@ def run():
 
                 if is_dangerous:
                     # FIX BUG-10: Chỉ trigger hardware khi LẦN ĐẦU phát hiện nguy hiểm
-                    # Không gọi lại mỗi giây — tránh spam MQTT
                     if not state.get("was_dangerous"):
                         _trigger_safety_action(bus, room_id, alert_type, current_gas)
                         state["was_dangerous"] = True
                         print(f"[WATCHDOG] DANGER DETECTED {room_id}: {alert_msg}")
                     else:
                         # Đã nguy hiểm rồi — chỉ refresh safety_lock TTL mỗi 30s
-                        # (tránh lock hết hạn nếu nguy hiểm kéo dài)
                         _set_safety_lock(room_id, True)
 
-                    # Lưu alert theo interval (không lưu mỗi giây)
+                    # Lưu alert theo interval
                     if state.get("muted"):
                         mute_time = state.get("mute_time")
                         elapsed   = (now - mute_time).total_seconds() if mute_time else 9999
@@ -192,7 +221,6 @@ def run():
                 else:
                     # Hết nguy hiểm
                     if state.get("was_dangerous"):
-                        # Lần đầu trở về an toàn — mở lock + thông báo
                         _set_safety_lock(room_id, False)
                         state["was_dangerous"] = False
                         state["last_alert"]    = None
