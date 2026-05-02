@@ -545,11 +545,12 @@ class UplinkStream(threading.Thread):
         pubsub = self.r.pubsub()
         # FIX A1: Không subscribe "realtime_data" cho sensor RTDB
         pubsub.subscribe(
-            "mqtt_inbound",        # Sensor realtime → RTDB (single writer)
-            CHANNEL_DEVICE,        # device_status → Firestore (On-Change)
-            CHANNEL_ALERT,         # safety_alert → Firestore alerts
-            CHANNEL_WIFI,          # wifi_status → Firestore
-            CHANNEL_COMMAND_ACK,   # command_ack → Firestore
+            "mqtt_inbound",             # Sensor realtime → RTDB (single writer)
+            CHANNEL_DEVICE,             # device_status → Firestore (On-Change)
+            CHANNEL_ALERT,              # safety_alert → Firestore alerts
+            CHANNEL_WIFI,               # wifi_status → Firestore
+            CHANNEL_COMMAND_ACK,        # command_ack → Firestore
+            "rfid_enrollment_result",   # [FIX] Enrollment result → Firestore commands/entrance_register
         )
         logger.info("[Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)")
 
@@ -586,6 +587,8 @@ class UplinkStream(threading.Thread):
                 self._on_wifi(payload)
             elif channel == CHANNEL_COMMAND_ACK:
                 self._on_command_ack(payload)
+            elif channel == "rfid_enrollment_result":
+                self._on_rfid_enrollment_result(payload)
         except Exception as e:
             logger.error("[Uplink] Handle [%s] error: %s", channel, e)
 
@@ -643,6 +646,23 @@ class UplinkStream(threading.Thread):
             self.fs_writer.delete_command(cmd_id)
         else:
             self.fs_writer.ack_command(cmd_id, p.get("status", "error"), p.get("result"))
+
+    def _on_rfid_enrollment_result(self, p: dict):
+        """
+        [FIX] Ghi kết quả enrollment về Firestore commands/entrance_register.
+        settings.js đang listen onSnapshot doc này để hiển thị kết quả cho user.
+        """
+        try:
+            self.fs_writer.fs.collection("commands").document("entrance_register").set({
+                "status":      p.get("status", "success"),
+                "result_type": p.get("result_type", "rfid"),
+                "value":       p.get("value", ""),
+                "owner_name":  p.get("owner_name", ""),
+                "timestamp":   firestore.SERVER_TIMESTAMP,
+            }, merge=True)
+            logger.info("[Uplink] RFID enrollment result written to Firestore: %s", p.get("value"))
+        except Exception as e:
+            logger.error("[Uplink] RFID enrollment result write error: %s", e)
 
 
 # ─────────────────────────────────────────────
@@ -752,6 +772,130 @@ def run_heartbeat_loop(rtdb_writer: RTDBWriter, stop_event: threading.Event):
         stop_event.wait(timeout=30)
 
 
+def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: threading.Event):
+    """
+    [FIX] Downlink sync: Firestore automations/schedules → SQLite → Redis notify.
+
+    Vấn đề cũ: Web ghi automation/schedule lên Firestore trực tiếp qua roomService.js,
+    nhưng automation_engine chỉ đọc từ SQLite. Không có gì sync Firestore → SQLite
+    nên ngưỡng nhiệt độ và lịch hẹn giờ không bao giờ có tác dụng.
+
+    Fix: Loop này poll Firestore mỗi 30s, so sánh với SQLite, sync nếu có thay đổi,
+    sau đó publish Redis channel để automation_engine reload cache.
+    """
+    logger.info("[AutoSync] Automation/Schedule sync loop started (interval: 30s)")
+    SYNC_INTERVAL = 30
+
+    def get_sqlite_conn():
+        import sqlite3 as _sqlite3
+        conn = _sqlite3.connect(SQLITE_PATH, timeout=10)
+        conn.row_factory = _sqlite3.Row
+        conn.execute("PRAGMA journal_mode=WAL")
+        return conn
+
+    while not stop_event.is_set():
+        stop_event.wait(timeout=SYNC_INTERVAL)
+        if stop_event.is_set():
+            break
+        try:
+            # ── 1. Sync Automations ──────────────────────────────────────
+            auto_docs = fs_client.collection("automations").get()
+            conn = get_sqlite_conn()
+            changed_auto = False
+            try:
+                for doc_snap in auto_docs:
+                    data    = doc_snap.to_dict()
+                    room_id = data.get("roomId") or data.get("room_id", "")
+                    if not room_id:
+                        continue
+                    # Map Web field names → SQLite column names
+                    fan_thresh   = data.get("fanThreshold")   or data.get("fan_threshold")
+                    light_thresh = data.get("lightThreshold") or data.get("light_threshold")
+                    gas_thresh   = data.get("gasThreshold")   or data.get("gas_threshold")   or 600
+                    co2_thresh   = data.get("co2Threshold")   or data.get("co2_threshold")   or 1000
+                    enabled      = 1 if data.get("enabled", True) else 0
+
+                    # Upsert vào SQLite (chỉ update nếu có sự thay đổi thực sự)
+                    row = conn.execute(
+                        "SELECT fan_threshold, light_threshold, gas_threshold, co2_threshold, enabled FROM automations WHERE room_id=?",
+                        (room_id,)
+                    ).fetchone()
+                    if row is None:
+                        conn.execute(
+                            "INSERT INTO automations (room_id, enabled, fan_threshold, light_threshold, gas_threshold, co2_threshold) VALUES (?,?,?,?,?,?)",
+                            (room_id, enabled, fan_thresh, light_thresh, gas_thresh, co2_thresh)
+                        )
+                        changed_auto = True
+                    else:
+                        if (row["fan_threshold"]   != fan_thresh   or
+                            row["light_threshold"] != light_thresh or
+                            row["gas_threshold"]   != gas_thresh   or
+                            row["co2_threshold"]   != co2_thresh   or
+                            row["enabled"]         != enabled):
+                            conn.execute(
+                                "UPDATE automations SET enabled=?, fan_threshold=?, light_threshold=?, gas_threshold=?, co2_threshold=? WHERE room_id=?",
+                                (enabled, fan_thresh, light_thresh, gas_thresh, co2_thresh, room_id)
+                            )
+                            changed_auto = True
+                conn.commit()
+            finally:
+                conn.close()
+            if changed_auto:
+                logger.info("[AutoSync] Automation rules updated in SQLite from Firestore")
+                # Notify automation_engine để reload CACHED_AUTOMATIONS
+                r.publish("automation_commands", __import__("json").dumps({"action": "reload_all"}))
+
+            # ── 2. Sync Schedules ────────────────────────────────────────
+            sched_docs = fs_client.collection("schedules").get()
+            conn = get_sqlite_conn()
+            changed_sched = False
+            try:
+                # Lấy tất cả schedules hiện có trong SQLite (key = room+device+time)
+                existing = {}
+                for row in conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall():
+                    k = f"{row['room_id']}_{row['device_id']}_{row['time']}"
+                    existing[k] = dict(row)
+
+                seen_keys = set()
+                for doc_snap in sched_docs:
+                    data      = doc_snap.to_dict()
+                    room_id   = data.get("roomId")   or data.get("room_id", "")
+                    device_id = data.get("deviceId") or data.get("device_id", "")
+                    time_val  = data.get("time", "")
+                    action    = data.get("action", "turn_on")
+                    enabled   = 1 if data.get("enabled", True) else 0
+
+                    if not room_id or not device_id or not time_val:
+                        continue
+
+                    key = f"{room_id}_{device_id}_{time_val}"
+                    seen_keys.add(key)
+
+                    if key not in existing:
+                        conn.execute(
+                            "INSERT INTO schedules (room_id, device_id, action, time, enabled) VALUES (?,?,?,?,?)",
+                            (room_id, device_id, action, time_val, enabled)
+                        )
+                        changed_sched = True
+                    elif existing[key]["action"] != action or existing[key]["enabled"] != enabled:
+                        conn.execute(
+                            "UPDATE schedules SET action=?, enabled=? WHERE room_id=? AND device_id=? AND time=?",
+                            (action, enabled, room_id, device_id, time_val)
+                        )
+                        changed_sched = True
+
+                conn.commit()
+            finally:
+                conn.close()
+            if changed_sched:
+                logger.info("[AutoSync] Schedules updated in SQLite from Firestore")
+                # Notify automation_engine để reload CACHED_SCHEDULES
+                r.publish("schedule_commands", __import__("json").dumps({"action": "reload"}))
+
+        except Exception as e:
+            logger.error("[AutoSync] Sync loop error: %s", e)
+
+
 # ─────────────────────────────────────────────
 #  MAIN
 # ─────────────────────────────────────────────
@@ -794,6 +938,9 @@ def main():
                      daemon=True, name="sensor-flush").start()
     threading.Thread(target=run_heartbeat_loop,    args=(rtdb_writer, stop_event),
                      daemon=True, name="heartbeat").start()
+    # [FIX] Sync automation rules và schedules từ Firestore → SQLite
+    threading.Thread(target=run_automation_schedule_sync_loop, args=(fs_client, r, stop_event),
+                     daemon=True, name="auto-sched-sync").start()
 
     fs_writer.push_alert(
         alert_type="system",
