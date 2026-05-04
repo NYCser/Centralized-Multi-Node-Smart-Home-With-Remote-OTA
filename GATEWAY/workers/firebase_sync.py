@@ -75,7 +75,7 @@ CHANNEL_WIFI        = "wifi_status"
 CHANNEL_COMMAND_ACK = "command_ack"
 # CHANNEL_SENSOR = "realtime_data"  ← KHÔNG subscribe nữa cho RTDB write
 
-SENSOR_FLUSH_INTERVAL_S = 180
+SENSOR_FLUSH_INTERVAL_S = 60  # FIX: giảm từ 180s để biểu đồ có data nhanh hơn
 
 DEFAULT_ROOMS = [
     {"id": "bedroom_01",     "name": "Phòng Ngủ",   "icon": "bed"},
@@ -354,39 +354,129 @@ class FirestoreWriter:
         # On-Change cache: chỉ ghi Firestore khi trạng thái thực sự thay đổi
         self._device_state_cache: Dict[str, dict] = {}
 
+    # def update_device(self, room_id: str, device_id: str, payload: dict):
+    #     """
+    #     [v2.2 - FIXED] Cập nhật trạng thái thiết bị lên Firestore theo On-Change.
+    #     - Tự động gán 'type' nếu bị rỗng để Dashboard nhận diện được thiết bị.
+    #     - Tự động gán 'name' thân thiện dựa trên ID nếu thiếu.
+    #     """
+    #     key    = f"{room_id}_{device_id}"
+    #     is_on  = bool(payload.get("is_on", payload.get("isOn", False)))
+    #     status = payload.get("status", "online")
+
+    #     cached = self._device_state_cache.get(key)
+    #     if cached is not None:
+    #         if cached.get("isOn") == is_on and cached.get("status") == status:
+    #             return   # Không thay đổi → bỏ qua
+
+    #     try:
+    #         ref = (self.fs.collection("rooms").document(room_id)
+    #                      .collection("devices").document(device_id))
+            
+    #         # Khởi tạo data cơ bản
+    #         data = {
+    #             "isOn":      is_on,
+    #             "status":    status,
+    #             "details":   "Đang bật" if is_on else "Đã tắt",
+    #             "updatedAt": firestore.SERVER_TIMESTAMP,
+    #         }
+
+    #         # --- LOGIC FIX TYPE: Tránh bị rỗng khiến Dashboard không hiện ---
+    #         dev_type = payload.get("type")
+    #         if not dev_type or dev_type == "":
+    #             # Tự suy luận type từ device_id (Ví dụ: fan_bd_1 -> fan)
+    #             if "fan" in device_id.lower():
+    #                 dev_type = "fan"
+    #             elif "light" in device_id.lower():
+    #                 dev_type = "light"
+    #             else:
+    #                 dev_type = "unknown"
+    #         data["type"] = dev_type
+
+    #         # --- LOGIC FIX NAME: Hiển thị tên tiếng Việt thân thiện ---
+    #         dev_name = payload.get("name")
+    #         if not dev_name or dev_name == "":
+    #             # Nếu không có tên, đặt tên theo loại thiết bị
+    #             if dev_type == "fan":
+    #                 dev_name = "Quạt"
+    #             elif dev_type == "light":
+    #                 dev_name = "Đèn"
+    #             else:
+    #                 dev_name = device_id # Giữ nguyên ID nếu không xác định được
+    #         data["name"] = dev_name
+
+    #         # Thực hiện ghi đè dữ liệu có merge
+    #         ref.set(data, merge=True)
+            
+    #         # Cập nhật cache để tránh ghi lặp lại liên tục
+    #         self._device_state_cache[key] = {"isOn": is_on, "status": status}
+            
+    #         logger.info("Firestore device [%s/%s] → %s | Name: %s | Type: %s (Fixed)",
+    #                     room_id, device_id, ("ON" if is_on else "OFF"), dev_name, dev_type)
+                        
+    #     except Exception as e:
+    #         logger.error("Firestore update_device [%s/%s] error: %s", room_id, device_id, e)
+
     def update_device(self, room_id: str, device_id: str, payload: dict):
         """
-        [v2.2] Cập nhật trạng thái thiết bị lên Firestore theo On-Change.
-        Chỉ ghi khi isOn hoặc status THỰC SỰ THAY ĐỔI.
-        Writer duy nhất — không còn force_update (fix B1).
+        [v2.2 - FIXED NAME] Cập nhật trạng thái và ép tên tiếng Việt thân thiện.
+        - Ưu tiên gán name là 'Quạt' hoặc 'Đèn' dựa vào ID.
+        - Đảm bảo 'type' luôn có giá trị để hiển thị danh sách thiết bị.
         """
         key    = f"{room_id}_{device_id}"
         is_on  = bool(payload.get("is_on", payload.get("isOn", False)))
         status = payload.get("status", "online")
 
+        # Kiểm tra cache để tránh ghi trùng lặp dữ liệu cũ
         cached = self._device_state_cache.get(key)
         if cached is not None:
             if cached.get("isOn") == is_on and cached.get("status") == status:
-                return   # Không thay đổi → bỏ qua
+                return   
 
         try:
             ref = (self.fs.collection("rooms").document(room_id)
                          .collection("devices").document(device_id))
+            
+            # 1. Khởi tạo data cơ bản
             data = {
                 "isOn":      is_on,
                 "status":    status,
                 "details":   "Đang bật" if is_on else "Đã tắt",
                 "updatedAt": firestore.SERVER_TIMESTAMP,
             }
-            if "name" in payload:
-                data["name"] = payload["name"]
-            if "type" in payload:
-                data["type"] = payload["type"]
 
+            # 2. Xử lý TYPE (Mechanical necessity để hiện icon trên Dashboard)
+            dev_type = payload.get("type")
+            if not dev_type or dev_type == "":
+                if "fan" in device_id.lower():
+                    dev_type = "fan"
+                elif "light" in device_id.lower():
+                    dev_type = "light"
+                else:
+                    dev_type = "unknown"
+            data["type"] = dev_type
+
+            # 3. Xử lý NAME (Ép hiển thị tiếng Việt như image_17a667.png)
+            # Thay vì ưu tiên payload["name"], ta ưu tiên nhận diện qua ID để fix lỗi ID hiện lên UI
+            if dev_type == "fan":
+                dev_name = "Quạt"
+            elif dev_type == "light":
+                dev_name = "Đèn"
+            else:
+                # Nếu không phải quạt/đèn, mới lấy từ payload hoặc dùng device_id gốc
+                dev_name = payload.get("name") or device_id 
+            
+            data["name"] = dev_name
+
+            # 4. Thực hiện ghi đè lên Firestore
             ref.set(data, merge=True)
+            
+            # Cập nhật cache
             self._device_state_cache[key] = {"isOn": is_on, "status": status}
-            logger.info("Firestore device [%s/%s] → %s (On-Change write)",
-                        room_id, device_id, "ON" if is_on else "OFF")
+            
+            logger.info("Firestore sync [%s/%s] -> %s | Name: %s | Type: %s",
+                        room_id, device_id, ("ON" if is_on else "OFF"), dev_name, dev_type)
+                        
         except Exception as e:
             logger.error("Firestore update_device [%s/%s] error: %s", room_id, device_id, e)
 
@@ -475,7 +565,9 @@ class FirestoreWriter:
     def listen_commands(self, callback):
         def _on_snapshot(col_snapshot, changes, read_time):
             for change in changes:
-                if change.type.name == "ADDED":
+                # FIX: Bắt cả ADDED và MODIFIED
+                # settings.js dùng updateDoc (MODIFIED) cho cancel_register
+                if change.type.name in ("ADDED", "MODIFIED"):
                     data   = change.document.to_dict()
                     cmd_id = change.document.id
                     if data.get("status") == "pending":
@@ -714,13 +806,18 @@ class CommandDispatcher:
         device_id = (data.get("device_id") or data.get("deviceId") or "")
 
         msg = {
-            "room":      room_id,
-            "device_id": device_id,
-            "cmd_id":    cmd_id,
-            "action":    action,
-            "is_on":     data.get("isOn", action == "turn_on"),
-            "source":    "web",
-            "payload":   data.get("payload", {}),
+            "room":       room_id,
+            "device_id":  device_id,
+            "cmd_id":     cmd_id,
+            "action":     action,
+            "is_on":      data.get("isOn", action == "turn_on"),
+            "source":     "web",
+            "payload":    data.get("payload", {}),
+            # FIX: pass các field của RFID command để automation_engine dùng
+            "owner_name": data.get("owner_name", "Thẻ mới"),
+            "target":     data.get("target", ""),
+            "ssid":       data.get("ssid", ""),
+            "password":   data.get("password", ""),
         }
 
         try:
@@ -728,12 +825,24 @@ class CommandDispatcher:
             logger.info("[Downlink] DISPATCH: %s [%s] → Redis[%s]", cmd_id, action, channel)
 
             # FIX B1: KHÔNG còn gọi force_update_device() ở đây.
-            # Firestore chỉ được cập nhật SAU KHI ESP32 confirm qua "device_status" channel.
-            # Điều này đảm bảo UI Web luôn phản ánh đúng trạng thái thực tế.
 
-            # Xóa lệnh khỏi Firestore ngay để tránh dispatch lặp
-            self.fs.collection("commands").document(cmd_id).delete()
-            logger.info("[Downlink] CLEANUP: Đã xóa lệnh %s", cmd_id)
+            # FIX RFID: Với lệnh RFID (entrance_register doc), KHÔNG xóa doc.
+            # settings.js dùng onSnapshot trên commands/entrance_register để nhận kết quả.
+            # Nếu xóa → listener nhận doc-not-found → UI không update.
+            # Giải pháp: chỉ update status=dispatched để tránh re-dispatch,
+            # giữ doc sống để nhận enrollment result từ Pi.
+            if action in ("start_register", "cancel_register"):
+                try:
+                    self.fs.collection("commands").document(cmd_id).update({
+                        "status": "dispatched",
+                    })
+                    logger.info("[Downlink] RFID cmd %s → dispatched (kept for onSnapshot)", cmd_id)
+                except Exception as ex:
+                    logger.warning("[Downlink] Could not mark dispatched: %s", ex)
+            else:
+                # Lệnh device thường: xóa ngay để tránh dispatch lặp
+                self.fs.collection("commands").document(cmd_id).delete()
+                logger.info("[Downlink] CLEANUP: Đã xóa lệnh %s", cmd_id)
 
         except Exception as e:
             logger.error("[Downlink] Dispatch error cho lệnh %s: %s", cmd_id, e)

@@ -324,7 +324,15 @@ def scheduler_loop():
             for sched in list(CACHED_SCHEDULES):
                 if not sched.get("enabled"):
                     continue
-                if sched.get("time") != current_hhmm:
+                # FIX: Normalize time từ schedule để so sánh đúng với current_hhmm
+                # Web có thể lưu "9:05" (không có leading zero) → normalize về "09:05"
+                sched_time_raw = sched.get("time", "")
+                try:
+                    h, m = sched_time_raw.split(":")
+                    sched_time_norm = f"{int(h):02d}:{int(m):02d}"
+                except Exception:
+                    sched_time_norm = sched_time_raw
+                if sched_time_norm != current_hhmm:
                     continue
                 if not sched.get("device_id"):
                     continue
