@@ -20,6 +20,9 @@ MQTT_BROKER    = "localhost"
 MQTT_PORT      = 1883
 REDIS_HOST     = "localhost"
 MQTT_TOPIC_SUB = "home/+/+"          # home/{room}/{category}
+# [FIX-RFID-1] ESP32 living room gửi enrollment result qua home/{room}/enroll
+# MQTT_TOPIC_SUB "home/+/+" đã cover topic này (3 segments = 2 wildcards + 1 prefix)
+# Không cần thêm subscription riêng vì wildcard đã match
 
 # Channels Redis nội bộ
 CH_INBOUND    = "mqtt_inbound"         # MQTT → các worker đọc

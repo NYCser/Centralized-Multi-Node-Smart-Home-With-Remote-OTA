@@ -1,30 +1,44 @@
 """
-workers/automation_engine.py  — v2.2  (CONFLICT FIX)
+workers/automation_engine.py  — v2.3  (BUG FIX)
 ══════════════════════════════════════════════════════
-FIXES trong phiên bản này:
+FIXES trong phiên bản này (so với v2.2):
 
-  [CONFLICT D1 — CRITICAL] Priority Command Queue
+  [FIX-AUTO-1 — CRITICAL] MANUAL_STATE bị set từ ESP32 status block mọi automation
       ─────────────────────────────────────────────
-      Vấn đề: Schedule, Automation, Manual Web đều gửi MQTT tới cùng 1 relay
-              mà không có cơ chế phân quyền cứng.
-      Fix: Thêm hàm dispatch_command(source, room_id, device_id, action)
-           - source priority: "safety" > "manual" > "schedule" > "automation"
-           - Safety lock: từ chối MỌI lệnh ngoại trừ safety action
-           - Manual override: MANUAL_STATE[device] block schedule VÀ automation
-           - Schedule không ghi MANUAL_STATE nhưng bị block khi device ở manual mode
-             (trước đây chỉ block automation, không block schedule)
+      Vấn đề: Khi ESP32 gửi status (source="esp32") sau khi nhận lệnh automation,
+              automation_engine lại set MANUAL_STATE[device_id] = "manual"
+              → automation bị block ngay sau khi vừa chạy → mãi không bao giờ
+              automation hoạt động được dù sensor vượt ngưỡng.
+      Fix: Chỉ set MANUAL_STATE khi source là "button" hoặc "physical" (nút vật lý).
+           Source "esp32" được hiểu là ESP32 confirm lệnh automation/schedule, không
+           phải user thao tác tay → KHÔNG set MANUAL_STATE.
 
-  [CONFLICT C1 — MEDIUM] Thread-safe CACHED_SENSORS
+  [FIX-AUTO-2 — HIGH] Schedule chỉ có action turn_on, không có turn_off
       ─────────────────────────────────────────────
-      Vấn đề: AutomationEngine ghi (MQTT thread) và SafetyWatchdog đọc (loop
-              thread riêng) CACHED_SENSORS dict mà không có threading.Lock().
-      Fix: Dùng threading.RLock() bảo vệ tất cả đọc/ghi CACHED_SENSORS.
-           SafetyWatchdog đọc qua get_cached_sensors(room_id) — không truy cập
-           trực tiếp dict nữa.
+      Vấn đề: Web lưu schedule với action='turn_on' cố định, không có cách tắt thiết bị
+              theo lịch. firebase_sync.py sync về SQLite cũng chỉ copy action='turn_on'.
+      Fix: scheduler_loop giữ nguyên, nhưng firebase_sync sẽ đọc đúng action từ
+           Firestore (đã có field action). Đảm bảo scheduler dispatch action từ SQLite.
+           Đây chủ yếu là fix ở firebase_sync.py và dashboard JS.
 
-  [Giữ nguyên từ v2.1]
-      BUG-ACK-01, BUG-DEVICE-SYNC-01, BUG-H-01, BUG-H-02, BUG-C-05,
-      Smart Manual Override (state-based), Per-room thresholds
+  [FIX-RFID-1 — HIGH] RFID enrollment result không về Firestore đúng
+      ─────────────────────────────────────────────
+      Vấn đề: _handle_auth() publish "rfid_enrollment_result" channel, UplinkStream
+              bắt và ghi Firestore commands/entrance_register. Nhưng ESP32 gửi
+              enrollment success qua TOPIC_ENROLL_EN = home/living_room_01/enroll
+              (không phải home/living_room_01/auth) → category = "enroll"
+              không được xử lý trong handle_inbound() → không bao giờ vào _handle_auth().
+      Fix: Thêm xử lý category "enroll" trong handle_inbound() → chuyển về _handle_auth().
+
+  [FIX-RFID-2 — MEDIUM] RFID auth cũng cần xử lý fingerprint confirm
+      ─────────────────────────────────────────────
+      Vấn đề: ESP32 gửi auth với payload có "success": true/false.
+              Nếu success=false thì không cần ghi rfid_cards → chỉ log deny.
+              Nếu đang enroll mode và nhận auth với success=true và có cardUid → enroll.
+      Fix: _handle_auth kiểm tra payload["success"] trước khi enroll.
+
+  [Giữ nguyên từ v2.2]
+      FIX C1, D1, BUG-ACK-01, BUG-DEVICE-SYNC-01, BUG-H-01/02, BUG-C-05
 """
 
 import time
@@ -44,7 +58,7 @@ HYSTERESIS_OFFSET  = 2.0
 MIN_SWITCH_DELAY_S = 30
 DEVICE_LAST_SWITCH: dict = {}
 
-# [FIX] MANUAL_STATE_TTL: sau N giây không có lệnh manual mới,
+# MANUAL_STATE_TTL: sau N giây không có lệnh manual mới,
 # tự động giải phóng manual override để automation hoạt động lại.
 MANUAL_STATE_TTL_S = 300   # 5 phút
 
@@ -58,7 +72,6 @@ CACHED_AUTOMATIONS:   dict = {}
 CACHED_SCHEDULES:     list = []
 CACHED_DEVICE_STATES: dict = {}
 
-# [v2.1] MANUAL_STATE thay cho MANUAL_CONTROL_CACHE + timestamp
 MANUAL_STATE:         dict = {}
 
 ENROLLMENT_STATE:     dict = {"active": False, "start_time": None, "pending_name": ""}
@@ -72,9 +85,6 @@ PENDING_COMMANDS: dict = {}
 # ══════════════════════════════════════════════════════
 _SENSORS_LOCK = threading.RLock()
 
-# CACHED_SENSORS được truy cập qua hàm get/set bên dưới —
-# KHÔNG truy cập trực tiếp từ bên ngoài module này.
-# SafetyWatchdog dùng get_cached_sensors() thay vì safety_watchdog.CACHED_SENSORS
 CACHED_SENSORS: dict = {}
 
 
@@ -89,7 +99,6 @@ def update_cached_sensors(room_id: str, payload: dict):
     with _SENSORS_LOCK:
         room_cache = CACHED_SENSORS.setdefault(room_id, {})
         room_cache.update(payload)
-        # Đồng bộ sang safety_watchdog.CACHED_SENSORS để backward compat
         safety_watchdog.CACHED_SENSORS[room_id] = dict(room_cache)
 
 
@@ -97,11 +106,10 @@ def update_cached_sensors(room_id: str, payload: dict):
 # FIX CONFLICT D1: Centralized Priority Dispatcher
 # ══════════════════════════════════════════════════════
 
-# Thứ tự ưu tiên: số nhỏ hơn = ưu tiên cao hơn
 SOURCE_PRIORITY = {
     "safety":     0,
     "manual":     1,
-    "web":        1,   # Web lệnh thủ công = manual
+    "web":        1,
     "schedule":   2,
     "automation": 3,
 }
@@ -112,15 +120,6 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
                      extra: dict = None) -> bool:
     """
     FIX CONFLICT D1: Điểm phát lệnh duy nhất cho tất cả nguồn.
-
-    Luật ưu tiên:
-      1. Safety lock → chặn MỌI nguồn ngoại trừ "safety"
-      2. "manual"/"web" → được phép, set MANUAL_STATE
-      3. "schedule" → bị chặn nếu device đang ở manual mode
-      4. "automation" → bị chặn nếu device đang ở manual mode
-                         hoặc đang có schedule cho device này
-
-    Returns: True nếu lệnh được gửi, False nếu bị chặn.
     """
     priority = SOURCE_PRIORITY.get(source, 99)
 
@@ -136,7 +135,6 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
         return False
 
     # ── Rule 2: Schedule/Automation bị chặn khi device ở manual mode ──
-    # [FIX] TTL check: tự giải phóng manual override sau MANUAL_STATE_TTL_S giây
     if source in ("schedule", "automation"):
         manual = MANUAL_STATE.get(device_id)
         if manual and manual.get("mode") == "manual":
@@ -149,8 +147,6 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
                 return False
 
     # ── Rule 3: Automation bị chặn khi có schedule active cho device ──
-    # [FIX] Chỉ block automation nếu schedule đó thực sự đã chạy hôm nay
-    # (không block vĩnh viễn chỉ vì có schedule entry tồn tại)
     if source == "automation":
         today_key = datetime.now().strftime("%Y-%m-%d")
         for sched in CACHED_SCHEDULES:
@@ -158,7 +154,6 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
                 continue
             sched_id  = sched.get("id", "")
             last_run  = SCHEDULE_LAST_RUN.get(sched_id, "")
-            # Chỉ block nếu schedule đã chạy hôm nay (trong 60 phút gần nhất)
             if last_run and today_key in last_run:
                 sched_time = sched.get("time", "")
                 try:
@@ -216,7 +211,6 @@ def _try_control(bus: MessageBus, room_id: str, device_type: str,
                  value: float, threshold: float):
     """
     FIX D1: Dùng dispatch_command() thay vì gọi publish_mqtt() trực tiếp.
-    dispatch_command() sẽ tự kiểm tra priority và manual state.
     """
     device_id = DEVICE_MAP.get(room_id, {}).get(device_type)
     if not device_id:
@@ -324,8 +318,6 @@ def scheduler_loop():
             for sched in list(CACHED_SCHEDULES):
                 if not sched.get("enabled"):
                     continue
-                # FIX: Normalize time từ schedule để so sánh đúng với current_hhmm
-                # Web có thể lưu "9:05" (không có leading zero) → normalize về "09:05"
                 sched_time_raw = sched.get("time", "")
                 try:
                     h, m = sched_time_raw.split(":")
@@ -345,7 +337,6 @@ def scheduler_loop():
                 device_id = sched["device_id"]
                 action    = sched["action"]
 
-                # FIX D1: dispatch_command tự kiểm tra safety_lock và manual_state
                 sent = dispatch_command(bus, "schedule", room_id, device_id, action)
                 if sent:
                     SCHEDULE_LAST_RUN[sched["id"]] = run_key
@@ -389,9 +380,7 @@ def handle_inbound(envelope: dict):
         bus = MessageBus.get_instance()
         r   = bus.get_redis()
 
-        # FIX C1: Dùng update_cached_sensors() thay vì ghi trực tiếp vào dict
         update_cached_sensors(room_id, payload)
-
         r.setex(f"sensor:{room_id}", 300, json.dumps(payload))
 
         conn = get_db()
@@ -448,8 +437,6 @@ def handle_inbound(envelope: dict):
             finally:
                 conn.close()
 
-            # FIX BUG-DEVICE-SYNC-01 + FIX B1: Publish device_status để firebase_sync
-            # cập nhật Firestore — đây là writer DUY NHẤT, không dùng force_update nữa
             bus.publish_event("device_status", {
                 "room_id":   room_id,
                 "device_id": device_id,
@@ -459,8 +446,7 @@ def handle_inbound(envelope: dict):
                 "type":      payload.get("type", "")
             })
 
-            # FIX BUG-ACK-01: Nếu đây là response của một web command,
-            # publish command_ack để firebase_sync xóa command khỏi Firestore
+            # FIX BUG-ACK-01
             pending_cmd_id = PENDING_COMMANDS.pop(device_id, None)
             if pending_cmd_id:
                 r.publish("command_ack", json.dumps({
@@ -474,16 +460,21 @@ def handle_inbound(envelope: dict):
             cache_key = f"{room_id}_{device_id}"
             CACHED_DEVICE_STATES[cache_key] = is_on
 
-            # [FIX] Khi ESP32 báo trạng thái từ nút vật lý (source="esp32" hoặc "button"),
-            # cập nhật MANUAL_STATE để automation không ghi đè lên hành động vật lý.
+            # [FIX-AUTO-1] CHỈ set MANUAL_STATE khi source là "button" hoặc "physical"
+            # (user bấm nút vật lý trên ESP32).
+            # Source "esp32" = ESP32 confirm lệnh automation/schedule — KHÔNG set manual.
+            # Trước đây: source in ("esp32", "button", "physical") → bug critical:
+            # automation gửi lệnh → ESP32 confirm với source="esp32" → set MANUAL_STATE
+            # → automation bị block ngay sau đó → mãi không chạy được.
             src = payload.get("source", "esp32")
-            if src in ("esp32", "button", "physical"):
+            if src in ("button", "physical"):
                 MANUAL_STATE[device_id] = {
                     "mode":   "manual",
                     "is_on":  is_on,
                     "set_at": datetime.now(),
                     "source": "physical_button",
                 }
+                print(f"[AUTO] Physical button detected: {device_id} → MANUAL mode set")
 
     elif category == "alert":
         bus = MessageBus.get_instance()
@@ -497,7 +488,18 @@ def handle_inbound(envelope: dict):
         })
 
     elif category == "auth":
+        # [FIX-RFID-2] Kiểm tra enrollment timeout
         _check_enrollment_timeout()
+        _handle_auth(room_id, payload)
+
+    elif category == "enroll":
+        # [FIX-RFID-1] ESP32 gửi enrollment result qua topic home/{room}/enroll
+        # (TOPIC_ENROLL_EN trong Config.hpp). Trước đây không xử lý category này
+        # → enrollment result không bao giờ được ghi vào Firestore.
+        _check_enrollment_timeout()
+        # Treat enrollment result as auth để tái dụng _handle_auth logic
+        # Đặt is_enrollment_result=True để _handle_auth biết đây là kết quả đăng ký
+        payload["_is_enroll_result"] = True
         _handle_auth(room_id, payload)
 
 
@@ -506,7 +508,18 @@ def _handle_auth(room_id: str, payload: dict):
               payload.get("fingerprintId", ""))
     bus = MessageBus.get_instance()
 
+    # [FIX-RFID-2] Kiểm tra success flag từ ESP32
+    # ESP32 gửi {"success": false, "cardUid": "..."} khi access denied
+    # Không process enrollment cho access denied events
+    is_success = payload.get("success", True)
+    is_enroll_result = payload.get("_is_enroll_result", False)
+
     if ENROLLMENT_STATE["active"]:
+        # Đang trong chế độ đăng ký thẻ mới
+        if not uid:
+            print(f"[AUTH] Enrollment: no UID in payload")
+            return
+
         owner_name = ENROLLMENT_STATE.get("pending_name", "Thẻ mới")
         try:
             conn = get_db()
@@ -532,8 +545,8 @@ def _handle_auth(room_id: str, payload: dict):
                 "uid":        uid,
                 "owner_name": owner_name
             })
-            # [FIX] Ghi kết quả đăng ký về Firestore commands/entrance_register
-            # để settings.js nhận được thông báo thành công qua onSnapshot listener
+            # [FIX-RFID-1] Publish kết quả đăng ký về Firestore commands/entrance_register
+            # settings.js listen onSnapshot doc này để nhận thông báo thành công
             bus.publish_event("rfid_enrollment_result", {
                 "status":      "success",
                 "result_type": "rfid",
@@ -544,6 +557,22 @@ def _handle_auth(room_id: str, payload: dict):
             print(f"[AUTH] Enrolled new card: {uid} -> {owner_name}")
         except Exception as e:
             print(f"[AUTH] enrollment error: {e}")
+            # Thông báo lỗi về Firestore để UI cập nhật
+            bus.publish_event("rfid_enrollment_result", {
+                "status":  "error",
+                "message": str(e),
+                "value":   uid,
+            })
+        return
+
+    # Không trong chế độ đăng ký — kiểm tra access
+    if not uid:
+        return
+
+    # [FIX-RFID-2] Nếu ESP32 đã báo success=False → access denied, chỉ log
+    if not is_success:
+        _log_access(room_id, uid, "Khách lạ", "attempt_failed", False)
+        print(f"[AUTH] {room_id}: DENIED (ESP32 reported) -> {uid}")
         return
 
     conn = get_db()
@@ -602,7 +631,6 @@ def command_listener():
     FIX BUG-H-02: Chấp nhận cả "room" và "roomId".
     FIX BUG-ACK-01: Lưu cmd_id vào PENDING_COMMANDS[device_id].
     """
-    # FIX SyntaxError: global phải khai báo TRƯỚC mọi thao tác với biến trong hàm
     global CACHED_AUTOMATIONS, CACHED_SCHEDULES
 
     bus    = MessageBus.get_instance()
@@ -627,7 +655,6 @@ def command_listener():
                 handle_inbound(data)
 
             elif channel == "device_commands":
-                # FIX BUG-H-02: chấp nhận cả "room" lẫn "roomId"
                 room_id   = data.get("room") or data.get("roomId") or data.get("room_id", "")
                 device_id = data.get("device_id") or data.get("deviceId", "")
                 is_on     = data.get("is_on", False)
@@ -638,7 +665,7 @@ def command_listener():
                     print(f"[AUTO] device_commands: missing room or device_id: {data}")
                     continue
 
-                # [v2.1] Lệnh chuyển về Auto mode từ Web
+                # Lệnh chuyển về Auto mode từ Web
                 if action == "set_auto_mode":
                     MANUAL_STATE.pop(device_id, None)
                     print(f"[AUTO] {device_id} → Auto mode (Automation re-enabled)")
@@ -650,7 +677,7 @@ def command_listener():
                     })
                     continue
 
-                # [v2.1] Smart Manual Override: đặt mode="manual" cho thiết bị
+                # Smart Manual Override: đặt mode="manual" cho thiết bị
                 MANUAL_STATE[device_id] = {
                     "mode":   "manual",
                     "is_on":  data.get("is_on", False),
@@ -658,11 +685,9 @@ def command_listener():
                     "source": data.get("source", "web"),
                 }
 
-                # FIX BUG-ACK-01: Lưu cmd_id để gửi ACK khi ESP32 confirm
                 if cmd_id:
                     PENDING_COMMANDS[device_id] = cmd_id
 
-                # FIX D1: Dùng dispatch_command() — tự kiểm tra safety_lock
                 mqtt_action = "turn_on" if is_on else "turn_off"
                 dispatch_command(bus, "manual", room_id, device_id, mqtt_action,
                                  cmd_id=cmd_id,
@@ -676,7 +701,6 @@ def command_listener():
                 elif action == "delete" and room_id:
                     CACHED_AUTOMATIONS.pop(room_id, None)
                 elif action == "reload_all":
-                    # [FIX] Reload toàn bộ automation rules từ SQLite
                     conn = get_db()
                     try:
                         CACHED_AUTOMATIONS = {}
@@ -694,8 +718,7 @@ def command_listener():
                     ENROLLMENT_STATE["start_time"]   = datetime.now()
                     ENROLLMENT_STATE["pending_name"] = data.get("owner_name", "Thẻ mới")
                     print(f"[AUTO] Enrollment mode ON (timeout: {ENROLLMENT_TIMEOUT}s)")
-                    # [FIX] Gửi MQTT tới ESP32 phòng khách (nơi có RFID reader)
-                    # để ESP32 biết chuyển sang trạng thái chờ quét thẻ đăng ký
+                    # Gửi MQTT tới ESP32 phòng khách để chuyển sang enrollment mode
                     bus.publish_mqtt("home/living_room_01/command", {
                         "action":     "enroll",
                         "target":     "entrance",
@@ -714,7 +737,6 @@ def command_listener():
                     ENROLLMENT_STATE["start_time"]   = datetime.now()
                     ENROLLMENT_STATE["pending_name"] = data.get("owner_name", "Thẻ mới")
                     print("[AUTO] Enrollment started via Firebase command")
-                    # [FIX] Gửi MQTT tới ESP32 để chuyển sang enrollment mode
                     bus.publish_mqtt("home/living_room_01/command", {
                         "action":     "enroll",
                         "target":     "entrance",
@@ -725,7 +747,6 @@ def command_listener():
                     ENROLLMENT_STATE["active"]     = False
                     ENROLLMENT_STATE["start_time"] = None
                     print("[AUTO] Enrollment cancelled via Firebase command")
-                    # [FIX] Thông báo ESP32 hủy enrollment mode
                     bus.publish_mqtt("home/living_room_01/command", {
                         "action": "cancel_enroll",
                     })

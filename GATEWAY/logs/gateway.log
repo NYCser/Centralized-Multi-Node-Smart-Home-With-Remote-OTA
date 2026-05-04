@@ -8625,3 +8625,1229 @@ SyntaxError: name 'CACHED_AUTOMATIONS' is used prior to global declaration
 2026-05-03 19:03:56 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
 2026-05-03 19:03:56 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
 2026-05-03 19:03:56 [ERROR][SYNCER] [AutoSync] Sync loop error: 429 Quota exceeded.
+2026-05-04 17:25:36 [INFO][SYNCER] SyncWorker starting...
+2026-05-04 17:25:36 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-04 17:25:37 [INFO][SYNCER] ============================================================
+2026-05-04 17:25:37 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-04 17:25:37 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-04 17:25:37 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-04 17:25:37 [INFO][SYNCER] ============================================================
+2026-05-04 17:25:37 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-04 17:25:37 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-04 17:25:37 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-04 17:25:37 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=p2p-dev-wlan0
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:p2p-dev-wlan0
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 3 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-04 17:25:38 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.2:5000
+2026-05-04 17:25:38 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-04 17:25:42 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-04 17:25:42 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-04 17:25:42 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-04 17:25:42 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-04 17:25:42 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-04 17:25:42 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-04 17:26:42 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-04 17:26:42 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-04 17:27:05 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 17:27:10 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:27:16 [INFO][SYNCER] [Downlink] DISPATCH: NCyxXEBQsTEEfqsCXwAK [turn_off] → Redis[device_commands]
+2026-05-04 17:27:16 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh NCyxXEBQsTEEfqsCXwAK
+2026-05-04 17:27:16 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:27:17 [INFO][SYNCER] [Downlink] DISPATCH: dJAlyOqygijyVNtcuU4U [turn_on] → Redis[device_commands]
+2026-05-04 17:27:17 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh dJAlyOqygijyVNtcuU4U
+2026-05-04 17:27:17 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:27:23 [INFO][SYNCER] [Downlink] DISPATCH: vSJwZRQfwzr3WDPmyzZx [turn_off] → Redis[device_commands]
+2026-05-04 17:27:23 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh vSJwZRQfwzr3WDPmyzZx
+2026-05-04 17:27:23 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:27:42 [INFO][SYNCER] Firestore: Batch flush 32 sensor history rows
+2026-05-04 17:27:42 [INFO][SYNCER] Flushed 32 sensor history rows to Firestore
+2026-05-04 17:28:13 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 17:28:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:28:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:28:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-04 17:29:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:29:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:30:36 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-04 17:30:36 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-04.db (mode: sd2)
+2026-05-04 17:30:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:30:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:31:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:31:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:32:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:32:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd NCyxXEBQsTEEfqsCXwAK: fan_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd dJAlyOqygijyVNtcuU4U: fan_bd_1 → True
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd vSJwZRQfwzr3WDPmyzZx: fan_bd_1 → False
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[AUTO] Schedules reloaded: 4
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+2026-05-04 17:33:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:33:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:34:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:34:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:35:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:35:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:36:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:36:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:37:45 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-04 17:37:45 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-04 17:38:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:38:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:39:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:39:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+2026-05-04 17:40:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:40:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:41:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:41:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:42:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:42:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:43:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:43:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:44:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:44:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:45:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:45:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:46:48 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:46:48 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:47:48 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:47:48 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:48:48 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:48:48 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:49:48 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:49:48 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+2026-05-04 17:50:49 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:50:49 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:51:49 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:51:49 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:52:49 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:52:49 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:53:42 [INFO][SYNCER] [Downlink] DISPATCH: geNY2sjrL8pV8dCRld0T [turn_on] → Redis[device_commands]
+2026-05-04 17:53:42 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh geNY2sjrL8pV8dCRld0T
+2026-05-04 17:53:42 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:53:47 [INFO][SYNCER] [Downlink] DISPATCH: pEpJilxgwXQ5413415Xd [turn_off] → Redis[device_commands]
+2026-05-04 17:53:47 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:53:47 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh pEpJilxgwXQ5413415Xd
+2026-05-04 17:53:48 [INFO][SYNCER] [Downlink] DISPATCH: DBhHV8NntEGEjiEBDAi2 [turn_on] → Redis[device_commands]
+2026-05-04 17:53:48 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh DBhHV8NntEGEjiEBDAi2
+2026-05-04 17:53:48 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:53:50 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:53:50 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:53:50 [INFO][SYNCER] [Downlink] DISPATCH: HCA786NiwZZ5p06ngIj5 [turn_off] → Redis[device_commands]
+2026-05-04 17:53:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh HCA786NiwZZ5p06ngIj5
+2026-05-04 17:53:50 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:53:52 [INFO][SYNCER] [Downlink] DISPATCH: CPHdsSWkd8JUDOvZ695b [turn_on] → Redis[device_commands]
+2026-05-04 17:53:52 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh CPHdsSWkd8JUDOvZ695b
+2026-05-04 17:53:52 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 17:53:53 [INFO][SYNCER] [Downlink] DISPATCH: H2u9rQCnfei8ka6rJgVp [turn_off] → Redis[device_commands]
+2026-05-04 17:53:53 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh H2u9rQCnfei8ka6rJgVp
+2026-05-04 17:53:53 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 17:53:54 [INFO][SYNCER] [Downlink] DISPATCH: TJSqe5d18ACOyd67Gtvo [turn_on] → Redis[device_commands]
+2026-05-04 17:53:54 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TJSqe5d18ACOyd67Gtvo
+2026-05-04 17:53:54 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:53:58 [INFO][SYNCER] [Downlink] DISPATCH: u5AEqGPaiSKMZrcVirhL [turn_off] → Redis[device_commands]
+2026-05-04 17:53:58 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh u5AEqGPaiSKMZrcVirhL
+2026-05-04 17:53:59 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:54:17 [INFO][SYNCER] [Downlink] DISPATCH: goiR3iAajqvSOkVTJUya [turn_on] → Redis[device_commands]
+2026-05-04 17:54:17 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh goiR3iAajqvSOkVTJUya
+2026-05-04 17:54:20 [INFO][SYNCER] [Downlink] DISPATCH: OGK0SrWq5B8vKCGaUC5S [turn_off] → Redis[device_commands]
+2026-05-04 17:54:20 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh OGK0SrWq5B8vKCGaUC5S
+2026-05-04 17:54:26 [INFO][SYNCER] [Downlink] DISPATCH: yuUEypOm7VGDEakOotCB [turn_on] → Redis[device_commands]
+2026-05-04 17:54:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh yuUEypOm7VGDEakOotCB
+2026-05-04 17:54:27 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:54:29 [INFO][SYNCER] [Downlink] DISPATCH: zv8bvA6usERSphODUDE7 [turn_off] → Redis[device_commands]
+2026-05-04 17:54:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh zv8bvA6usERSphODUDE7
+2026-05-04 17:54:29 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:54:31 [INFO][SYNCER] [Downlink] DISPATCH: gUDpeeDP7ImHj8mFc01r [turn_on] → Redis[device_commands]
+2026-05-04 17:54:31 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh gUDpeeDP7ImHj8mFc01r
+2026-05-04 17:54:31 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 17:54:32 [INFO][SYNCER] [Downlink] DISPATCH: gJTlvuibjRZaljtg8a0n [turn_off] → Redis[device_commands]
+2026-05-04 17:54:32 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh gJTlvuibjRZaljtg8a0n
+2026-05-04 17:54:32 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 17:54:34 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 17:54:35 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 17:54:37 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 17:54:38 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 17:54:50 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-04 17:54:50 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-04 17:55:50 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:55:50 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:56:50 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:56:50 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:57:51 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:57:51 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd geNY2sjrL8pV8dCRld0T: fan_bd_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd pEpJilxgwXQ5413415Xd: fan_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd DBhHV8NntEGEjiEBDAi2: fan_bd_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd HCA786NiwZZ5p06ngIj5: fan_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_on
+[AUTO] ACK sent for cmd CPHdsSWkd8JUDOvZ695b: light_bd_1 → True
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd H2u9rQCnfei8ka6rJgVp: light_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd TJSqe5d18ACOyd67Gtvo: fan_bd_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd u5AEqGPaiSKMZrcVirhL: fan_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd OGK0SrWq5B8vKCGaUC5S: fan_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd yuUEypOm7VGDEakOotCB: fan_bd_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd zv8bvA6usERSphODUDE7: fan_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_on
+[AUTO] ACK sent for cmd gUDpeeDP7ImHj8mFc01r: light_bd_1 → True
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd gJTlvuibjRZaljtg8a0n: light_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+2026-05-04 17:58:51 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:58:51 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 17:59:51 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 17:59:51 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:00:52 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:00:52 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:01:52 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:01:52 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:02:52 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:02:52 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:03:52 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:03:52 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:04:53 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:04:53 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:05:53 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:05:53 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:06:53 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:06:53 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:07:53 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-04 18:07:53 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-04 18:08:54 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:08:54 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+2026-05-04 18:09:54 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:09:54 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:10:54 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:10:54 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:11:05 [INFO][SYNCER] SyncWorker starting...
+2026-05-04 18:11:05 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-04 18:11:05 [INFO][SYNCER] ============================================================
+2026-05-04 18:11:05 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-04 18:11:05 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-04 18:11:05 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-04 18:11:05 [INFO][SYNCER] ============================================================
+2026-05-04 18:11:06 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-04 18:11:06 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-04 18:11:06 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-04 18:11:06 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=p2p-dev-wlan0
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:p2p-dev-wlan0
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[NET] NTP already synchronized via systemd-timesyncd
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 4 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-04 18:11:06 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.2:5000
+2026-05-04 18:11:06 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-04 18:11:09 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-04 18:11:09 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-04 18:11:09 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-04 18:11:09 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-04 18:11:09 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-04 18:11:09 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-04 18:11:13 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 18:11:13 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 18:12:10 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-04 18:12:10 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-04 18:13:10 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:13:10 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:14:10 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:14:10 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:15:10 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:15:10 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:16:05 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-04 18:16:05 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-04.db (mode: sd2)
+2026-05-04 18:16:10 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:16:11 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:17:11 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 18:17:11 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 18:18:19 [WARNING][SYNCER] Retrying (Retry(total=9, connect=0, read=1, redirect=None, status=4)) after connection broken by 'NameResolutionError("HTTPSConnection(host='nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app', port=443): Failed to resolve 'nhathongminh-myhome-default-rtdb.asia-southeast1.firebasedatabase.app' ([Errno -3] Temporary failure in name resolution)")': /gateway_status.json?print=silent
+2026-05-04 18:20:26 [INFO][SYNCER] SyncWorker starting...
+2026-05-04 18:20:26 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-04 18:20:27 [INFO][SYNCER] ============================================================
+2026-05-04 18:20:27 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-04 18:20:27 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-04 18:20:27 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-04 18:20:27 [INFO][SYNCER] ============================================================
+2026-05-04 18:20:27 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-04 18:20:27 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-04 18:20:27 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-04 18:20:27 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=p2p-dev-wlan0
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:p2p-dev-wlan0
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[NET] NTP already synchronized via systemd-timesyncd
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Cache loaded: 3 rules, 4 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-04 18:20:27 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.2:5000
+2026-05-04 18:20:27 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-04 18:20:30 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-04 18:20:30 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-04 18:20:31 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-04 18:20:31 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-04 18:20:31 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-04 18:20:31 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-04 18:20:32 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 18:20:32 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 18:21:31 [INFO][SYNCER] Firestore: Batch flush 88 sensor history rows
+2026-05-04 18:21:31 [INFO][SYNCER] Flushed 88 sensor history rows to Firestore
+2026-05-04 18:22:31 [INFO][SYNCER] Firestore: Batch flush 20 sensor history rows
+2026-05-04 18:22:31 [INFO][SYNCER] Flushed 20 sensor history rows to Firestore
+2026-05-04 18:25:02 [INFO][SYNCER] SyncWorker starting...
+2026-05-04 18:25:02 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-04 18:25:03 [INFO][SYNCER] ============================================================
+2026-05-04 18:25:03 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-04 18:25:03 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-04 18:25:03 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-04 18:25:03 [INFO][SYNCER] ============================================================
+2026-05-04 18:25:03 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-04 18:25:03 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-04 18:25:03 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-04 18:25:03 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=p2p-dev-wlan0
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:p2p-dev-wlan0
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 4 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[AUTO] Command listener started
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-04 18:25:03 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.2:5000
+2026-05-04 18:25:03 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-04 18:25:07 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-04 18:25:07 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-04 18:25:07 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-04 18:25:07 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-04 18:25:07 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-04 18:25:07 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-04 18:25:07 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [start_register] → Redis[rfid_register]
+2026-05-04 18:25:07 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-04 18:25:09 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [cancel_register] → Redis[rfid_register]
+2026-05-04 18:25:09 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-04 18:26:45 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 18:26:45 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 18:27:07 [INFO][SYNCER] Firestore: Batch flush 12 sensor history rows
+2026-05-04 18:27:07 [INFO][SYNCER] Flushed 12 sensor history rows to Firestore
+2026-05-04 18:28:01 [INFO][SYNCER] [Downlink] DISPATCH: FosislKxqh6f1MlpVqXP [turn_on] → Redis[device_commands]
+2026-05-04 18:28:01 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh FosislKxqh6f1MlpVqXP
+2026-05-04 18:28:02 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 18:28:03 [INFO][SYNCER] [Downlink] DISPATCH: YdQghlPNddqqRRaFMack [turn_off] → Redis[device_commands]
+2026-05-04 18:28:03 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh YdQghlPNddqqRRaFMack
+2026-05-04 18:28:04 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 18:28:05 [INFO][SYNCER] [Downlink] DISPATCH: gijKSh0FpeYtABL7Um2J [turn_on] → Redis[device_commands]
+2026-05-04 18:28:05 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh gijKSh0FpeYtABL7Um2J
+2026-05-04 18:28:05 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> ON | Name: Đèn | Type: light
+2026-05-04 18:28:06 [INFO][SYNCER] [Downlink] DISPATCH: TcOisbxJlzLfVHakDBLG [turn_off] → Redis[device_commands]
+2026-05-04 18:28:06 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TcOisbxJlzLfVHakDBLG
+2026-05-04 18:28:07 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 18:28:07 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-04 18:28:07 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-04 18:28:24 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [start_register] → Redis[rfid_register]
+2026-05-04 18:28:24 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-04 18:28:33 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [cancel_register] → Redis[rfid_register]
+2026-05-04 18:28:33 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-04 18:29:07 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-04 18:29:07 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-04 18:30:02 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-04 18:30:02 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-04.db (mode: sd2)
+2026-05-04 21:02:14 [INFO][SYNCER] SyncWorker starting...
+2026-05-04 21:02:14 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-04 21:02:15 [INFO][SYNCER] ============================================================
+2026-05-04 21:02:15 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-04 21:02:15 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-04 21:02:15 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-04 21:02:15 [INFO][SYNCER] ============================================================
+2026-05-04 21:02:15 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-04 21:02:15 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-04 21:02:15 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-04 21:02:15 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] MQTT connected & subscribed
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=p2p-dev-wlan0
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:p2p-dev-wlan0
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[NET] NTP already synchronized via systemd-timesyncd
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 3 rules, 4 schedules
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[SCHEDULER] Started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[AUTO] Command listener started
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-04 21:02:15 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.2:5000
+2026-05-04 21:02:15 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-04 21:02:18 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-04 21:02:19 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-04 21:02:19 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-04 21:02:19 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-04 21:02:19 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-04 21:02:19 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-04 21:02:57 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 21:03:02 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 21:03:19 [INFO][SYNCER] Firestore: Batch flush 20 sensor history rows
+2026-05-04 21:03:19 [INFO][SYNCER] Flushed 20 sensor history rows to Firestore
+2026-05-04 21:03:20 [INFO][SYNCER] [Downlink] DISPATCH: ePogHP0fuQIl4YV83tDq [turn_off] → Redis[device_commands]
+2026-05-04 21:03:20 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh ePogHP0fuQIl4YV83tDq
+2026-05-04 21:03:20 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 21:03:20 [INFO][SYNCER] [Downlink] DISPATCH: Y4ggDBePLfFhHxHEGsbZ [turn_off] → Redis[device_commands]
+2026-05-04 21:03:20 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Y4ggDBePLfFhHxHEGsbZ
+2026-05-04 21:03:20 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 21:03:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-04 21:04:19 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:04:19 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:05:20 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:05:20 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:06:20 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:06:20 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:07:14 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-04 21:07:14 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-04.db (mode: sd2)
+2026-05-04 21:07:20 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:07:20 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:08:20 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:08:20 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:08:22 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 21:09:21 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:09:21 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:10:21 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:10:21 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:11:21 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:11:21 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:12:22 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:12:22 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:13:22 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:13:22 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:14:22 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:14:22 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:15:22 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:15:22 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:16:22 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:16:22 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:17:23 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:17:23 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:18:23 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-04 21:18:23 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-04 21:19:23 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:19:23 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:20:00 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 21:20:23 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:20:23 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:21:24 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:21:24 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:22:24 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:22:24 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:23:24 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:23:24 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:24:25 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:24:25 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:25:25 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:25:25 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:26:25 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 21:26:25 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 21:27:20 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 21:27:21 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 21:27:21 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 21:27:25 [INFO][SYNCER] Firestore: Batch flush 22 sensor history rows
+2026-05-04 21:27:25 [INFO][SYNCER] Flushed 22 sensor history rows to Firestore
+2026-05-04 21:27:56 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 21:28:26 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:28:26 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:28:31 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 21:28:35 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 21:28:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-04 21:29:26 [INFO][SYNCER] Firestore: Batch flush 65 sensor history rows
+2026-05-04 21:29:26 [INFO][SYNCER] Flushed 65 sensor history rows to Firestore
+2026-05-04 21:30:26 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:30:26 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:31:27 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:31:27 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:32:27 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:32:27 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:33:27 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:33:28 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:34:28 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:34:28 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:35:00 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-04 21:35:28 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:35:28 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:36:29 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:36:29 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:37:29 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:37:29 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:38:30 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:38:30 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:39:30 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:39:30 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:40:31 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 21:40:31 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 21:40:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore

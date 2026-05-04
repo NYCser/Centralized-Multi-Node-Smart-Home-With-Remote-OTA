@@ -1,21 +1,27 @@
 """
-workers/safety_watchdog.py  — FIXED v2 (CONFLICT FIX)
+workers/safety_watchdog.py  — FIXED v3
 ══════════════════════════════════════════════════════
 FIXES trong phiên bản này:
 
-  [CONFLICT C1 — MEDIUM] Thread-safe CACHED_SENSORS
-      ─────────────────────────────────────────────
-      Vấn đề: safety_watchdog đọc CACHED_SENSORS trực tiếp từ dict Python
-              trong khi automation_engine đang ghi từ MQTT thread khác.
-              Python GIL bảo vệ atomic ops nhưng KHÔNG bảo vệ dict.update()
-              đang thực thi giữa chừng.
-      Fix: Đọc sensor data qua automation_engine.get_cached_sensors(room_id)
-           — hàm này dùng threading.RLock() và trả về copy của dict.
-           CACHED_SENSORS trong file này vẫn giữ để backward compat nhưng
-           KHÔNG ĐỌC TRỰC TIẾP nữa trong vòng lặp watchdog.
+  [FIX-ALERT-1 — CRITICAL] _save_alert không publish lên "safety_alert" channel
+      ─────────────────────────────────────────────────────────────────────────
+      Vấn đề: UplinkStream trong firebase_sync.py subscribe "safety_alert" channel
+              để push cảnh báo lên Firestore system_alerts, nhưng _save_alert()
+              chỉ publish lên "realtime_data" (dùng cho SocketIO/Web), KHÔNG publish
+              lên "safety_alert" → cảnh báo gas/fire không bao giờ vào Firestore.
+      Fix: _save_alert() thêm bus.get_redis().publish("safety_alert", ...) sau khi
+           lưu SQLite, để UplinkStream bắt được và push lên Firestore.
 
-  [Giữ nguyên]
-      BUG-10: was_dangerous flag để chặn spam MQTT
+  [FIX-ALERT-2 — MEDIUM] Cơ chế an toàn khi safety lock tự refresh
+      ─────────────────────────────────────────────────────────────────────────
+      Vấn đề: Khi is_dangerous == True và was_dangerous == True, _set_safety_lock()
+              được gọi mỗi 1s (WATCHDOG_TICK) thay vì mỗi 30s như comment.
+              Gây spam Redis setex không cần thiết.
+      Fix: Thêm biến last_lock_refresh tracking 30s per room.
+
+  [Giữ nguyên từ v2]
+      BUG-10: was_dangerous flag
+      FIX C1: Thread-safe CACHED_SENSORS qua get_cached_sensors()
 """
 
 import time
@@ -31,6 +37,7 @@ SAFETY_REPEAT_INTERVAL  = 300   # 5 phút → lưu alert lại
 WATCHDOG_TICK           = 1.0
 GAS_DEFAULT_THRESHOLD   = 600
 DB_PATH                 = "/data/smarthome.db"
+LOCK_REFRESH_INTERVAL   = 30    # [FIX-ALERT-2] Chỉ refresh safety_lock mỗi 30s
 
 DEVICE_MAP = {
     "kitchen_01":     {"fan": "fan_kt_1",  "light": "light_kt_1"},
@@ -54,10 +61,16 @@ def get_db():
 
 
 def _save_alert(room_id: str, alert_type: str, message: str):
+    """
+    [FIX-ALERT-1] Lưu alert vào SQLite + publish lên CẢ HAI channel:
+      1. "realtime_data"  → SocketIO → Web dashboard (hiển thị ngay)
+      2. "safety_alert"   → UplinkStream → Firestore system_alerts (lưu lịch sử Firebase)
+    Trước đây chỉ publish "realtime_data" → Firestore không bao giờ có dữ liệu gas/fire.
+    """
     bus = MessageBus.get_instance()
     conn = get_db()
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         conn.execute(
             "INSERT INTO system_alerts (room,type,message,level,timestamp) VALUES (?,?,?,?,?)",
             (room_id, alert_type, message, "critical", now)
@@ -72,11 +85,29 @@ def _save_alert(room_id: str, alert_type: str, message: str):
     finally:
         conn.close()
 
+    # Publish lên "realtime_data" cho SocketIO/Web
     bus.publish_event("realtime_data", {
         "event":   "new_alert", "type": alert_type,
         "room":    room_id, "message": message,
         "level":   "critical", "timestamp": now
     })
+
+    # [FIX-ALERT-1] Publish lên "safety_alert" cho UplinkStream → Firestore
+    # Format phù hợp với UplinkStream._on_alert() trong firebase_sync.py
+    alert_payload = json.dumps({
+        "type":     alert_type,
+        "message":  message,
+        "level":    "critical",
+        "room":     room_id,
+        "location": room_id,
+        "timestamp": now
+    })
+    try:
+        bus.get_redis().publish("safety_alert", alert_payload)
+    except Exception as e:
+        print(f"[WATCHDOG] safety_alert publish error: {e}")
+
+    # Lưu active alert vào Redis để /system/safety_status endpoint trả về
     bus.get_redis().setex(
         f"active_alert:{room_id}",
         SAFETY_MUTE_TIMEOUT * 2,
@@ -121,7 +152,6 @@ def run():
     redis = bus.get_redis()
 
     # Import ở đây để tránh circular import
-    # automation_engine phải được import SAU KHI đã load
     import importlib
 
     def _get_sensors(room_id: str) -> dict:
@@ -133,7 +163,6 @@ def run():
             ae = importlib.import_module("workers.automation_engine")
             return ae.get_cached_sensors(room_id)
         except Exception:
-            # Fallback: dùng local dict (ít an toàn hơn nhưng không crash)
             return dict(CACHED_SENSORS.get(room_id, {}))
 
     def listen_mute():
@@ -156,7 +185,7 @@ def run():
                 print(f"[WATCHDOG] mute listener error: {e}")
 
     threading.Thread(target=listen_mute, daemon=True).start()
-    print("[WATCHDOG] Safety watchdog started (thread-safe sensor read)")
+    print("[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)")
 
     while True:
         try:
@@ -175,10 +204,11 @@ def run():
                 sensors = _get_sensors(room_id)
 
                 state   = SAFETY_STATE.setdefault(room_id, {
-                    "muted":        False,
-                    "mute_time":    None,
-                    "last_alert":   None,
-                    "was_dangerous": False,
+                    "muted":             False,
+                    "mute_time":         None,
+                    "last_alert":        None,
+                    "was_dangerous":     False,
+                    "last_lock_refresh": None,  # [FIX-ALERT-2]
                 })
 
                 gas_threshold = float(rule.get("gas_threshold") or GAS_DEFAULT_THRESHOLD)
@@ -195,11 +225,15 @@ def run():
                     # FIX BUG-10: Chỉ trigger hardware khi LẦN ĐẦU phát hiện nguy hiểm
                     if not state.get("was_dangerous"):
                         _trigger_safety_action(bus, room_id, alert_type, current_gas)
-                        state["was_dangerous"] = True
+                        state["was_dangerous"]     = True
+                        state["last_lock_refresh"] = now
                         print(f"[WATCHDOG] DANGER DETECTED {room_id}: {alert_msg}")
                     else:
-                        # Đã nguy hiểm rồi — chỉ refresh safety_lock TTL mỗi 30s
-                        _set_safety_lock(room_id, True)
+                        # [FIX-ALERT-2] Đã nguy hiểm — refresh safety_lock mỗi 30s, không mỗi 1s
+                        last_refresh = state.get("last_lock_refresh")
+                        if last_refresh is None or (now - last_refresh).total_seconds() >= LOCK_REFRESH_INTERVAL:
+                            _set_safety_lock(room_id, True)
+                            state["last_lock_refresh"] = now
 
                     # Lưu alert theo interval
                     if state.get("muted"):
@@ -222,9 +256,12 @@ def run():
                     # Hết nguy hiểm
                     if state.get("was_dangerous"):
                         _set_safety_lock(room_id, False)
-                        state["was_dangerous"] = False
-                        state["last_alert"]    = None
-                        state["muted"]         = False
+                        state["was_dangerous"]     = False
+                        state["last_alert"]        = None
+                        state["muted"]             = False
+                        state["last_lock_refresh"] = None
+
+                        # Thông báo an toàn cho Web (realtime_data)
                         bus.publish_event("realtime_data", {
                             "event":     "new_alert",
                             "type":      "system",
@@ -233,6 +270,18 @@ def run():
                             "level":     "info",
                             "timestamp": now.strftime("%Y-%m-%d %H:%M:%S")
                         })
+                        # [FIX-ALERT-1] Cũng push "safe" notification lên Firestore
+                        try:
+                            bus.get_redis().publish("safety_alert", json.dumps({
+                                "type":     "system",
+                                "message":  f"Phòng {room_id} đã an toàn.",
+                                "level":    "info",
+                                "room":     room_id,
+                                "location": room_id,
+                                "timestamp": now.strftime("%Y-%m-%d %H:%M:%S")
+                            }))
+                        except Exception:
+                            pass
                         print(f"[WATCHDOG] {room_id}: SAFE — lock released")
 
             time.sleep(WATCHDOG_TICK)
