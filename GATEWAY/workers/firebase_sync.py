@@ -928,11 +928,13 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
             conn = get_sqlite_conn()
             changed_auto = False
             try:
+                seen_rooms = set()
                 for doc_snap in auto_docs:
                     data    = doc_snap.to_dict()
                     room_id = data.get("roomId") or data.get("room_id", "")
                     if not room_id:
                         continue
+                    seen_rooms.add(room_id)
                     # Map Web field names → SQLite column names
                     fan_thresh   = data.get("fanThreshold")   or data.get("fan_threshold")
                     light_thresh = data.get("lightThreshold") or data.get("light_threshold")
@@ -962,6 +964,13 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                                 (enabled, fan_thresh, light_thresh, gas_thresh, co2_thresh, room_id)
                             )
                             changed_auto = True
+
+                # Delete automations no longer in Firestore
+                for row in conn.execute("SELECT room_id FROM automations").fetchall():
+                    if row["room_id"] not in seen_rooms:
+                        conn.execute("DELETE FROM automations WHERE room_id=?", (row["room_id"],))
+                        changed_auto = True
+
                 conn.commit()
             finally:
                 conn.close()
@@ -969,6 +978,8 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                 logger.info("[AutoSync] Automation rules updated in SQLite from Firestore")
                 # Notify automation_engine để reload CACHED_AUTOMATIONS
                 r.publish("automation_commands", __import__("json").dumps({"action": "reload_all"}))
+
+            # ── 2. Sync Schedules ────────────────────────────────────────
 
             # ── 2. Sync Schedules ────────────────────────────────────────
             sched_docs = fs_client.collection("schedules").get()
@@ -1006,6 +1017,16 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                         conn.execute(
                             "UPDATE schedules SET action=?, enabled=? WHERE room_id=? AND device_id=? AND time=?",
                             (action, enabled, room_id, device_id, time_val)
+                        )
+                        changed_sched = True
+
+                # Delete schedules no longer in Firestore
+                for key in existing:
+                    if key not in seen_keys:
+                        room_id, device_id, time_val = key.split('_', 2)
+                        conn.execute(
+                            "DELETE FROM schedules WHERE room_id=? AND device_id=? AND time=?",
+                            (room_id, device_id, time_val)
                         )
                         changed_sched = True
 
