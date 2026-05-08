@@ -9851,3 +9851,1899 @@ SyntaxError: name 'CACHED_AUTOMATIONS' is used prior to global declaration
 2026-05-04 21:40:31 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
 2026-05-04 21:40:31 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
 2026-05-04 21:40:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-04 22:08:04 [INFO][SYNCER] SyncWorker starting...
+2026-05-04 22:08:04 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-04 22:08:05 [INFO][SYNCER] ============================================================
+2026-05-04 22:08:05 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-04 22:08:05 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-04 22:08:05 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-04 22:08:05 [INFO][SYNCER] ============================================================
+2026-05-04 22:08:05 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-04 22:08:05 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-04 22:08:05 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-04 22:08:05 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=p2p-dev-wlan0
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:p2p-dev-wlan0
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[NET] NTP already synchronized via systemd-timesyncd
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Cache loaded: 3 rules, 7 schedules
+[SCHEDULER] Started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-04 22:08:06 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.137.2:5000
+2026-05-04 22:08:06 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-04 22:08:09 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-04 22:08:09 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-04 22:08:09 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-04 22:08:09 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-04 22:08:09 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-04 22:08:09 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-04 22:08:18 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:08:18 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:09:10 [INFO][SYNCER] Firestore: Batch flush 70 sensor history rows
+2026-05-04 22:09:10 [INFO][SYNCER] Flushed 70 sensor history rows to Firestore
+2026-05-04 22:10:10 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 22:10:10 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 22:10:11 [INFO][SYNCER] [Downlink] DISPATCH: LQufxfELX0mvx09LaS0h [turn_off] → Redis[device_commands]
+2026-05-04 22:10:11 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh LQufxfELX0mvx09LaS0h
+2026-05-04 22:11:11 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 22:11:11 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 22:12:12 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 22:12:12 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 22:13:04 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-04 22:13:05 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-04.db (mode: sd2)
+2026-05-04 22:13:12 [INFO][SYNCER] Firestore: Batch flush 40 sensor history rows
+2026-05-04 22:13:12 [INFO][SYNCER] Flushed 40 sensor history rows to Firestore
+2026-05-04 22:14:13 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-04 22:14:13 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-04 22:15:04 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:15:09 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:15:13 [INFO][SYNCER] Firestore: Batch flush 68 sensor history rows
+2026-05-04 22:15:13 [INFO][SYNCER] Flushed 68 sensor history rows to Firestore
+2026-05-04 22:15:27 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:15:34 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:16:14 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 22:16:14 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 22:16:31 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:16:34 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:16:34 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:16:39 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:16:46 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:17:08 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:17:12 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:17:14 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:17:14 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:17:22 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:18:14 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 22:18:14 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 22:19:03 [INFO][SYNCER] [Downlink] DISPATCH: iGGqSnfB8jDjYhmFt5sZ [turn_off] → Redis[device_commands]
+2026-05-04 22:19:03 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh iGGqSnfB8jDjYhmFt5sZ
+2026-05-04 22:19:03 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:19:15 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:19:15 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:19:30 [INFO][SYNCER] [Downlink] DISPATCH: ajmC1dhy5W0ejjWfUH6u [turn_off] → Redis[device_commands]
+2026-05-04 22:19:30 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh ajmC1dhy5W0ejjWfUH6u
+2026-05-04 22:19:30 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:20:15 [INFO][SYNCER] Firestore: Batch flush 88 sensor history rows
+2026-05-04 22:20:15 [INFO][SYNCER] Flushed 88 sensor history rows to Firestore
+2026-05-04 22:21:15 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 22:21:15 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 22:22:16 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 22:22:16 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 22:22:19 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:23:16 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 22:23:16 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 22:24:16 [INFO][SYNCER] Firestore: Batch flush 53 sensor history rows
+2026-05-04 22:24:16 [INFO][SYNCER] Flushed 53 sensor history rows to Firestore
+2026-05-04 22:24:20 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:24:24 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:25:16 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 22:25:16 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 22:25:18 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:25:19 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:25:20 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:25:40 [INFO][SYNCER] [Downlink] DISPATCH: VIjCcP9R3VSKM3pOhuxM [turn_off] → Redis[device_commands]
+2026-05-04 22:25:41 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh VIjCcP9R3VSKM3pOhuxM
+2026-05-04 22:25:41 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:26:17 [INFO][SYNCER] Firestore: Batch flush 78 sensor history rows
+2026-05-04 22:26:17 [INFO][SYNCER] Flushed 78 sensor history rows to Firestore
+2026-05-04 22:27:17 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-04 22:27:17 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-04 22:28:18 [INFO][SYNCER] Firestore: Batch flush 53 sensor history rows
+2026-05-04 22:28:18 [INFO][SYNCER] Flushed 53 sensor history rows to Firestore
+2026-05-04 22:28:27 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:28:33 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:28:36 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:28:52 [INFO][SYNCER] [Downlink] DISPATCH: zA8jXZBmWNXohVA0m0lg [turn_off] → Redis[device_commands]
+2026-05-04 22:28:53 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh zA8jXZBmWNXohVA0m0lg
+2026-05-04 22:28:53 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:28:53 [INFO][SYNCER] [Downlink] DISPATCH: tbVtMphFpOGM9m2ZjzGZ [turn_off] → Redis[device_commands]
+2026-05-04 22:28:53 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh tbVtMphFpOGM9m2ZjzGZ
+2026-05-04 22:28:54 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:29:18 [INFO][SYNCER] Firestore: Batch flush 128 sensor history rows
+2026-05-04 22:29:18 [INFO][SYNCER] Flushed 128 sensor history rows to Firestore
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 816 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 624 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 859 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 711 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): manual → kitchen_01/fan_kt_1 turn_off
+[WATCHDOG] kitchen_01: SAFE — lock released
+[AUTO] ACK sent for cmd LQufxfELX0mvx09LaS0h: fan_kt_1 → True
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 663 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_on
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_on
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_on
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd iGGqSnfB8jDjYhmFt5sZ: fan_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd ajmC1dhy5W0ejjWfUH6u: light_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_on
+[DISPATCH] MANUAL_STATE TTL expired for fan_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] MANUAL_STATE TTL expired for light_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd VIjCcP9R3VSKM3pOhuxM: light_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd zA8jXZBmWNXohVA0m0lg: light_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] ACK sent for cmd tbVtMphFpOGM9m2ZjzGZ: fan_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+2026-05-04 22:30:19 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 22:30:19 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 22:30:44 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:31:19 [INFO][SYNCER] Firestore: Batch flush 93 sensor history rows
+2026-05-04 22:31:19 [INFO][SYNCER] Flushed 93 sensor history rows to Firestore
+2026-05-04 22:32:20 [INFO][SYNCER] Firestore: Batch flush 102 sensor history rows
+2026-05-04 22:32:20 [INFO][SYNCER] Flushed 102 sensor history rows to Firestore
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] MANUAL_STATE TTL expired for light_bd_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_on
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+2026-05-04 22:33:20 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 22:33:20 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 22:33:53 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:33:53 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:34:21 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:34:21 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:35:21 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:35:21 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:36:22 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:36:22 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:37:22 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:37:22 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:38:23 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:38:23 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:39:24 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:39:24 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:40:24 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 22:40:24 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 22:41:25 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 22:41:25 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 22:41:41 [INFO][SYNCER] [Downlink] DISPATCH: 5d1mbjrc3zvzb6ZUukAx [turn_off] → Redis[device_commands]
+2026-05-04 22:41:41 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 5d1mbjrc3zvzb6ZUukAx
+2026-05-04 22:41:41 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:41:42 [INFO][SYNCER] [Downlink] DISPATCH: Y8M4CPui1GJsz0gJG6Zu [turn_off] → Redis[device_commands]
+2026-05-04 22:41:42 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Y8M4CPui1GJsz0gJG6Zu
+2026-05-04 22:41:42 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:42:00 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:42:07 [INFO][SYNCER] [Downlink] DISPATCH: 9wMMt4A0HfN97unlET6z [turn_off] → Redis[device_commands]
+2026-05-04 22:42:07 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 9wMMt4A0HfN97unlET6z
+2026-05-04 22:42:07 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:42:08 [INFO][SYNCER] [Downlink] DISPATCH: OR7iZBqAt6UVhRPUZNnc [turn_off] → Redis[device_commands]
+2026-05-04 22:42:08 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh OR7iZBqAt6UVhRPUZNnc
+2026-05-04 22:42:09 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:42:25 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:42:25 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:42:31 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:43:26 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:43:26 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:44:27 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:44:27 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:44:47 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [start_register] → Redis[rfid_register]
+2026-05-04 22:44:47 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-04 22:44:50 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [cancel_register] → Redis[rfid_register]
+2026-05-04 22:44:50 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-04 22:45:27 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:45:27 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:46:28 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:46:28 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:46:29 [INFO][SYNCER] [Downlink] DISPATCH: 8BHRZg9zxfcaOCFI1Z5d [turn_on] → Redis[device_commands]
+2026-05-04 22:46:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 8BHRZg9zxfcaOCFI1Z5d
+2026-05-04 22:46:29 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:46:29 [INFO][SYNCER] [Downlink] DISPATCH: pWLEGdTR0fLvuXYUUyEK [turn_on] → Redis[device_commands]
+2026-05-04 22:46:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh pWLEGdTR0fLvuXYUUyEK
+2026-05-04 22:46:29 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-04 22:46:38 [INFO][SYNCER] [Downlink] DISPATCH: rlZ8nFJDzbuqNc1jYPgu [turn_off] → Redis[device_commands]
+2026-05-04 22:46:38 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh rlZ8nFJDzbuqNc1jYPgu
+2026-05-04 22:46:38 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:46:38 [INFO][SYNCER] [Downlink] DISPATCH: FZiWCdUKTWTL4yUppiGf [turn_off] → Redis[device_commands]
+2026-05-04 22:46:38 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh FZiWCdUKTWTL4yUppiGf
+2026-05-04 22:46:38 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-04 22:47:09 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:47:24 [INFO][SYNCER] [Downlink] DISPATCH: BKZDj1NF2vEnJtNkUaH8 [turn_off] → Redis[device_commands]
+2026-05-04 22:47:24 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh BKZDj1NF2vEnJtNkUaH8
+2026-05-04 22:47:24 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:47:28 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:47:28 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] MANUAL_STATE TTL expired for fan_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] MANUAL_STATE TTL expired for light_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd 5d1mbjrc3zvzb6ZUukAx: light_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd Y8M4CPui1GJsz0gJG6Zu: fan_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd 9wMMt4A0HfN97unlET6z: fan_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd OR7iZBqAt6UVhRPUZNnc: light_kt_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[AUTO] Enrollment started via Firebase command
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[AUTO] Enrollment cancelled via Firebase command
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd 8BHRZg9zxfcaOCFI1Z5d: fan_bd_1 → True
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_on
+[AUTO] ACK sent for cmd pWLEGdTR0fLvuXYUUyEK: light_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd rlZ8nFJDzbuqNc1jYPgu: fan_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd FZiWCdUKTWTL4yUppiGf: light_bd_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] MANUAL_STATE TTL expired for fan_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd BKZDj1NF2vEnJtNkUaH8: fan_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → fan_kt_1
+2026-05-04 22:48:29 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 22:48:29 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 22:49:29 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:49:29 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:50:30 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 22:50:30 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 22:51:30 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:51:30 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:52:29 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:52:31 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:52:31 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:52:59 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:53:29 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:53:31 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:53:31 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:54:04 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:54:08 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 22:54:32 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:54:32 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:54:34 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:55:09 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:55:33 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:55:33 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:55:39 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 22:55:50 [INFO][SYNCER] [Downlink] DISPATCH: P4a7VQOdFbP0YoDGUGlU [turn_off] → Redis[device_commands]
+2026-05-04 22:55:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh P4a7VQOdFbP0YoDGUGlU
+2026-05-04 22:55:50 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 22:56:33 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:56:33 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:57:34 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:57:34 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 22:58:34 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 22:58:34 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 22:59:34 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 22:59:34 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:00:35 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:00:35 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:00:54 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 23:01:24 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 23:01:35 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:01:35 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:01:59 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 23:02:34 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 23:02:36 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:02:36 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:03:04 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-04 23:03:36 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:03:36 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:03:38 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-04 23:03:42 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-04 23:04:37 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:04:37 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:05:37 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:05:37 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:06:38 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:06:38 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:07:38 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:07:38 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:08:39 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:08:39 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:09:39 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:09:39 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:10:40 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:10:40 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:11:41 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:11:41 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:12:41 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:12:41 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:13:42 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:13:42 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:14:42 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:14:42 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:15:43 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:15:43 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:16:44 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:16:44 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:17:45 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:17:45 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:18:45 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:18:45 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:19:46 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:19:46 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:20:47 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:20:47 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:21:47 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:21:47 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:22:48 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:22:48 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:23:49 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:23:49 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:24:49 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:24:49 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:25:50 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:25:50 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:26:50 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:26:51 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:27:51 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:27:51 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:28:52 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:28:52 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:29:52 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:29:52 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:30:53 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:30:53 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:31:53 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:31:53 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:32:54 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:32:54 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:33:55 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:33:55 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:34:55 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:34:55 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:35:56 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:35:56 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:36:57 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:36:57 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:37:58 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:37:58 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:38:58 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:38:58 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:39:59 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:39:59 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:41:00 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:41:00 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:42:00 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:42:00 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:43:01 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:43:01 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:44:01 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:44:01 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:45:02 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:45:02 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:46:03 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:46:03 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:47:03 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:47:03 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:48:04 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:48:04 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:49:05 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:49:05 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:50:05 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:50:05 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:51:06 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:51:06 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-04 23:52:06 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:52:06 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:53:07 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:53:07 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:54:08 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:54:08 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:55:08 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:55:08 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:56:09 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:56:09 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:57:09 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-04 23:57:09 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-04 23:58:10 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-04 23:58:10 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-04 23:59:11 [INFO][SYNCER] Firestore: Batch flush 112 sensor history rows
+2026-05-04 23:59:11 [INFO][SYNCER] Flushed 112 sensor history rows to Firestore
+2026-05-05 00:00:12 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-05 00:00:12 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-05 00:01:12 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-05 00:01:12 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-05 00:01:13 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-05.db (mode: sd2)
+2026-05-05 00:02:13 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-05 00:02:13 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-05 00:03:14 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-05 00:03:14 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-05 00:04:14 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-05 00:04:14 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-05 00:05:15 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-05 00:05:15 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-05 00:14:01 [INFO][SYNCER] SyncWorker starting...
+2026-05-05 00:14:01 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-05 00:14:03 [INFO][SYNCER] ============================================================
+2026-05-05 00:14:03 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-05 00:14:03 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-05 00:14:03 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-05 00:14:03 [INFO][SYNCER] ============================================================
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 7 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-05 00:14:03 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://127.0.0.1:5000
+2026-05-05 00:14:03 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-05 00:14:03 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-05 00:14:03 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-05 00:14:03 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-05 00:14:03 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+2026-05-05 00:14:03 [WARNING][SYNCER] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f861f4c90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution')': /token
+2026-05-05 00:14:03 [WARNING][SYNCER] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f6b7964d0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution')': /token
+2026-05-05 00:14:03 [WARNING][SYNCER] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f6b797150>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution')': /token
+2026-05-05 00:14:03 [ERROR][SYNCER] RTDB provision room bedroom_01 failed: HTTPSConnectionPool(host='oauth2.googleapis.com', port=443): Max retries exceeded with url: /token (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f6b7843d0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+2026-05-08 11:02:25 [INFO][SYNCER] SyncWorker starting...
+2026-05-08 11:02:25 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-08 11:02:26 [INFO][SYNCER] ============================================================
+2026-05-08 11:02:26 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-08 11:02:26 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-08 11:02:26 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-08 11:02:26 [INFO][SYNCER] ============================================================
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[NET] Internet: ON
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 7 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[NET] NTP already synchronized via systemd-timesyncd
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-08 11:02:26 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-08 11:02:26 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-08 11:02:26 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-08 11:02:26 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-08 11:02:26 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-08 11:02:26 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+2026-05-08 11:02:30 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-08 11:02:30 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-08 11:02:30 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-08 11:02:30 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-08 11:02:30 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-08 11:02:30 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-08 11:03:19 [INFO][SYNCER] [Downlink] DISPATCH: bbwuUZo0p09Qo6hMQpcj [turn_on] → Redis[device_commands]
+2026-05-08 11:03:19 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh bbwuUZo0p09Qo6hMQpcj
+2026-05-08 11:03:20 [INFO][SYNCER] [Downlink] DISPATCH: df5QzsP48XspHhBPBtz9 [turn_off] → Redis[device_commands]
+2026-05-08 11:03:20 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh df5QzsP48XspHhBPBtz9
+2026-05-08 11:03:30 [INFO][SYNCER] Firestore: Batch flush 153 sensor history rows
+2026-05-08 11:03:31 [INFO][SYNCER] Flushed 153 sensor history rows to Firestore
+2026-05-08 11:04:21 [INFO][SYNCER] [Downlink] DISPATCH: NkNRw1QSFTjlKUjoTG6n [turn_on] → Redis[device_commands]
+2026-05-08 11:04:21 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh NkNRw1QSFTjlKUjoTG6n
+2026-05-08 11:04:29 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:04:29 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 11:04:29 [INFO][SYNCER] [Downlink] DISPATCH: 0TTLpfjM6cCicQ2SwBQ3 [turn_on] → Redis[device_commands]
+2026-05-08 11:04:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 0TTLpfjM6cCicQ2SwBQ3
+2026-05-08 11:04:31 [INFO][SYNCER] Firestore: Batch flush 10 sensor history rows
+2026-05-08 11:04:31 [INFO][SYNCER] Flushed 10 sensor history rows to Firestore
+2026-05-08 11:04:35 [INFO][SYNCER] [Downlink] DISPATCH: J8jOJGCG1hd7SndoUIjd [turn_off] → Redis[device_commands]
+2026-05-08 11:04:35 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh J8jOJGCG1hd7SndoUIjd
+2026-05-08 11:04:52 [INFO][SYNCER] [Downlink] DISPATCH: UC2SxAVoGy3emyDYcQKN [turn_on] → Redis[device_commands]
+2026-05-08 11:04:52 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh UC2SxAVoGy3emyDYcQKN
+2026-05-08 11:05:05 [INFO][SYNCER] [Downlink] DISPATCH: v3pKuAwwnA6YQ2hhzyK3 [turn_off] → Redis[device_commands]
+2026-05-08 11:05:05 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh v3pKuAwwnA6YQ2hhzyK3
+2026-05-08 11:05:29 [INFO][SYNCER] [Downlink] DISPATCH: De4gZecyLzt5T3qvkA3N [turn_on] → Redis[device_commands]
+2026-05-08 11:05:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh De4gZecyLzt5T3qvkA3N
+2026-05-08 11:05:33 [INFO][SYNCER] [Downlink] DISPATCH: 7nxn5R7wlyyG4mrayik5 [turn_off] → Redis[device_commands]
+2026-05-08 11:05:33 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 7nxn5R7wlyyG4mrayik5
+2026-05-08 11:05:45 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 11:06:00 [INFO][SYNCER] [Downlink] DISPATCH: nqN5IBzHV9FXx5R24tD1 [turn_off] → Redis[device_commands]
+2026-05-08 11:06:01 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh nqN5IBzHV9FXx5R24tD1
+2026-05-08 11:06:03 [INFO][SYNCER] [Downlink] DISPATCH: VA6Ug72VNn8Z6VkxK4tk [turn_on] → Redis[device_commands]
+2026-05-08 11:06:04 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh VA6Ug72VNn8Z6VkxK4tk
+2026-05-08 11:06:14 [INFO][SYNCER] [Downlink] DISPATCH: YbtZqfudjtPY5Xdq4R1Y [turn_off] → Redis[device_commands]
+2026-05-08 11:06:15 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh YbtZqfudjtPY5Xdq4R1Y
+2026-05-08 11:06:40 [INFO][SYNCER] [Downlink] DISPATCH: shuxwv4GZgOqmznM72g7 [turn_off] → Redis[device_commands]
+2026-05-08 11:06:40 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh shuxwv4GZgOqmznM72g7
+2026-05-08 11:06:51 [INFO][SYNCER] [Downlink] DISPATCH: oIxJtaX5kzg0FoSQudJ1 [turn_off] → Redis[device_commands]
+2026-05-08 11:06:52 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh oIxJtaX5kzg0FoSQudJ1
+2026-05-08 11:07:14 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:07:25 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-08 11:07:25 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-08.db (mode: sd2)
+2026-05-08 11:07:31 [INFO][SYNCER] Firestore: Batch flush 10 sensor history rows
+2026-05-08 11:07:31 [INFO][SYNCER] Flushed 10 sensor history rows to Firestore
+2026-05-08 11:07:36 [INFO][SYNCER] [Downlink] DISPATCH: qSVIHH5XHkdsADE2oPFF [turn_on] → Redis[device_commands]
+2026-05-08 11:07:37 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh qSVIHH5XHkdsADE2oPFF
+2026-05-08 11:07:42 [INFO][SYNCER] [Downlink] DISPATCH: lqxYJ8NJbOELHVDogiw8 [turn_off] → Redis[device_commands]
+2026-05-08 11:07:42 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh lqxYJ8NJbOELHVDogiw8
+2026-05-08 11:07:43 [INFO][SYNCER] [Downlink] DISPATCH: VKfRoedK6wqVhZ5I3PvL [turn_on] → Redis[device_commands]
+2026-05-08 11:07:44 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh VKfRoedK6wqVhZ5I3PvL
+2026-05-08 11:07:45 [INFO][SYNCER] [Downlink] DISPATCH: jmLKEVIehHUVy0AJJPvL [turn_off] → Redis[device_commands]
+2026-05-08 11:07:45 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh jmLKEVIehHUVy0AJJPvL
+2026-05-08 11:08:00 [INFO][SYNCER] [Downlink] DISPATCH: FAM6clhr1IaYnmu9cMfv [turn_on] → Redis[device_commands]
+2026-05-08 11:08:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh FAM6clhr1IaYnmu9cMfv
+2026-05-08 11:08:19 [INFO][SYNCER] [Downlink] DISPATCH: tycTL5rRUcGlU4EqXGja [turn_off] → Redis[device_commands]
+2026-05-08 11:08:19 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh tycTL5rRUcGlU4EqXGja
+2026-05-08 11:08:31 [INFO][SYNCER] Firestore: Batch flush 5 sensor history rows
+2026-05-08 11:08:31 [INFO][SYNCER] Flushed 5 sensor history rows to Firestore
+2026-05-08 11:08:40 [INFO][SYNCER] [Downlink] DISPATCH: SPlAag17FNgg5uH6KdXa [turn_on] → Redis[device_commands]
+2026-05-08 11:08:40 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh SPlAag17FNgg5uH6KdXa
+2026-05-08 11:08:52 [INFO][SYNCER] [Downlink] DISPATCH: riVPThz9wuzBjpEOowJa [turn_off] → Redis[device_commands]
+2026-05-08 11:08:52 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh riVPThz9wuzBjpEOowJa
+2026-05-08 11:09:22 [INFO][SYNCER] [Downlink] DISPATCH: y6fTnYsdHoPnRGEpxVpf [turn_on] → Redis[device_commands]
+2026-05-08 11:09:22 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh y6fTnYsdHoPnRGEpxVpf
+2026-05-08 11:09:54 [INFO][SYNCER] [Downlink] DISPATCH: X4CJwG5arws3WArgz1Cy [turn_off] → Redis[device_commands]
+2026-05-08 11:09:54 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh X4CJwG5arws3WArgz1Cy
+2026-05-08 11:10:05 [INFO][SYNCER] [Downlink] DISPATCH: TzbBEM2n2YLbbWCkVBQR [turn_on] → Redis[device_commands]
+2026-05-08 11:10:05 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TzbBEM2n2YLbbWCkVBQR
+2026-05-08 11:10:07 [INFO][SYNCER] [Downlink] DISPATCH: 6TVMgWZIHlwgvKxtmUay [turn_off] → Redis[device_commands]
+2026-05-08 11:10:07 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 6TVMgWZIHlwgvKxtmUay
+2026-05-08 11:10:12 [INFO][SYNCER] [Downlink] DISPATCH: aJrl1p52ZWTZlpBeqUMO [turn_on] → Redis[device_commands]
+2026-05-08 11:10:12 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh aJrl1p52ZWTZlpBeqUMO
+2026-05-08 11:10:25 [INFO][SYNCER] [Downlink] DISPATCH: aFogg8wKwaJZ9DZ8njDj [turn_off] → Redis[device_commands]
+2026-05-08 11:10:25 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh aFogg8wKwaJZ9DZ8njDj
+2026-05-08 11:11:12 [INFO][SYNCER] [Downlink] DISPATCH: 4S3pdrDaJbY3MWlkGCZk [turn_on] → Redis[device_commands]
+2026-05-08 11:11:12 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 4S3pdrDaJbY3MWlkGCZk
+2026-05-08 11:11:13 [INFO][SYNCER] [Downlink] DISPATCH: nsSFd5OkY4DVWvuDHMAR [turn_off] → Redis[device_commands]
+2026-05-08 11:11:13 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh nsSFd5OkY4DVWvuDHMAR
+2026-05-08 11:12:14 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 11:12:31 [INFO][SYNCER] Firestore: Batch flush 10 sensor history rows
+2026-05-08 11:12:31 [INFO][SYNCER] Flushed 10 sensor history rows to Firestore
+2026-05-08 11:12:41 [INFO][SYNCER] [Downlink] DISPATCH: KN9KQfkjIf8S3Bjww1D6 [turn_off] → Redis[device_commands]
+2026-05-08 11:12:41 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh KN9KQfkjIf8S3Bjww1D6
+2026-05-08 11:12:58 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 11:13:31 [INFO][SYNCER] Firestore: Batch flush 30 sensor history rows
+2026-05-08 11:13:31 [INFO][SYNCER] Flushed 30 sensor history rows to Firestore
+2026-05-08 11:14:32 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 11:14:32 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 11:15:32 [INFO][SYNCER] Firestore: Batch flush 30 sensor history rows
+2026-05-08 11:15:32 [INFO][SYNCER] Flushed 30 sensor history rows to Firestore
+2026-05-08 11:26:42 [INFO][SYNCER] SyncWorker starting...
+2026-05-08 11:26:42 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-08 11:26:43 [INFO][SYNCER] ============================================================
+2026-05-08 11:26:43 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-08 11:26:43 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-08 11:26:43 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-08 11:26:43 [INFO][SYNCER] ============================================================
+2026-05-08 11:26:44 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-08 11:26:44 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-08 11:26:44 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-08 11:26:44 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[NET] Internet: ON
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Cache loaded: 3 rules, 7 schedules
+[API] Registered /api: automation
+[SCHEDULER] Started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[AUTO] Command listener started
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-08 11:26:44 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-08 11:26:44 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-08 11:26:47 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-08 11:26:47 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-08 11:26:47 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-08 11:26:47 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-08 11:26:47 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-08 11:26:47 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-08 11:27:07 [INFO][SYNCER] [Downlink] DISPATCH: iqWgqPSgRWWH1kOsjSNA [turn_on] → Redis[device_commands]
+2026-05-08 11:27:07 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh iqWgqPSgRWWH1kOsjSNA
+2026-05-08 11:27:18 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:27:18 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 11:27:24 [INFO][SYNCER] [Downlink] DISPATCH: 3o5cUQwmwWTzI8htmoL3 [turn_on] → Redis[device_commands]
+2026-05-08 11:27:24 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 3o5cUQwmwWTzI8htmoL3
+2026-05-08 11:27:24 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 11:27:29 [INFO][SYNCER] [Downlink] DISPATCH: RCJc5eynfw3RjsaI1PbM [turn_off] → Redis[device_commands]
+2026-05-08 11:27:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh RCJc5eynfw3RjsaI1PbM
+2026-05-08 11:27:29 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:27:34 [INFO][SYNCER] [Downlink] DISPATCH: BeIuUVLMXQgNY4YIILUl [turn_on] → Redis[device_commands]
+2026-05-08 11:27:34 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh BeIuUVLMXQgNY4YIILUl
+2026-05-08 11:27:38 [INFO][SYNCER] [Downlink] DISPATCH: ggJLlKo6jB4KZcsNdXdp [turn_off] → Redis[device_commands]
+2026-05-08 11:27:38 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh ggJLlKo6jB4KZcsNdXdp
+2026-05-08 11:27:41 [INFO][SYNCER] [Downlink] DISPATCH: hcjaNWAAXVwLLXU4skhp [turn_on] → Redis[device_commands]
+2026-05-08 11:27:41 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh hcjaNWAAXVwLLXU4skhp
+2026-05-08 11:27:43 [INFO][SYNCER] [Downlink] DISPATCH: jhSvByzce6bDqdMsljde [turn_off] → Redis[device_commands]
+2026-05-08 11:27:43 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh jhSvByzce6bDqdMsljde
+2026-05-08 11:27:44 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 11:27:45 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:27:45 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 11:27:45 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 11:27:46 [INFO][SYNCER] [Downlink] DISPATCH: pl3Uj0ui5KmWn4iqgwgS [turn_on] → Redis[device_commands]
+2026-05-08 11:27:46 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh pl3Uj0ui5KmWn4iqgwgS
+2026-05-08 11:27:47 [INFO][SYNCER] [Downlink] DISPATCH: 7lCDBRYnETxcihZbWXvG [turn_off] → Redis[device_commands]
+2026-05-08 11:27:47 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 7lCDBRYnETxcihZbWXvG
+2026-05-08 11:27:47 [INFO][SYNCER] Firestore: Batch flush 45 sensor history rows
+2026-05-08 11:27:47 [INFO][SYNCER] Flushed 45 sensor history rows to Firestore
+2026-05-08 11:27:49 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 11:27:49 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 11:27:49 [INFO][SYNCER] [Downlink] DISPATCH: qp3gDK0Z1Ktf5rSCr2wB [turn_on] → Redis[device_commands]
+2026-05-08 11:27:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh qp3gDK0Z1Ktf5rSCr2wB
+2026-05-08 11:27:50 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 11:27:51 [INFO][SYNCER] [Downlink] DISPATCH: 79ySiXoOmWiYqroLVSm2 [turn_off] → Redis[device_commands]
+2026-05-08 11:27:51 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 79ySiXoOmWiYqroLVSm2
+2026-05-08 11:27:51 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 11:28:48 [INFO][SYNCER] Firestore: Batch flush 65 sensor history rows
+2026-05-08 11:28:48 [INFO][SYNCER] Flushed 65 sensor history rows to Firestore
+2026-05-08 11:29:17 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 11:29:48 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 11:29:48 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 11:30:48 [INFO][SYNCER] Firestore: Batch flush 40 sensor history rows
+2026-05-08 11:30:48 [INFO][SYNCER] Flushed 40 sensor history rows to Firestore
+2026-05-08 11:31:08 [INFO][SYNCER] [Downlink] DISPATCH: G8axDD2zJyEsPaoc1Rcf [turn_off] → Redis[device_commands]
+2026-05-08 11:31:08 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh G8axDD2zJyEsPaoc1Rcf
+2026-05-08 11:31:08 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:31:25 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 11:31:42 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-08 11:31:42 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-08.db (mode: sd2)
+2026-05-08 11:31:49 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 11:31:49 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 11:32:06 [INFO][SYNCER] [Downlink] DISPATCH: Y730m635fMexJOhjGiew [turn_off] → Redis[device_commands]
+2026-05-08 11:32:06 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Y730m635fMexJOhjGiew
+2026-05-08 11:32:06 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 11:32:35 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [start_register] → Redis[rfid_register]
+2026-05-08 11:32:35 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-08 11:32:49 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 11:32:49 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 11:32:54 [INFO][SYNCER] [Downlink] DISPATCH: entrance_register [cancel_register] → Redis[rfid_register]
+2026-05-08 11:32:54 [INFO][SYNCER] [Downlink] RFID cmd entrance_register → dispatched (kept for onSnapshot)
+2026-05-08 12:36:29 [INFO][SYNCER] SyncWorker starting...
+2026-05-08 12:36:29 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-08 12:36:30 [INFO][SYNCER] ============================================================
+2026-05-08 12:36:30 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-08 12:36:30 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-08 12:36:30 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-08 12:36:30 [INFO][SYNCER] ============================================================
+2026-05-08 12:36:31 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-08 12:36:31 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-08 12:36:31 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-08 12:36:31 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] MQTT connected & subscribed
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[NET] Initial WiFi status: connected / BETEA / internet=True
+[NET] NTP already synchronized via systemd-timesyncd
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 7 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-08 12:36:31 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-08 12:36:31 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-08 12:36:33 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-08 12:36:33 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-08 12:36:33 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-08 12:36:33 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-08 12:36:33 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-08 12:36:33 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-08 12:37:34 [INFO][SYNCER] Firestore: Batch flush 40 sensor history rows
+2026-05-08 12:37:34 [INFO][SYNCER] Flushed 40 sensor history rows to Firestore
+2026-05-08 12:37:37 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:37:37 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:37:46 [INFO][SYNCER] [Downlink] DISPATCH: xKHYXVZls2Ir30rKU7mn [turn_on] → Redis[device_commands]
+2026-05-08 12:37:47 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh xKHYXVZls2Ir30rKU7mn
+2026-05-08 12:37:47 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 12:37:47 [INFO][SYNCER] [Downlink] DISPATCH: vlKBfmk4sQrsIwfYDehY [turn_off] → Redis[device_commands]
+2026-05-08 12:37:47 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh vlKBfmk4sQrsIwfYDehY
+2026-05-08 12:37:48 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:37:49 [INFO][SYNCER] [Downlink] DISPATCH: 560bM9EnwXd9cAiconsP [turn_on] → Redis[device_commands]
+2026-05-08 12:37:49 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 560bM9EnwXd9cAiconsP
+2026-05-08 12:37:49 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 12:37:50 [INFO][SYNCER] [Downlink] DISPATCH: r3doYj9LYoxyAnjcRSMy [turn_off] → Redis[device_commands]
+2026-05-08 12:37:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh r3doYj9LYoxyAnjcRSMy
+2026-05-08 12:37:51 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:38:20 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 12:38:34 [INFO][SYNCER] Firestore: Batch flush 65 sensor history rows
+2026-05-08 12:38:34 [INFO][SYNCER] Flushed 65 sensor history rows to Firestore
+2026-05-08 12:39:00 [INFO][SYNCER] [Downlink] DISPATCH: vvb06L5orn9nhkpCHM2J [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 12:39:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh vvb06L5orn9nhkpCHM2J
+2026-05-08 12:39:00 [INFO][SYNCER] [Downlink] DISPATCH: qt05drF18QztpoWg4hjp [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 12:39:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh qt05drF18QztpoWg4hjp
+2026-05-08 12:39:00 [INFO][SYNCER] [Downlink] DISPATCH: XjShkGhEQFG9jnb19m0k [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 12:39:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh XjShkGhEQFG9jnb19m0k
+2026-05-08 12:39:34 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 12:39:34 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 12:39:46 [INFO][SYNCER] [Downlink] DISPATCH: 629J3bGWH8mgh4W15EWi [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 12:39:46 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 629J3bGWH8mgh4W15EWi
+2026-05-08 12:40:01 [INFO][SYNCER] [Downlink] DISPATCH: xDve1QBlvOlc35CpCqyk [turn_off] → Redis[device_commands]
+2026-05-08 12:40:02 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh xDve1QBlvOlc35CpCqyk
+2026-05-08 12:40:34 [INFO][SYNCER] Firestore: Batch flush 25 sensor history rows
+2026-05-08 12:40:34 [INFO][SYNCER] Flushed 25 sensor history rows to Firestore
+2026-05-08 12:40:35 [INFO][SYNCER] [AutoSync] Automation rules updated in SQLite from Firestore
+2026-05-08 12:41:29 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-08 12:41:29 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-08.db (mode: sd2)
+2026-05-08 12:41:34 [INFO][SYNCER] Firestore: Batch flush 5 sensor history rows
+2026-05-08 12:41:34 [INFO][SYNCER] Flushed 5 sensor history rows to Firestore
+2026-05-08 12:42:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-08 12:43:27 [INFO][SYNCER] [Downlink] DISPATCH: P6rF1RSC8fUB1U5ojlDd [turn_off] → Redis[device_commands]
+2026-05-08 12:43:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh P6rF1RSC8fUB1U5ojlDd
+2026-05-08 12:44:48 [INFO][SYNCER] [Downlink] DISPATCH: 1nw4EaVVsUyf5UObPo3I [turn_on] → Redis[device_commands]
+2026-05-08 12:44:48 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 1nw4EaVVsUyf5UObPo3I
+2026-05-08 12:44:52 [INFO][SYNCER] [Downlink] DISPATCH: fwWaLHDDOULA7lmsrt4H [turn_off] → Redis[device_commands]
+2026-05-08 12:44:52 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh fwWaLHDDOULA7lmsrt4H
+2026-05-08 12:45:00 [INFO][SYNCER] [Downlink] DISPATCH: JihPSocexE1rYU2yt1Gw [turn_off] → Redis[device_commands]
+2026-05-08 12:45:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh JihPSocexE1rYU2yt1Gw
+2026-05-08 12:45:03 [INFO][SYNCER] [Downlink] DISPATCH: fFnHHnry9BgkdmB0znnu [turn_on] → Redis[device_commands]
+2026-05-08 12:45:03 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh fFnHHnry9BgkdmB0znnu
+2026-05-08 12:45:07 [INFO][SYNCER] [Downlink] DISPATCH: TAD0nMpIwnN9SlxI35dt [turn_off] → Redis[device_commands]
+2026-05-08 12:45:07 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TAD0nMpIwnN9SlxI35dt
+2026-05-08 12:45:11 [INFO][SYNCER] [Downlink] DISPATCH: 2sUcBbSKO12AcOZOI8or [turn_on] → Redis[device_commands]
+2026-05-08 12:45:11 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 2sUcBbSKO12AcOZOI8or
+2026-05-08 12:45:15 [INFO][SYNCER] [Downlink] DISPATCH: Od9YQ2HTDhY2sqTH2IGJ [turn_off] → Redis[device_commands]
+2026-05-08 12:45:15 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Od9YQ2HTDhY2sqTH2IGJ
+2026-05-08 12:45:29 [INFO][SYNCER] [Downlink] DISPATCH: CJYtYnuYdJUE41jgdJVd [turn_on] → Redis[device_commands]
+2026-05-08 12:45:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh CJYtYnuYdJUE41jgdJVd
+2026-05-08 12:45:30 [INFO][SYNCER] [Downlink] DISPATCH: sqCtadOSGe4xdKUEPauh [turn_off] → Redis[device_commands]
+2026-05-08 12:45:30 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh sqCtadOSGe4xdKUEPauh
+2026-05-08 12:45:31 [INFO][SYNCER] [Downlink] DISPATCH: Y1JPttTfN4gpdeHIljAq [turn_on] → Redis[device_commands]
+2026-05-08 12:45:31 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Y1JPttTfN4gpdeHIljAq
+2026-05-08 12:45:31 [INFO][SYNCER] [Downlink] DISPATCH: Is8WBkP4TPE7aRlDF37n [turn_off] → Redis[device_commands]
+2026-05-08 12:45:31 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Is8WBkP4TPE7aRlDF37n
+2026-05-08 12:46:34 [INFO][SYNCER] Firestore: Batch flush 10 sensor history rows
+2026-05-08 12:46:34 [INFO][SYNCER] Flushed 10 sensor history rows to Firestore
+2026-05-08 12:46:53 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:46:55 [INFO][SYNCER] [Downlink] DISPATCH: Pyb4zI93DxYkgRDw0hvq [turn_on] → Redis[device_commands]
+2026-05-08 12:46:55 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Pyb4zI93DxYkgRDw0hvq
+2026-05-08 12:46:56 [INFO][SYNCER] [Downlink] DISPATCH: 9YnUy7DFhYoGgsjYF1CW [turn_off] → Redis[device_commands]
+2026-05-08 12:46:56 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 9YnUy7DFhYoGgsjYF1CW
+2026-05-08 12:47:01 [INFO][SYNCER] [Downlink] DISPATCH: 9cRhUYgTvJSkemQjHzpz [turn_on] → Redis[device_commands]
+2026-05-08 12:47:01 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 9cRhUYgTvJSkemQjHzpz
+2026-05-08 12:47:03 [INFO][SYNCER] [Downlink] DISPATCH: s15Bo02UBzHiUVYNo7Hz [turn_off] → Redis[device_commands]
+2026-05-08 12:47:03 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh s15Bo02UBzHiUVYNo7Hz
+2026-05-08 12:47:25 [INFO][SYNCER] [Downlink] DISPATCH: GTTeMMXi3DKG7Rut5yDV [turn_on] → Redis[device_commands]
+2026-05-08 12:47:25 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh GTTeMMXi3DKG7Rut5yDV
+2026-05-08 12:47:32 [INFO][SYNCER] [Downlink] DISPATCH: RqIIaQofQ5YVmDHgximC [turn_off] → Redis[device_commands]
+2026-05-08 12:47:32 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh RqIIaQofQ5YVmDHgximC
+2026-05-08 12:47:34 [INFO][SYNCER] [Downlink] DISPATCH: Eui9hKflrgYCpdJgyAe7 [turn_on] → Redis[device_commands]
+2026-05-08 12:47:34 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Eui9hKflrgYCpdJgyAe7
+2026-05-08 12:47:38 [INFO][SYNCER] [Downlink] DISPATCH: Oh5runtLOesYFdTH5oea [turn_off] → Redis[device_commands]
+2026-05-08 12:47:38 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Oh5runtLOesYFdTH5oea
+2026-05-08 12:47:40 [INFO][SYNCER] [Downlink] DISPATCH: NbSjODncrtjgxjV8lcmO [turn_on] → Redis[device_commands]
+2026-05-08 12:47:40 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh NbSjODncrtjgxjV8lcmO
+2026-05-08 12:47:42 [INFO][SYNCER] [Downlink] DISPATCH: FXUd162jHrXZizTW0BMF [turn_off] → Redis[device_commands]
+2026-05-08 12:47:42 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh FXUd162jHrXZizTW0BMF
+2026-05-08 12:47:49 [INFO][SYNCER] [Downlink] DISPATCH: RsmbypbQh3zdXiCG0Sli [turn_on] → Redis[device_commands]
+2026-05-08 12:47:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh RsmbypbQh3zdXiCG0Sli
+2026-05-08 12:47:50 [INFO][SYNCER] [Downlink] DISPATCH: klexGA76k9upKEZxCG3F [turn_off] → Redis[device_commands]
+2026-05-08 12:47:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh klexGA76k9upKEZxCG3F
+2026-05-08 12:48:08 [INFO][SYNCER] [Downlink] DISPATCH: 7F7xFV5QSdwdsARAzti6 [turn_on] → Redis[device_commands]
+2026-05-08 12:48:08 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 7F7xFV5QSdwdsARAzti6
+2026-05-08 12:48:10 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 12:48:11 [INFO][SYNCER] [Downlink] DISPATCH: XYwEHmT2z6kEJyK6xeOm [turn_off] → Redis[device_commands]
+2026-05-08 12:48:11 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh XYwEHmT2z6kEJyK6xeOm
+2026-05-08 12:48:13 [INFO][SYNCER] [Downlink] DISPATCH: 6gNLVbUocnQY2RW8VFnS [turn_on] → Redis[device_commands]
+2026-05-08 12:48:13 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 6gNLVbUocnQY2RW8VFnS
+2026-05-08 12:48:23 [INFO][SYNCER] [Downlink] DISPATCH: mM6H5NTw7yhNwMaMgOOM [turn_off] → Redis[device_commands]
+2026-05-08 12:48:23 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh mM6H5NTw7yhNwMaMgOOM
+2026-05-08 12:48:28 [INFO][SYNCER] [Downlink] DISPATCH: zu4yF2yxDI3gyx96B5DW [turn_on] → Redis[device_commands]
+2026-05-08 12:48:28 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh zu4yF2yxDI3gyx96B5DW
+2026-05-08 12:48:34 [INFO][SYNCER] Firestore: Batch flush 15 sensor history rows
+2026-05-08 12:48:34 [INFO][SYNCER] Flushed 15 sensor history rows to Firestore
+2026-05-08 12:48:35 [INFO][SYNCER] [Downlink] DISPATCH: dy1TQQLJllbws0QuPXxE [turn_off] → Redis[device_commands]
+2026-05-08 12:48:35 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh dy1TQQLJllbws0QuPXxE
+2026-05-08 12:48:44 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 12:48:44 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:48:53 [INFO][SYNCER] [Downlink] DISPATCH: lqD8Wh947Kcwn5mfCNPj [turn_off] → Redis[device_commands]
+2026-05-08 12:48:53 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh lqD8Wh947Kcwn5mfCNPj
+2026-05-08 12:49:11 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:49:21 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 12:49:21 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:49:35 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 12:49:35 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 12:50:35 [INFO][SYNCER] Firestore: Batch flush 45 sensor history rows
+2026-05-08 12:50:35 [INFO][SYNCER] Flushed 45 sensor history rows to Firestore
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[AUTO] ACK sent for cmd xKHYXVZls2Ir30rKU7mn: light_kt_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd vlKBfmk4sQrsIwfYDehY: light_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[AUTO] ACK sent for cmd 560bM9EnwXd9cAiconsP: fan_kt_1 → True
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd r3doYj9LYoxyAnjcRSMy: fan_kt_1 → False
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 1015 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 918 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 688 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 4095 ppm - Phòng: kitchen_01
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] CACHED_AUTOMATIONS reloaded: 3 rules
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 8
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] ACK sent for cmd Is8WBkP4TPE7aRlDF37n: fan_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] ACK sent for cmd klexGA76k9upKEZxCG3F: fan_kt_1 → False
+[AUTO] ACK sent for cmd Oh5runtLOesYFdTH5oea: light_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[AUTO] ACK sent for cmd 7F7xFV5QSdwdsARAzti6: light_kt_1 → True
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd dy1TQQLJllbws0QuPXxE: fan_kt_1 → True
+[AUTO] ACK sent for cmd XYwEHmT2z6kEJyK6xeOm: light_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] ACK sent for cmd lqD8Wh947Kcwn5mfCNPj: fan_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+2026-05-08 12:51:54 [INFO][SYNCER] SyncWorker starting...
+2026-05-08 12:51:54 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-08 12:51:54 [INFO][SYNCER] ============================================================
+2026-05-08 12:51:54 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-08 12:51:54 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-08 12:51:54 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-08 12:51:54 [INFO][SYNCER] ============================================================
+2026-05-08 12:51:55 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-08 12:51:55 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-08 12:51:55 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-08 12:51:55 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[NET] Initial WiFi status: connected / BETEA / internet=True
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[NET] NTP already synchronized via systemd-timesyncd
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Cache loaded: 3 rules, 8 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-08 12:51:55 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-08 12:51:55 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-08 12:51:58 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-08 12:51:58 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-08 12:51:58 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-08 12:51:58 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-08 12:51:58 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-08 12:51:58 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-08 12:52:09 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:52:09 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:52:09 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 12:52:23 [INFO][SYNCER] [Downlink] DISPATCH: DQzNCMA9SUZ4kly23QJK [turn_on] → Redis[device_commands]
+2026-05-08 12:52:23 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh DQzNCMA9SUZ4kly23QJK
+2026-05-08 12:52:27 [INFO][SYNCER] [Downlink] DISPATCH: LBSmyHaK7vwzMiTv4dmD [turn_off] → Redis[device_commands]
+2026-05-08 12:52:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh LBSmyHaK7vwzMiTv4dmD
+2026-05-08 12:52:28 [INFO][SYNCER] [Downlink] DISPATCH: 6LuItvp3p9pio20mQOvU [turn_off] → Redis[device_commands]
+2026-05-08 12:52:28 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 6LuItvp3p9pio20mQOvU
+2026-05-08 12:52:32 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 12:52:46 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:52:46 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:52:58 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 12:52:58 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 12:53:58 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-08 12:53:58 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-08 12:53:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-08 12:54:59 [INFO][SYNCER] Firestore: Batch flush 55 sensor history rows
+2026-05-08 12:54:59 [INFO][SYNCER] Flushed 55 sensor history rows to Firestore
+2026-05-08 12:55:27 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:55:31 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 12:55:59 [INFO][SYNCER] Firestore: Batch flush 93 sensor history rows
+2026-05-08 12:55:59 [INFO][SYNCER] Flushed 93 sensor history rows to Firestore
+2026-05-08 12:56:54 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-08 12:56:54 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-08.db (mode: sd2)
+2026-05-08 12:57:00 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 12:57:00 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 12:57:25 [INFO][SYNCER] [Downlink] DISPATCH: 1iPWOYAqs1q57wETTOLG [turn_off] → Redis[device_commands]
+2026-05-08 12:57:25 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 1iPWOYAqs1q57wETTOLG
+2026-05-08 12:57:25 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 12:57:32 [INFO][SYNCER] [Downlink] DISPATCH: 92Ub9xaLRNu1I2eqLBG9 [turn_on] → Redis[device_commands]
+2026-05-08 12:57:32 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 92Ub9xaLRNu1I2eqLBG9
+2026-05-08 12:57:32 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-08 12:57:33 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 12:57:35 [INFO][SYNCER] [Downlink] DISPATCH: HM5XkOmcuhkEZ9FsdEeV [turn_off] → Redis[device_commands]
+2026-05-08 12:57:35 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh HM5XkOmcuhkEZ9FsdEeV
+2026-05-08 12:57:36 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:58:00 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 12:58:00 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 12:58:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-08 12:58:37 [INFO][SYNCER] [Downlink] DISPATCH: 4R1y9U68nIY9DXmxidWB [turn_off] → Redis[device_commands]
+2026-05-08 12:58:37 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 4R1y9U68nIY9DXmxidWB
+2026-05-08 12:58:37 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 12:59:01 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 12:59:01 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 13:00:01 [INFO][SYNCER] Firestore: Batch flush 93 sensor history rows
+2026-05-08 13:00:01 [INFO][SYNCER] Flushed 93 sensor history rows to Firestore
+2026-05-08 13:00:05 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[AUTO] ACK sent for cmd DQzNCMA9SUZ4kly23QJK: fan_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd LBSmyHaK7vwzMiTv4dmD: fan_kt_1 → True
+[AUTO] ACK sent for cmd 6LuItvp3p9pio20mQOvU: light_kt_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 9
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd 1iPWOYAqs1q57wETTOLG: fan_bd_1 → False
+[DISPATCH] MANUAL_STATE TTL expired for light_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_on
+[AUTO] ACK sent for cmd 92Ub9xaLRNu1I2eqLBG9: light_bd_1 → True
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd HM5XkOmcuhkEZ9FsdEeV: light_bd_1 → False
+[AUTO] Schedules reloaded: 10
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd 4R1y9U68nIY9DXmxidWB: light_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] MANUAL_STATE TTL expired for fan_kt_1 → auto mode restored
+[DISPATCH] SENT [schedule|p=2]: kitchen_01/fan_kt_1 → turn_on
+[SCHEDULER] Executed: kitchen_01/fan_kt_1 → turn_on
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+[DISPATCH] BLOCKED (manual_override): schedule → fan_bd_1
+2026-05-08 13:01:02 [INFO][SYNCER] Firestore: Batch flush 132 sensor history rows
+2026-05-08 13:01:02 [INFO][SYNCER] Flushed 132 sensor history rows to Firestore
+2026-05-08 13:02:02 [INFO][SYNCER] Firestore: Batch flush 83 sensor history rows
+2026-05-08 13:02:02 [INFO][SYNCER] Flushed 83 sensor history rows to Firestore
+2026-05-08 13:11:50 [INFO][SYNCER] SyncWorker starting...
+2026-05-08 13:11:50 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-08 13:11:51 [INFO][SYNCER] ============================================================
+2026-05-08 13:11:51 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-08 13:11:51 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-08 13:11:51 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-08 13:11:51 [INFO][SYNCER] ============================================================
+2026-05-08 13:11:51 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-08 13:11:51 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-08 13:11:51 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-08 13:11:51 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[NET] Initial WiFi status: connected / BETEA / internet=True
+[MAIN] FirebaseSync worker started
+[MAIN] All workers started
+[NET] NTP already synchronized via systemd-timesyncd
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 3 rules, 10 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Command listener started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-08 13:11:52 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-08 13:11:52 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-08 13:11:54 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-08 13:11:54 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-08 13:11:54 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-08 13:11:54 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-08 13:11:54 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-08 13:11:54 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-08 13:11:57 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 13:11:57 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 13:11:57 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 13:11:57 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 13:12:01 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 13:12:21 [INFO][SYNCER] [Downlink] DISPATCH: UHSXG9yUjzcwk0cBgHha [turn_off] → Redis[device_commands]
+2026-05-08 13:12:21 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh UHSXG9yUjzcwk0cBgHha
+2026-05-08 13:12:21 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 13:12:22 [INFO][SYNCER] [Downlink] DISPATCH: 1R0Mcb20NAa10zlB2hlL [turn_off] → Redis[device_commands]
+2026-05-08 13:12:22 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 1R0Mcb20NAa10zlB2hlL
+2026-05-08 13:12:22 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 13:12:38 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 13:12:43 [INFO][SYNCER] [Downlink] DISPATCH: oVttdvKdcm5OPg4gwuTQ [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 13:12:43 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh oVttdvKdcm5OPg4gwuTQ
+2026-05-08 13:12:55 [INFO][SYNCER] Firestore: Batch flush 132 sensor history rows
+2026-05-08 13:12:55 [INFO][SYNCER] Flushed 132 sensor history rows to Firestore
+2026-05-08 13:13:14 [INFO][SYNCER] [Downlink] DISPATCH: 1IskBTxmky1u44y9dpxj [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 13:13:14 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 1IskBTxmky1u44y9dpxj
+2026-05-08 13:13:50 [INFO][SYNCER] [Downlink] DISPATCH: FyEdW2Dg2i1Jnj2qN09l [turn_off] → Redis[device_commands]
+2026-05-08 13:13:50 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh FyEdW2Dg2i1Jnj2qN09l
+2026-05-08 13:13:50 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 13:13:53 [INFO][SYNCER] [Downlink] DISPATCH: hsYsWghN84xQfAwVCVK4 [turn_on] → Redis[device_commands]
+2026-05-08 13:13:53 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh hsYsWghN84xQfAwVCVK4
+2026-05-08 13:13:54 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 13:13:55 [INFO][SYNCER] [Downlink] DISPATCH: iftypEECzWeh7nFz4uJB [turn_off] → Redis[device_commands]
+2026-05-08 13:13:55 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh iftypEECzWeh7nFz4uJB
+2026-05-08 13:13:55 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 13:13:55 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 13:13:56 [INFO][SYNCER] [Downlink] DISPATCH: 4nIkIB6P81sBgYp2LJXv [turn_on] → Redis[device_commands]
+2026-05-08 13:13:56 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 4nIkIB6P81sBgYp2LJXv
+2026-05-08 13:13:58 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 13:14:00 [INFO][SYNCER] [Downlink] DISPATCH: PLW039m5gTZ7aij3ZwDs [turn_off] → Redis[device_commands]
+2026-05-08 13:14:00 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh PLW039m5gTZ7aij3ZwDs
+2026-05-08 13:14:00 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 13:14:01 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 13:14:19 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 13:14:27 [INFO][SYNCER] [Downlink] DISPATCH: H2bGeTEYV1EUkEbHzj2h [turn_on] → Redis[device_commands]
+2026-05-08 13:14:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh H2bGeTEYV1EUkEbHzj2h
+2026-05-08 13:14:40 [INFO][SYNCER] [Downlink] DISPATCH: PJzjUU1Ke4Rv2R0nXqaf [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 13:14:40 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh PJzjUU1Ke4Rv2R0nXqaf
+2026-05-08 13:14:55 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 13:14:55 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 13:15:23 [INFO][SYNCER] [Downlink] DISPATCH: s0buc151jqkhXEvlo2MV [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 13:15:23 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh s0buc151jqkhXEvlo2MV
+2026-05-08 13:15:56 [INFO][SYNCER] Firestore: Batch flush 83 sensor history rows
+2026-05-08 13:15:56 [INFO][SYNCER] Flushed 83 sensor history rows to Firestore
+2026-05-08 13:16:12 [INFO][SYNCER] [Downlink] DISPATCH: N9FrLgrjFoPQrqTDpwYf [turn_on] → Redis[device_commands]
+2026-05-08 13:16:12 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh N9FrLgrjFoPQrqTDpwYf
+2026-05-08 13:16:12 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 13:16:14 [INFO][SYNCER] [Downlink] DISPATCH: Hq5vMtVIJLRCZ7khxLVc [turn_off] → Redis[device_commands]
+2026-05-08 13:16:14 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Hq5vMtVIJLRCZ7khxLVc
+2026-05-08 13:16:14 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 13:16:31 [INFO][SYNCER] [Downlink] DISPATCH: qdV8M1t6wLfcoTKIk7cz [turn_off] → Redis[device_commands]
+2026-05-08 13:16:31 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh qdV8M1t6wLfcoTKIk7cz
+2026-05-08 13:16:31 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-08 13:16:50 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-08 13:16:50 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-08.db (mode: sd2)
+2026-05-08 13:16:57 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 13:16:57 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 13:17:22 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-08 13:17:32 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-08 13:17:33 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-08 13:17:47 [INFO][SYNCER] [Downlink] DISPATCH: boRRHfY3zfrm4ZiU3dn0 [turn_on] → Redis[device_commands]
+2026-05-08 13:17:47 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh boRRHfY3zfrm4ZiU3dn0
+2026-05-08 13:17:49 [INFO][SYNCER] [Downlink] DISPATCH: VjdW7YEaxPSqVaNtUfCu [turn_off] → Redis[device_commands]
+2026-05-08 13:17:49 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh VjdW7YEaxPSqVaNtUfCu
+2026-05-08 13:17:57 [INFO][SYNCER] Firestore: Batch flush 92 sensor history rows
+2026-05-08 13:17:57 [INFO][SYNCER] Flushed 92 sensor history rows to Firestore
+2026-05-08 13:18:07 [INFO][SYNCER] [Downlink] DISPATCH: W1LdshRI7bG1seEM94qX [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 13:18:07 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh W1LdshRI7bG1seEM94qX
+2026-05-08 13:18:07 [INFO][SYNCER] [Downlink] DISPATCH: TfFTHy7ap2YFapI3spkY [smart_mute_alert] → Redis[alert_commands]
+2026-05-08 13:18:07 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh TfFTHy7ap2YFapI3spkY
+2026-05-08 13:18:57 [INFO][SYNCER] Firestore: Batch flush 83 sensor history rows
+2026-05-08 13:18:57 [INFO][SYNCER] Flushed 83 sensor history rows to Firestore
+2026-05-08 13:19:58 [INFO][SYNCER] Firestore: Batch flush 53 sensor history rows
+2026-05-08 13:19:58 [INFO][SYNCER] Flushed 53 sensor history rows to Firestore
+2026-05-08 13:20:58 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-08 13:20:58 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-08 13:21:58 [INFO][SYNCER] Firestore: Batch flush 93 sensor history rows
+2026-05-08 13:21:58 [INFO][SYNCER] Flushed 93 sensor history rows to Firestore
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd UHSXG9yUjzcwk0cBgHha: fan_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd 1R0Mcb20NAa10zlB2hlL: light_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 4095 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 1311 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd FyEdW2Dg2i1Jnj2qN09l: fan_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] ACK sent for cmd hsYsWghN84xQfAwVCVK4: light_kt_1 → True
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[AUTO] ACK sent for cmd iftypEECzWeh7nFz4uJB: light_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd PLW039m5gTZ7aij3ZwDs: fan_kt_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 947 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): manual → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[AUTO] ACK sent for cmd H2bGeTEYV1EUkEbHzj2h: light_kt_1 → False
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 4095 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_on
+[AUTO] ACK sent for cmd N9FrLgrjFoPQrqTDpwYf: light_kt_1 → False
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd Hq5vMtVIJLRCZ7khxLVc: light_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd qdV8M1t6wLfcoTKIk7cz: fan_kt_1 → False
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 859 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 3006 ppm - Phòng: kitchen_01
+[DISPATCH] BLOCKED (safety_lock): manual → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): manual → kitchen_01/light_kt_1 turn_off
+[AUTO] ACK sent for cmd VjdW7YEaxPSqVaNtUfCu: light_kt_1 → False
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+2026-05-08 13:22:59 [INFO][SYNCER] Firestore: Batch flush 88 sensor history rows
+2026-05-08 13:22:59 [INFO][SYNCER] Flushed 88 sensor history rows to Firestore
+2026-05-08 13:23:07 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-08 13:23:59 [INFO][SYNCER] Firestore: Batch flush 73 sensor history rows
+2026-05-08 13:23:59 [INFO][SYNCER] Flushed 73 sensor history rows to Firestore
+2026-05-08 13:24:59 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-08 13:24:59 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-08 13:26:00 [INFO][SYNCER] Firestore: Batch flush 113 sensor history rows
+2026-05-08 13:26:00 [INFO][SYNCER] Flushed 113 sensor history rows to Firestore
+2026-05-08 13:27:00 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 13:27:00 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore
+2026-05-08 13:28:01 [INFO][SYNCER] Firestore: Batch flush 108 sensor history rows
+2026-05-08 13:28:01 [INFO][SYNCER] Flushed 108 sensor history rows to Firestore

@@ -706,9 +706,16 @@ def get_alerts():
 @logs_bp.route("/alerts/<int:aid>/resolve", methods=["POST"])
 @require_auth
 def resolve_alert(aid):
+    """
+    [SMART-MUTE] Khi user đánh dấu alert đã đọc (isResolved=true trên Firestore):
+      - Lưu is_resolved=1 vào SQLite
+      - Publish "smart_mute" lên alert_commands
+        → safety_watchdog tắt buzzer 3 phút
+        → Sau 3 phút nếu vẫn còn nguy hiểm, buzzer tự kêu lại
+    """
     conn = get_db()
     try:
-        row = conn.execute("SELECT room FROM system_alerts WHERE id=?", (aid,)).fetchone()
+        row = conn.execute("SELECT room, type FROM system_alerts WHERE id=?", (aid,)).fetchone()
         if not row:
             return jsonify({"error": "not found"}), 404
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -716,11 +723,18 @@ def resolve_alert(aid):
             "UPDATE system_alerts SET is_resolved=1, resolved_at=? WHERE id=?", (now, aid)
         )
         conn.commit()
-        room = row["room"]
+        room       = row["room"]
+        alert_type = row["type"] if row["type"] else "unknown"
     finally:
         conn.close()
-    r.publish("alert_commands", json.dumps({"action": "mute", "room_id": room}))
-    return jsonify({"status": "ok"})
+    # [SMART-MUTE] tắt buzzer 3 phút, tự động kêu lại nếu vẫn còn nguy hiểm
+    r.publish("alert_commands", json.dumps({
+        "action":      "smart_mute",
+        "room_id":     room,
+        "alert_type":  alert_type,
+        "resolved_at": now,
+    }))
+    return jsonify({"status": "ok", "smart_mute": True, "resume_in_seconds": 180})
 
 
 @logs_bp.route("/notifications")

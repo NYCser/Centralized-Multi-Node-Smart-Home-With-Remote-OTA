@@ -141,24 +141,101 @@ def check_internet() -> bool:
 
 
 def get_wifi_status() -> dict:
-    try:
-        cmd    = "nmcli -t -f ACTIVE,SSID,MODE dev wifi | grep '^yes' | grep ':infrastructure'"
-        output = subprocess.check_output(cmd, shell=True).decode().strip()
-        if output:
-            ssid = output.split(":")[1]
-            return {"status": "connected", "ssid": ssid, "type": "wifi", "current_ssid": ssid}
-    except Exception:
-        pass
+    """
+    [FIX-WIFI-STATUS] Ưu tiên kiểm tra internet thực tế bằng ping trước.
+    Root cause bug cũ: nmcli parse sai khi SSID chứa ':', và chỉ check
+    infrastructure (STA) mode — bỏ qua wlan1 TP-Link dongle nếu nmcli
+    trả về format khác.
+
+    Logic mới:
+      1. Ping 8.8.8.8 → nếu OK tức là có internet thực tế
+      2. Tìm SSID đang kết nối bằng nmcli (parse an toàn hơn)
+      3. Nếu ping OK nhưng không tìm được SSID → báo "connected" với ssid = "Internet (Unknown SSID)"
+      4. Chỉ báo "disconnected" khi ping THỰC SỰ thất bại
+    """
+    # Step 1: Kiểm tra internet thực tế (quan trọng nhất)
+    internet_ok = False
     try:
         subprocess.check_call(
             ["ping", "-c", "1", "-W", "3", "8.8.8.8"],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
         )
-        return {"status": "connected", "ssid": "Ethernet/Wired", "type": "ethernet",
-                "current_ssid": "Ethernet/Wired"}
+        internet_ok = True
     except Exception:
         pass
-    return {"status": "disconnected", "ssid": "N/A", "type": "none", "current_ssid": ""}
+
+    # Step 2: Tìm SSID đang kết nối
+    # Dùng `nmcli -t -f ACTIVE,SSID,DEVICE dev wifi` thay vì filter MODE
+    # để bắt được cả wlan0 và wlan1
+    ssid = ""
+    iface_found = ""
+    try:
+        # Format: ACTIVE:SSID:DEVICE
+        output = subprocess.check_output(
+            "nmcli -t -f ACTIVE,SSID,DEVICE dev wifi 2>/dev/null",
+            shell=True, timeout=5
+        ).decode().strip()
+        for line in output.splitlines():
+            if line.startswith("yes:"):
+                parts = line.split(":")
+                # parts[0] = "yes", parts[-1] = device (wlan0/wlan1), parts[1:-1] = SSID (có thể có :)
+                if len(parts) >= 3:
+                    ssid = ":".join(parts[1:-1])  # SSID an toàn: join middle parts
+                    iface_found = parts[-1]
+                    if ssid:
+                        break
+    except Exception:
+        pass
+
+    # Step 3: Fallback — thử nmcli con show --active để tìm WiFi connections
+    if not ssid:
+        try:
+            output = subprocess.check_output(
+                "nmcli -t -f NAME,TYPE,DEVICE con show --active 2>/dev/null | grep ':802-11-wireless:'",
+                shell=True, timeout=5
+            ).decode().strip()
+            for line in output.splitlines():
+                parts = line.split(":")
+                if len(parts) >= 3:
+                    name = parts[0]
+                    if name and name.lower() not in ("smarthome_hub", "smarthamome_hub", "lo"):
+                        ssid = name
+                        break
+        except Exception:
+            pass
+
+    # Step 4: Quyết định trạng thái cuối cùng
+    if internet_ok:
+        effective_ssid = ssid if ssid else "Internet (wlan)"
+        return {
+            "status":       "connected",
+            "ssid":         effective_ssid,
+            "current_ssid": effective_ssid,
+            "type":         "wifi",
+            "interface":    iface_found or "wlan",
+            "internet":     True,
+        }
+
+    # Không có internet — kiểm tra xem có LAN/Ethernet không
+    try:
+        eth_output = subprocess.check_output(
+            "nmcli -t -f DEVICE,STATE dev | grep ':connected'",
+            shell=True, timeout=5
+        ).decode().strip()
+        for line in eth_output.splitlines():
+            dev = line.split(":")[0]
+            if dev.startswith("eth") or dev.startswith("enp") or dev.startswith("ens"):
+                return {
+                    "status":       "connected",
+                    "ssid":         "Ethernet/Wired",
+                    "current_ssid": "Ethernet/Wired",
+                    "type":         "ethernet",
+                    "internet":     False,
+                }
+    except Exception:
+        pass
+
+    return {"status": "disconnected", "ssid": "N/A", "type": "none", "current_ssid": "", "internet": False}
 
 
 # ── NTP Sync ─────────────────────────────────────────────
@@ -347,6 +424,20 @@ def run():
     # FIX F1: Bring up Hotspot TRƯỚC trên hotspot_iface
     ensure_hotspot(hotspot_iface)
 
+    # [FIX-WIFI-STATUS] Publish trạng thái WiFi ngay khi khởi động
+    # Trước đây chỉ publish khi has_internet THAY ĐỔI → nếu Pi đã có internet
+    # từ trước khi gateway start, lần đầu sẽ không publish → Web thấy "N/A"
+    _initial_status = get_wifi_status()
+    r.setex("system_status:wifi", 120, json.dumps(_initial_status))
+    has_internet = _initial_status.get("internet", False) or _initial_status.get("status") == "connected"
+    r.publish("wifi_status", json.dumps({
+        "status":       _initial_status.get("status", "disconnected"),
+        "ssid":         _initial_status.get("ssid", ""),
+        "current_ssid": _initial_status.get("current_ssid", ""),
+        "type":         _initial_status.get("type", "none"),
+    }))
+    print(f"[NET] Initial WiFi status: {_initial_status.get('status')} / {_initial_status.get('ssid')} / internet={has_internet}")
+
     while True:
         now = time.time()
         if (now - last_check) >= CHECK_EVERY:
@@ -355,7 +446,17 @@ def run():
             status = get_wifi_status()
             r.setex("system_status:wifi", 120, json.dumps(status))
 
-            new_internet = check_internet()
+            new_internet = status.get("internet", False) or status.get("status") == "connected"
+
+            # [FIX-WIFI-STATUS] Luôn publish wifi_status mỗi chu kỳ CHECK_EVERY
+            # (không chỉ khi thay đổi) để settings.js onSnapshot luôn nhận đúng trạng thái
+            r.publish("wifi_status", json.dumps({
+                "status":       status.get("status", "disconnected"),
+                "ssid":         status.get("ssid", ""),
+                "current_ssid": status.get("current_ssid", ""),
+                "type":         status.get("type", "none"),
+            }))
+
             if new_internet != has_internet:
                 has_internet = new_internet
                 event = "internet_online" if has_internet else "internet_offline"
@@ -363,17 +464,7 @@ def run():
                     "event":   event,
                     "message": "Đã có Internet" if has_internet else "Mất kết nối Internet"
                 }))
-                print(f"[NET] Internet: {'ON' if has_internet else 'OFF'}")
-
-                r.publish("wifi_status", json.dumps({
-                    "status":       status.get("status", "disconnected"),
-                    "ssid":         status.get("ssid", ""),
-                    "current_ssid": status.get("current_ssid", ""),
-                    "type":         status.get("type", "none")
-                }))
-
-                # FIX F1: Sau khi internet thay đổi, đảm bảo Hotspot vẫn còn sống
-                ensure_hotspot(hotspot_iface)
+                print(f"[NET] Internet: {'ON' if has_internet else 'OFF'} / {status.get('ssid', '')}")
 
             if has_internet and (now - last_ntp) >= NTP_SYNC_EVERY:
                 sync_ntp()

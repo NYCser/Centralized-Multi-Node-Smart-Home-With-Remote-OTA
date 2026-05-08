@@ -801,24 +801,35 @@ class CommandDispatcher:
             channel = "wifi_setup"
         elif action in ("start_register", "cancel_register"):
             channel = "rfid_register"
+        elif action == "smart_mute_alert":
+            # [SMART-MUTE] Web gửi smart_mute qua Firestore commands
+            # → forward lên Redis alert_commands để safety_watchdog xử lý
+            channel = "alert_commands"
 
         room_id   = (data.get("room") or data.get("roomId") or data.get("room_id") or "")
         device_id = (data.get("device_id") or data.get("deviceId") or "")
 
-        msg = {
-            "room":       room_id,
-            "device_id":  device_id,
-            "cmd_id":     cmd_id,
-            "action":     action,
-            "is_on":      data.get("isOn", action == "turn_on"),
-            "source":     "web",
-            "payload":    data.get("payload", {}),
-            # FIX: pass các field của RFID command để automation_engine dùng
-            "owner_name": data.get("owner_name", "Thẻ mới"),
-            "target":     data.get("target", ""),
-            "ssid":       data.get("ssid", ""),
-            "password":   data.get("password", ""),
-        }
+        # [SMART-MUTE] Điều chỉnh payload cho alert_commands channel
+        if action == "smart_mute_alert":
+            msg = {
+                "action":     "smart_mute",
+                "room_id":    room_id,
+                "alert_type": data.get("alert_type", "gas"),
+            }
+        else:
+            msg = {
+                "room":       room_id,
+                "device_id":  device_id,
+                "cmd_id":     cmd_id,
+                "action":     action,
+                "is_on":      data.get("isOn", action == "turn_on"),
+                "source":     "web",
+                "payload":    data.get("payload", {}),
+                "owner_name": data.get("owner_name", "Thẻ mới"),
+                "target":     data.get("target", ""),
+                "ssid":       data.get("ssid", ""),
+                "password":   data.get("password", ""),
+            }
 
         try:
             self.r.publish(channel, json.dumps(msg))
@@ -840,7 +851,7 @@ class CommandDispatcher:
                 except Exception as ex:
                     logger.warning("[Downlink] Could not mark dispatched: %s", ex)
             else:
-                # Lệnh device thường: xóa ngay để tránh dispatch lặp
+                # smart_mute_alert và device commands thường: xóa ngay
                 self.fs.collection("commands").document(cmd_id).delete()
                 logger.info("[Downlink] CLEANUP: Đã xóa lệnh %s", cmd_id)
 

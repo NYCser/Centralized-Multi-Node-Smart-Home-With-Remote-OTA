@@ -32,8 +32,11 @@ from datetime import datetime
 from bridge.message_bus import MessageBus, CH_INBOUND
 
 # ── Config ────────────────────────────────────────────────
-SAFETY_MUTE_TIMEOUT     = 600   # 10 phút
-SAFETY_REPEAT_INTERVAL  = 300   # 5 phút → lưu alert lại
+SAFETY_MUTE_TIMEOUT     = 600   # 10 phút — mute manual qua API vẫn giữ nguyên
+# [SMART-MUTE] Khi user "đã đọc" thông báo trên Web → buzzer tắt 3 phút
+# Sau 3 phút nếu vẫn còn nguy hiểm → buzzer kêu lại
+SMART_MUTE_DURATION     = 180   # 3 phút (user đọc thông báo → buzzer tắt)
+SAFETY_REPEAT_INTERVAL  = 300   # 5 phút → lưu alert lại (không spam DB)
 WATCHDOG_TICK           = 1.0
 GAS_DEFAULT_THRESHOLD   = 600
 DB_PATH                 = "/data/smarthome.db"
@@ -176,11 +179,20 @@ def run():
                 action  = data.get("action")
                 room_id = data.get("room_id")
                 if action == "mute" and room_id:
+                    # Mute thủ công (từ nút Tắt còi trên Web)
                     state = SAFETY_STATE.setdefault(room_id, {})
                     state["muted"]     = True
                     state["mute_time"] = datetime.now()
                     _mute_safety_action(bus, room_id)
-                    print(f"[WATCHDOG] {room_id} muted by user")
+                    print(f"[WATCHDOG] {room_id} muted by user (manual)")
+                elif action == "smart_mute" and room_id:
+                    # [SMART-MUTE] User đánh dấu đã đọc thông báo trên Web
+                    # → tắt buzzer 3 phút, sau đó tự động kêu lại nếu còn nguy hiểm
+                    state = SAFETY_STATE.setdefault(room_id, {})
+                    state["smart_muted"]     = True
+                    state["smart_mute_time"] = datetime.now()
+                    _mute_safety_action(bus, room_id)
+                    print(f"[WATCHDOG] {room_id} smart_muted (alert read) — buzzer off for {SMART_MUTE_DURATION}s")
             except Exception as e:
                 print(f"[WATCHDOG] mute listener error: {e}")
 
@@ -209,6 +221,8 @@ def run():
                     "last_alert":        None,
                     "was_dangerous":     False,
                     "last_lock_refresh": None,  # [FIX-ALERT-2]
+                    "smart_muted":       False,  # [SMART-MUTE] user đánh dấu đã đọc
+                    "smart_mute_time":   None,   # [SMART-MUTE] thời điểm user đọc thông báo
                 })
 
                 gas_threshold = float(rule.get("gas_threshold") or GAS_DEFAULT_THRESHOLD)
@@ -227,13 +241,42 @@ def run():
                         _trigger_safety_action(bus, room_id, alert_type, current_gas)
                         state["was_dangerous"]     = True
                         state["last_lock_refresh"] = now
+                        # Reset smart_mute khi phát hiện nguy hiểm MỚI
+                        state["smart_muted"]       = False
+                        state["smart_mute_time"]   = None
                         print(f"[WATCHDOG] DANGER DETECTED {room_id}: {alert_msg}")
                     else:
-                        # [FIX-ALERT-2] Đã nguy hiểm — refresh safety_lock mỗi 30s, không mỗi 1s
+                        # [FIX-ALERT-2] Đã nguy hiểm — refresh safety_lock mỗi 30s
                         last_refresh = state.get("last_lock_refresh")
                         if last_refresh is None or (now - last_refresh).total_seconds() >= LOCK_REFRESH_INTERVAL:
                             _set_safety_lock(room_id, True)
                             state["last_lock_refresh"] = now
+
+                    # [SMART-MUTE] Kiểm tra xem buzzer có đang bị tắt tạm thời không
+                    is_smart_muted = state.get("smart_muted", False)
+                    if is_smart_muted:
+                        smart_mute_time = state.get("smart_mute_time")
+                        smart_elapsed = (now - smart_mute_time).total_seconds() if smart_mute_time else 9999
+                        if smart_elapsed >= SMART_MUTE_DURATION:
+                            # Hết 3 phút → bật buzzer lại nếu còn nguy hiểm
+                            state["smart_muted"]     = False
+                            state["smart_mute_time"] = None
+                            bus.publish_mqtt(f"home/{room_id}/command", {
+                                "action": "buzz_alarm",
+                                "type":   alert_type,
+                                "value":  current_gas,
+                                "source": "safety",
+                                "reason": "smart_mute_expired"
+                            })
+                            bus.publish_event("realtime_data", {
+                                "event":     "new_alert",
+                                "type":      alert_type,
+                                "room":      room_id,
+                                "message":   f"[Nhắc lại] {alert_msg}",
+                                "level":     "critical",
+                                "timestamp": now.strftime("%Y-%m-%d %H:%M:%S")
+                            })
+                            print(f"[WATCHDOG] {room_id}: smart_mute expired — buzzer reactivated")
 
                     # Lưu alert theo interval
                     if state.get("muted"):
@@ -260,6 +303,8 @@ def run():
                         state["last_alert"]        = None
                         state["muted"]             = False
                         state["last_lock_refresh"] = None
+                        state["smart_muted"]       = False   # [SMART-MUTE] reset
+                        state["smart_mute_time"]   = None
 
                         # Thông báo an toàn cho Web (realtime_data)
                         bus.publish_event("realtime_data", {
