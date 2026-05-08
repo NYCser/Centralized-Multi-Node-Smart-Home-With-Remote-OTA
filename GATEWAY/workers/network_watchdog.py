@@ -343,25 +343,50 @@ def connect_wifi(ssid: str, password: str, request_id: str, r,
 # ── WiFi Scan ─────────────────────────────────────────────
 
 def scan_wifi(r, uplink_iface: str):
-    """Scan trên uplink_iface — không ảnh hưởng Hotspot interface."""
+    """
+    [FIX-SCAN] Scan trên uplink_iface (wlan1) — không ảnh hưởng Hotspot.
+    Fix 1: Dùng --escape no + rsplit để parse SSID chứa dấu ':' an toàn.
+    Fix 2: Filter theo ifname để chỉ lấy kết quả của đúng interface.
+    """
     try:
-        scan_cmd = f"sudo nmcli dev wifi rescan ifname {uplink_iface}" if uplink_iface != "wlan0" else "sudo nmcli dev wifi rescan"
+        # Rescan trên đúng interface
+        scan_cmd = (
+            f"sudo nmcli dev wifi rescan ifname {uplink_iface}"
+            if uplink_iface != "wlan0"
+            else "sudo nmcli dev wifi rescan"
+        )
         subprocess.run(scan_cmd, shell=True, timeout=10,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(3)
-        output = subprocess.check_output(
-            "nmcli -t -f SSID,SIGNAL dev wifi list", shell=True
-        ).decode()
+
+        # [FIX] Dùng --escape no để SSID chứa ':' không bị escape
+        # Filter theo ifname để chỉ lấy đúng kết quả của uplink_iface (wlan1)
+        if uplink_iface != "wlan0":
+            list_cmd = (f"nmcli --escape no -t -f SSID,SIGNAL,DEVICE dev wifi list"
+                        f" ifname {uplink_iface}")
+        else:
+            list_cmd = "nmcli --escape no -t -f SSID,SIGNAL dev wifi list"
+        output = subprocess.check_output(list_cmd, shell=True).decode()
+
         networks = []
         seen = set()
         for line in output.strip().split("\n"):
-            parts = line.split(":")
-            if len(parts) >= 2 and parts[0] and parts[0] not in seen:
-                seen.add(parts[0])
-                networks.append({
-                    "ssid":   parts[0],
-                    "signal": int(parts[1]) if parts[1].isdigit() else 0
-                })
+            # Format với DEVICE: SSID:SIGNAL:DEVICE
+            # rsplit từ phải để bảo toàn SSID chứa ':' ở trái
+            parts = line.rsplit(":", 2)
+            if len(parts) < 2:
+                continue
+            ssid   = parts[0].strip()
+            signal = parts[1].strip()
+            if not ssid or ssid == "--" or ssid in seen:
+                continue
+            seen.add(ssid)
+            try:
+                sig_int = int(signal)
+            except ValueError:
+                sig_int = 0
+            networks.append({"ssid": ssid, "signal": sig_int})
+
         networks.sort(key=lambda x: -x["signal"])
 
         r.setex("wifi_scan_result", 300, json.dumps(networks))
@@ -371,7 +396,7 @@ def scan_wifi(r, uplink_iface: str):
             "event":    "wifi_scan_done",
             "networks": networks
         }, default=json_serializable))
-        print(f"[NET] WiFi scan done: {len(networks)} networks")
+        print(f"[NET] WiFi scan done via {uplink_iface}: {len(networks)} networks found")
     except Exception as e:
         r.set("wifi_scan_status", "error")
         print(f"[NET] WiFi scan error: {e}")
@@ -392,7 +417,9 @@ def run():
 
     def listen_wifi_commands():
         pub = r.pubsub()
-        pub.subscribe("wifi_commands", "wifi_scan_trigger")
+        # [FIX-WIFI-CHANNEL] Thêm "wifi_setup" — firebase_sync dispatch
+        # action add_and_connect vào channel này, không phải "wifi_commands"
+        pub.subscribe("wifi_commands", "wifi_scan_trigger", "wifi_setup")
         for msg in pub.listen():
             if msg["type"] != "message":
                 continue
@@ -405,15 +432,33 @@ def run():
                         args=(r, uplink_iface),
                         daemon=True
                     ).start()
-                elif channel == "wifi_commands":
+                elif channel in ("wifi_commands", "wifi_setup"):
+                    # [FIX-WIFI-CHANNEL] Xử lý cả 2 channel như nhau
                     data = json.loads(msg["data"])
-                    threading.Thread(
-                        target=connect_wifi,
-                        args=(data.get("ssid"), data.get("password", ""),
-                              data.get("request_id"), r,
-                              uplink_iface, hotspot_iface),  # FIX F1: pass interfaces
-                        daemon=True
-                    ).start()
+                    action = data.get("action", "")
+
+                    # Nếu là lệnh scan (từ firebase_sync gửi qua wifi_setup)
+                    if action == "scan_wifi":
+                        r.set("wifi_scan_status", "scanning")
+                        threading.Thread(
+                            target=scan_wifi,
+                            args=(r, uplink_iface),
+                            daemon=True
+                        ).start()
+                    else:
+                        # Lệnh connect: có thể từ wifi_commands (API) hoặc wifi_setup (Firestore)
+                        ssid     = data.get("ssid", "")
+                        password = data.get("password", "")
+                        req_id   = data.get("request_id") or data.get("cmd_id")
+                        if ssid:
+                            threading.Thread(
+                                target=connect_wifi,
+                                args=(ssid, password, req_id, r,
+                                      uplink_iface, hotspot_iface),
+                                daemon=True
+                            ).start()
+                        else:
+                            print(f"[NET] wifi_setup: thiếu ssid trong payload: {data}")
             except Exception as e:
                 print(f"[NET] wifi command error: {e}")
 

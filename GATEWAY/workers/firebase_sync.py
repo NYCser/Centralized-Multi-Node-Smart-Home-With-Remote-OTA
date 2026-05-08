@@ -797,7 +797,12 @@ class CommandDispatcher:
     def _dispatch(self, cmd_id: str, data: dict):
         action    = data.get("action", "")
         channel   = self.REDIS_CHANNEL
-        if action == "add_and_connect":
+
+        # [FIX-WIFI-CHANNEL] Các action wifi đều đi qua "wifi_setup":
+        #   - "add_and_connect": kết nối WiFi mới (từ settings.js modal)
+        #   - "scan_wifi":       trigger scan danh sách WiFi xung quanh
+        # network_watchdog.py subscribe "wifi_setup" và xử lý cả 2 action này.
+        if action in ("add_and_connect", "scan_wifi"):
             channel = "wifi_setup"
         elif action in ("start_register", "cancel_register"):
             channel = "rfid_register"
