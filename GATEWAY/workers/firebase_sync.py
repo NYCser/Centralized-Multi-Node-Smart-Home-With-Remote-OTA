@@ -753,6 +753,16 @@ class UplinkStream(threading.Thread):
                 "timestamp":   firestore.SERVER_TIMESTAMP,
             }, merge=True)
             logger.info("[Uplink] RFID enrollment result written to Firestore: %s", p.get("value"))
+
+            # Nếu enroll thành công, đồng bộ luôn thẻ mới vào collection rfid_cards
+            if p.get("status") == "success" and p.get("value"):
+                self.fs_writer.fs.collection("rfid_cards").document(p.get("value")).set({
+                    "uid":       p.get("value"),
+                    "name":      p.get("owner_name", "Thẻ mới"),
+                    "createdAt": firestore.SERVER_TIMESTAMP,
+                    "is_active": True,
+                }, merge=True)
+                logger.info("[Uplink] RFID card written to Firestore rfid_cards: %s", p.get("value"))
         except Exception as e:
             logger.error("[Uplink] RFID enrollment result write error: %s", e)
 
@@ -798,17 +808,16 @@ class CommandDispatcher:
         action    = data.get("action", "")
         channel   = self.REDIS_CHANNEL
 
-        # [FIX-WIFI-CHANNEL] Các action wifi đều đi qua "wifi_setup":
-        #   - "add_and_connect": kết nối WiFi mới (từ settings.js modal)
-        #   - "scan_wifi":       trigger scan danh sách WiFi xung quanh
-        # network_watchdog.py subscribe "wifi_setup" và xử lý cả 2 action này.
         if action in ("add_and_connect", "scan_wifi"):
             channel = "wifi_setup"
         elif action in ("start_register", "cancel_register"):
             channel = "rfid_register"
+        elif action == "delete_rfid":
+            # [FIX-DELETE-1] settings.js gửi delete_rfid → rfid_commands
+            # → automation_engine → MQTT home/entrance_01/command {delete_user, uid}
+            # → ESP32 xóa uid khỏi SPIFFS users.json
+            channel = "rfid_commands"
         elif action == "smart_mute_alert":
-            # [SMART-MUTE] Web gửi smart_mute qua Firestore commands
-            # → forward lên Redis alert_commands để safety_watchdog xử lý
             channel = "alert_commands"
 
         room_id   = (data.get("room") or data.get("roomId") or data.get("room_id") or "")
@@ -820,6 +829,12 @@ class CommandDispatcher:
                 "action":     "smart_mute",
                 "room_id":    room_id,
                 "alert_type": data.get("alert_type", "gas"),
+            }
+        elif action == "delete_rfid":
+            # [FIX-DELETE-1] Format cho rfid_commands handler
+            msg = {
+                "action": "delete",
+                "uid":    data.get("uid", ""),
             }
         else:
             msg = {
@@ -834,6 +849,7 @@ class CommandDispatcher:
                 "target":     data.get("target", ""),
                 "ssid":       data.get("ssid", ""),
                 "password":   data.get("password", ""),
+                "uid":        data.get("uid", ""),
             }
 
         try:
