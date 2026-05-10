@@ -17,11 +17,12 @@ void setup() {
     Serial.begin(115200);
     delay(1000);
 
+    setupNetwork(mqttCallback);
+
     // 1. Setup phần cứng (Sensors, Pins, FreeRTOS Button Task)
     setupHardware();
 
-    // 2. Setup mạng (WiFi + MQTT)
-    setupNetwork(mqttCallback);
+    // 2. Đồng bộ dữ liệu cũ nếu có (nếu vừa mới OTA xong thì sẽ có dữ liệu cũ trong buffer)
 
     Serial.println(">>> BEDROOM NODE READY <<<");
 }

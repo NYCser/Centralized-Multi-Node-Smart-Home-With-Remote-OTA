@@ -10,6 +10,7 @@
 #include "ClosedCube_HDC1080.h"
 #include "Config.hpp"
 #include "NetworkManager.hpp"
+#include <nvs_flash.h>
 
 // ================= ĐỐI TƯỢNG PHẦN CỨNG =================
 Adafruit_CCS811 ccs;
@@ -32,7 +33,14 @@ bool hasCCS = false;
 // Lưu tối đa 50 bản tin (khoảng 4-5 phút dữ liệu nếu gửi 5s/lần)
 std::vector<String> sensorBuffer; 
 const size_t MAX_BUFFER_SIZE = 50; 
-
+// OTA Update variables
+volatile bool otaInProgress = false;
+bool otaAckPending = false;
+String otaAckDocId = "";
+String otaAckVersion = "";
+unsigned long otaAckStartMs = 0;
+const unsigned long OTA_ACK_TIMEOUT_MS = 60000;
+String currentFirmwareVersion = "2.1.0";  // Hardcode version hiện tại
 // ================= HÀM HELPER =================
 void sendDeviceStatus(String docId, bool isOn) {
     // Trạng thái nút bấm ưu tiên gửi ngay nếu có mạng
@@ -102,15 +110,144 @@ void taskButtonMonitor(void * parameter) {
     }
 }
 
+// ================= OTA UPDATE HANDLER =================
+void performOTA(const String& url, const String& version, const String& docId) {
+    if (otaInProgress) {
+        Serial.println("[OTA] Already in progress, ignoring.");
+        return;
+    }
+    otaInProgress = true;
+
+    Serial.printf("[OTA] Starting OTA update from: %s\n", url.c_str());
+    Serial.printf("[OTA] Target version: %s\n", version.c_str());
+
+    // Gửi status 'starting' về Gateway trước khi flash
+    if (client.connected()) {
+        StaticJsonDocument<256> statusDoc;
+        statusDoc["source"]   = "ota";
+        statusDoc["event"]    = "ota_start";
+        statusDoc["room_id"]  = ROOM_BEDROOM;
+        statusDoc["version"]  = version;
+        statusDoc["doc_id"]   = docId;
+        String out; serializeJson(statusDoc, out);
+        sendMQTT(TOPIC_STATUS, out);
+    }
+
+    // Callback tiến trình download
+    httpUpdate.onStart([]() {
+        Serial.println("[OTA] HTTP Update started");
+    });
+    httpUpdate.onProgress([](int cur, int total) {
+        Serial.printf("[OTA] Progress: %d/%d bytes (%.0f%%)\n",
+                      cur, total, (float)cur/total*100);
+    });
+    httpUpdate.onEnd([]() {
+        Serial.println("[OTA] Download complete. Rebooting...");
+    });
+    httpUpdate.onError([](int err) {
+        Serial.printf("[OTA] Error: %d\n", err);
+    });
+
+    // Thực hiện OTA
+    WiFiClient wifiClient;
+    t_httpUpdate_return ret = httpUpdate.update(wifiClient, url);
+
+    switch (ret) {
+        case HTTP_UPDATE_FAILED:
+            Serial.printf("[OTA] FAILED: (%d) %s\n",
+                          httpUpdate.getLastError(),
+                          httpUpdate.getLastErrorString().c_str());
+            // Gửi báo lỗi về Gateway
+            if (client.connected()) {
+                StaticJsonDocument<256> errDoc;
+                errDoc["source"]  = "ota";
+                errDoc["event"]   = "ota_failed";
+                errDoc["room_id"] = ROOM_BEDROOM;
+                errDoc["version"] = version;
+                errDoc["doc_id"]  = docId;
+                errDoc["error"]   = httpUpdate.getLastErrorString();
+                String out; serializeJson(errDoc, out);
+                sendMQTT(TOPIC_STATUS, out);
+            }
+            otaInProgress = false;
+            break;
+
+        case HTTP_UPDATE_NO_UPDATES:
+            Serial.println("[OTA] No update available");
+            otaInProgress = false;
+            break;
+
+        case HTTP_UPDATE_OK:
+            // Sẽ tự reboot — code sau đây không chạy được
+            // Nhưng ghi vào Preferences để sau reboot biết mình vừa OTA
+            {
+                Preferences ota_pref;
+                bool ota_ok = ota_pref.begin("ota_state", false);
+                if (!ota_ok) {
+                    Serial.println("[OTA] WARNING: unable to open ota_state namespace for OTA success marker");
+                } else {
+                    ota_pref.putString("last_version", version);
+                    ota_pref.putString("doc_id",       docId);
+                    ota_pref.putBool("just_updated",   true);
+                    ota_pref.end();
+                }
+            }
+            Serial.println("[OTA] SUCCESS — Rebooting now!");
+            // httpUpdate.update() sẽ tự gọi ESP.restart()
+            break;
+    }
+}
+
 // ================= SETUP =================
 inline void setupHardware() {
     Serial.println("--- BEDROOM HARDWARE SETUP ---");
-    
+
+    esp_err_t err = nvs_flash_init();
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        nvs_flash_erase();
+        nvs_flash_init();
+    }
+
     // 1. Khôi phục trạng thái
     preferences.begin("bedroom_state", true); 
     fanState = preferences.getBool("fan", false);   
     lightState = preferences.getBool("light", false);
     preferences.end();
+    
+    // Kiểm tra nếu vừa OTA xong → gửi báo cáo về Gateway
+    Preferences ota_pref;
+    bool ota_ok = ota_pref.begin("ota_state", false);
+    if (!ota_ok) {
+        Serial.println("[OTA] WARNING: unable to open ota_state namespace");
+    }
+    bool justUpdated = ota_ok && ota_pref.getBool("just_updated", false);
+    if (justUpdated) {
+        currentFirmwareVersion = ota_pref.getString("last_version", "unknown");
+        String docId           = ota_pref.getString("doc_id", "");
+        ota_pref.end();
+
+        // Xóa flag để không gửi lại lần sau
+        ota_ok = ota_pref.begin("ota_state", false);
+        if (!ota_ok) {
+            Serial.println("[OTA] WARNING: unable to reopen ota_state namespace for ack cleanup");
+        } else {
+            ota_pref.putBool("just_updated", false);
+            ota_pref.end();
+        }
+
+        Serial.printf("[OTA] Reboot after OTA! New version: %s\n",
+                      currentFirmwareVersion.c_str());
+
+        // Delay nhỏ để MQTT kết nối xong rồi mới gửi
+        delay(3000);
+        otaAckPending = true;
+        otaAckDocId = docId;
+        otaAckVersion = currentFirmwareVersion;
+        otaAckStartMs = millis();
+        Serial.printf("[OTA] Reboot after OTA! New version: %s, ack pending\n", currentFirmwareVersion.c_str());
+    } else if (ota_ok) {
+        ota_pref.end();
+    }
     
     // 2. Cấu hình Output
     pinMode(PIN_RELAY_FAN, OUTPUT);
@@ -182,6 +319,27 @@ inline void loopHardware() {
         }
     }
 
+    if (otaAckPending) {
+        if (client.connected()) {
+            Serial.println("[OTA] Sending reboot completion ack to Gateway");
+            StaticJsonDocument<256> ackDoc;
+            ackDoc["source"]  = "ota";
+            ackDoc["event"]   = "ota_done";
+            ackDoc["room_id"] = ROOM_BEDROOM;
+            ackDoc["version"] = otaAckVersion;
+            ackDoc["doc_id"]  = otaAckDocId;
+            String out; serializeJson(ackDoc, out);
+            sendMQTT(TOPIC_STATUS, out);
+            otaAckPending = false;
+            otaAckDocId = "";
+            otaAckVersion = "";
+            Serial.println("[OTA] ACK sent to Gateway");
+        } else if (millis() - otaAckStartMs > OTA_ACK_TIMEOUT_MS) {
+            Serial.println("[OTA] ACK pending timeout, clearing state");
+            otaAckPending = false;
+        }
+    }
+
     // C. Heartbeat trạng thái (10s)
     static unsigned long lastStatusSync = 0;
     if (millis() - lastStatusSync > 10000) { 
@@ -196,25 +354,52 @@ inline void loopHardware() {
 // ================= XỬ LÝ LỆNH TỪ GATEWAY =================
 inline void processCommand(String topic, String payload) {
     StaticJsonDocument<512> doc;
-    if (deserializeJson(doc, payload)) return;
+    DeserializationError error = deserializeJson(doc, payload);
+    if (error) {
+        Serial.printf("[CMD] Invalid JSON payload: %s\n", error.c_str());
+        return;
+    }
 
-    const char* device = doc["device"];
-    const char* action = doc["action"]; 
-    bool state = (strcmp(action, "turn_on") == 0);
+    String action = doc["action"] | "";
+    String device = doc["device"] | "";
+    bool state = (action == "turn_on");
 
-    Serial.printf("CMD: %s -> %s\n", device, action);
+    Serial.printf("CMD: %s -> %s\n", device.c_str(), action.c_str());
 
-    if (strcmp(device, ID_FAN_BEDROOM) == 0) {
+    if (action == "ota_update") {
+        String url     = doc["url"]     | "";
+        String version = doc["version"] | "unknown";
+        String docId   = doc["doc_id"]  | "";
+
+        if (url.length() > 0) {
+            Serial.println("[CMD] OTA Update received!");
+            struct OtaParams { String url; String ver; String docId; };
+            OtaParams* p = new OtaParams{url, version, docId};
+
+            xTaskCreate([](void* arg) {
+                OtaParams* p = (OtaParams*)arg;
+                performOTA(p->url, p->ver, p->docId);
+                delete p;
+                vTaskDelete(NULL);
+            }, "OTATask", 8192, p, 5, NULL);
+        } else {
+            Serial.println("[CMD] ota_update missing url");
+        }
+    }
+    else if (device == ID_FAN_BEDROOM && (action == "turn_on" || action == "turn_off")) {
         fanState = state;
         digitalWrite(PIN_RELAY_FAN, fanState ? HIGH : LOW);
         saveState();
         sendDeviceStatus(ID_FAN_BEDROOM, fanState);
     }
-    else if (strcmp(device, ID_LIGHT_BEDROOM) == 0) {
+    else if (device == ID_LIGHT_BEDROOM && (action == "turn_on" || action == "turn_off")) {
         lightState = state;
         digitalWrite(PIN_LIGHT, lightState ? HIGH : LOW);
         saveState();
         sendDeviceStatus(ID_LIGHT_BEDROOM, lightState);
+    }
+    else {
+        Serial.println("[CMD] Unknown device/action");
     }
 }
 

@@ -187,13 +187,15 @@ CREATE TABLE IF NOT EXISTS schedules (
 -- 13. OTA FIRMWARE
 -- ──────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS ota_logs (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    room        TEXT,
-    filename    TEXT,
-    url         TEXT,
-    status      TEXT    DEFAULT 'sent',
-    triggered_by TEXT,
-    timestamp   TEXT    DEFAULT (datetime('now','localtime'))
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    room         TEXT NOT NULL,
+    filename     TEXT NOT NULL,
+    url          TEXT NOT NULL,
+    version      TEXT DEFAULT 'unknown',
+    release_notes TEXT DEFAULT '',
+    triggered_by TEXT DEFAULT '',
+    status       TEXT DEFAULT 'pending',
+    created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ──────────────────────────────────────────────────────────

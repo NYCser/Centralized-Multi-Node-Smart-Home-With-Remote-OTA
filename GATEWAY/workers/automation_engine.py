@@ -394,6 +394,18 @@ def handle_inbound(envelope: dict):
         bus = MessageBus.get_instance()
         r   = bus.get_redis()
 
+        # [OTA STATUS ROUTE] Route OTA status messages to ota_manager
+        if payload.get("source") == "ota":
+            r.publish("ota_status", json.dumps({
+                "event":   payload.get("event"),         # ota_done, ota_failed
+                "version": payload.get("version", ""),
+                "doc_id":  payload.get("doc_id", ""),
+                "room_id": room_id,
+                "error":   payload.get("error", "")
+            }))
+            print(f"[AUTO] OTA status routed: {room_id} {payload.get('event')}")
+            return
+
         device_id = payload.get("device") or payload.get("deviceId") or payload.get("device_id")
         is_on     = bool(payload.get("is_on", payload.get("isOn", False)))
 

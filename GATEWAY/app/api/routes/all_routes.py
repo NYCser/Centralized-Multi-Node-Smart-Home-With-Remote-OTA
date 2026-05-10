@@ -937,10 +937,46 @@ ota_bp = Blueprint("ota", __name__)
 def ota_upload():
     if "file" not in request.files:
         return jsonify({"error": "no file"}), 400
+
     f        = request.files["file"]
+    room     = request.form.get("room", "all")
+    version  = request.form.get("version", "unknown")
+    notes    = request.form.get("release_notes", "")
+
     filename = secure_filename(f.filename)
-    f.save(os.path.join(UPLOAD_FOLDER, filename))
-    return jsonify({"status": "uploaded", "filename": filename})
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    f.save(filepath)
+
+    # Lấy URL mà ESP32 sẽ dùng để tải về
+    pi_ip  = os.getenv("PI_LAN_IP", "10.42.0.1")
+    pi_port = os.getenv("API_PORT", "5000")
+    url    = f"http://{pi_ip}:{pi_port}/firmware/{filename}"
+
+    # Lưu vào SQLite ota_logs
+    conn = get_db()
+    try:
+        conn.execute(
+            "INSERT INTO ota_logs(room,filename,url,version,release_notes,triggered_by,status)"
+            " VALUES(?,?,?,?,?,?,?)",
+            (room, filename, url, version, notes,
+             request.current_user.get('email',''), 'pending')
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    # Publish Redis → ota_manager worker xử lý → ghi Firestore
+    from bridge.message_bus import MessageBus
+    MessageBus.get_instance().get_redis().publish("ota_commands", json.dumps({
+        "action":        "new_firmware",
+        "room":          room,
+        "filename":      filename,
+        "url":           url,
+        "version":       version,
+        "release_notes": notes
+    }))
+
+    return jsonify({"status": "uploaded", "filename": filename, "url": url})
 
 
 @ota_bp.route("/ota/update", methods=["POST"])

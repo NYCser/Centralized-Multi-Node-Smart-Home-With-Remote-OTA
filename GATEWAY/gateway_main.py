@@ -21,7 +21,7 @@ import sqlite3
 from flask import Flask
 from flask_socketio import SocketIO
 from flask_cors import CORS
-
+from workers import ota_manager
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 DB_PATH    = os.getenv("DB_PATH",     "/data/smarthome.db")
@@ -121,6 +121,10 @@ def start_workers():
 
     # AutomationEngine: daemon=False vì đây là blocking pub/sub loop chính
     threading.Thread(target=automation_engine.run, name="AutomationEngine", daemon=False).start()
+
+    # OtaManager: daemon=True vì đây là background worker
+    threading.Thread(target=ota_manager.run, name="OTAManager", daemon=True).start()
+    print('[MAIN] OTA Manager worker started')
 
     # Realtime bridge: Redis pubsub → SocketIO → Web
     threading.Thread(target=_realtime_bridge,      name="RealtimeBridge",  daemon=True).start()
