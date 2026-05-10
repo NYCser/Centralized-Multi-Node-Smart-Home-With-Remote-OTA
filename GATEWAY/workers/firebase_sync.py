@@ -1014,7 +1014,7 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                     room_id   = data.get("roomId")   or data.get("room_id", "")
                     device_id = data.get("deviceId") or data.get("device_id", "")
                     time_val  = data.get("time", "")
-                    action    = data.get("action", "turn_on")
+                    action    = data.get("action", "turn_off")
                     enabled   = 1 if data.get("enabled", True) else 0
 
                     if not room_id or not device_id or not time_val:
