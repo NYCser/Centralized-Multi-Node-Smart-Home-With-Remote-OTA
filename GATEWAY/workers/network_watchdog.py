@@ -29,6 +29,7 @@ import threading
 from datetime import datetime
 
 import redis as redis_lib
+from workers import event_logger
 
 REDIS_HOST    = "localhost"
 HOTSPOT_SSID  = "SmartHome_Hub"
@@ -505,6 +506,20 @@ def run():
             if new_internet != has_internet:
                 has_internet = new_internet
                 event = "internet_online" if has_internet else "internet_offline"
+                # Log WiFi status change
+                if has_internet:
+                    event_logger.log_wifi_status(
+                        room_id="system",
+                        status="connected",
+                        ssid=status.get("ssid", "SmartHome_Hub"),
+                        signal_strength=100  # placeholder
+                    )
+                else:
+                    event_logger.log_wifi_status(
+                        room_id="system",
+                        status="disconnected",
+                        ssid=status.get("ssid", "SmartHome_Hub")
+                    )
                 r.publish("realtime_data", json.dumps({
                     "event":   event,
                     "message": "Đã có Internet" if has_internet else "Mất kết nối Internet"

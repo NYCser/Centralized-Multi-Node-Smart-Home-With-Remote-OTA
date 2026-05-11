@@ -20,6 +20,7 @@ from bridge.message_bus import MessageBus
 from firebase_admin import firestore, db
 from google.cloud.firestore_v1 import FieldFilter
 import firebase_admin
+from workers import event_logger
 
 
 def _wait_for_firebase(timeout=30):

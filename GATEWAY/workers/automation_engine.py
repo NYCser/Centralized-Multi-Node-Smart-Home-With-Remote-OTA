@@ -46,6 +46,7 @@ from datetime import datetime
 
 from bridge.message_bus import MessageBus, CH_INBOUND
 from workers import safety_watchdog
+from workers import event_logger
 
 DB_PATH            = "/data/smarthome.db"
 ENROLLMENT_TIMEOUT = 60
@@ -113,6 +114,11 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
     priority = SOURCE_PRIORITY.get(source, 99)
 
     if _is_safety_locked(room_id) and source != "safety":
+        event_logger.log_system_message(
+            room_id=room_id,
+            message=f"⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: {device_id}",
+            level="warning"
+        )
         print(f"[DISPATCH] BLOCKED (safety_lock): {source} → {room_id}/{device_id} {action}")
         bus.publish_event("realtime_data", {
             "event":   "command_blocked",
@@ -128,8 +134,20 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
             set_at = manual.get("set_at")
             if set_at and (datetime.now() - set_at).total_seconds() > MANUAL_STATE_TTL_S:
                 MANUAL_STATE.pop(device_id, None)
+                event_logger.log_system_message(
+                    room_id=room_id,
+                    message=f"✓ Chế độ thủ công hết hạn | {device_id} → Tự động hoạt động lại",
+                    level="info"
+                )
                 print(f"[DISPATCH] MANUAL_STATE TTL expired for {device_id} → auto mode restored")
             else:
+                if source == "automation":
+                    event_logger.log_automation_blocked(
+                        room_id=room_id,
+                        device_id=device_id,
+                        device_name=device_id,
+                        reason="Vừa điều khiển thủ công (tạm dừng 5 phút)"
+                    )
                 print(f"[DISPATCH] BLOCKED (manual_override): {source} → {device_id}")
                 return False
 
@@ -147,6 +165,12 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
                     h, m      = map(int, sched_time.split(":"))
                     sched_mins = h * 60 + m
                     if abs(now_mins - sched_mins) <= 60:
+                        event_logger.log_automation_blocked(
+                            room_id=room_id,
+                            device_id=device_id,
+                            device_name=device_id,
+                            reason="Schedule đã chạy trong 60 phút qua"
+                        )
                         print(f"[DISPATCH] BLOCKED (schedule_active_60m): automation → {device_id}")
                         return False
                 except Exception:
@@ -321,6 +345,11 @@ def scheduler_loop():
                 sent = dispatch_command(bus, "schedule", room_id, device_id, action)
                 if sent:
                     SCHEDULE_LAST_RUN[sched["id"]] = run_key
+                    event_logger.log_schedule_executed(
+                        room_id=room_id,
+                        device_id=device_id,
+                        device_name=device_id
+                    )
                     print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
                     _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
 
@@ -567,10 +596,24 @@ def _handle_auth(room_id: str, payload: dict):
             "action": "open_door", "message": f"Xin chao {owner}"
         })
         _log_access(room_id, uid, owner, "open_door", True)
+        event_logger.log_door_access(
+            room_id=room_id,
+            uid=uid,
+            owner_name=owner,
+            access_type="granted",
+            method="RFID"
+        )
         print(f"[AUTH] {room_id}: GRANTED -> {owner}")
     else:
         bus.publish_mqtt(f"home/{room_id}/command", {"action": "access_denied"})
         _log_access(room_id, uid, "Khách lạ", "attempt_failed", False)
+        event_logger.log_door_access(
+            room_id=room_id,
+            uid=uid,
+            owner_name="Khách lạ",
+            access_type="denied",
+            method="RFID"
+        )
         print(f"[AUTH] {room_id}: DENIED -> {uid}")
 
 
@@ -690,6 +733,13 @@ def command_listener():
                     PENDING_COMMANDS[device_id] = cmd_id
 
                 mqtt_action = "turn_on" if is_on else "turn_off"
+                # Log manual control
+                event_logger.log_manual_control(
+                    room_id=room_id,
+                    device_id=device_id,
+                    device_name=device_id,
+                    action=mqtt_action
+                )
                 dispatch_command(bus, "manual", room_id, device_id, mqtt_action,
                                  cmd_id=cmd_id,
                                  extra={"source": data.get("source", "web")})

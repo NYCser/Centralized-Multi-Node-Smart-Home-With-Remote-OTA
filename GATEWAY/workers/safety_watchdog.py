@@ -30,6 +30,7 @@ import sqlite3
 import threading
 from datetime import datetime
 from bridge.message_bus import MessageBus, CH_INBOUND
+from workers import event_logger
 
 # ── Config ────────────────────────────────────────────────
 SAFETY_MUTE_TIMEOUT     = 600   # 10 phút — mute manual qua API vẫn giữ nguyên
@@ -244,6 +245,13 @@ def run():
                         # Reset smart_mute khi phát hiện nguy hiểm MỚI
                         state["smart_muted"]       = False
                         state["smart_mute_time"]   = None
+                        # Log safety alert
+                        event_logger.log_safety_alert(
+                            room_id=room_id,
+                            alert_type=alert_type,
+                            value=current_gas,
+                            message=alert_msg
+                        )
                         print(f"[WATCHDOG] DANGER DETECTED {room_id}: {alert_msg}")
                     else:
                         # [FIX-ALERT-2] Đã nguy hiểm — refresh safety_lock mỗi 30s
@@ -305,6 +313,9 @@ def run():
                         state["last_lock_refresh"] = None
                         state["smart_muted"]       = False   # [SMART-MUTE] reset
                         state["smart_mute_time"]   = None
+
+                        # Log safety resolved
+                        event_logger.log_safety_resolved(room_id=room_id, alert_type=alert_type)
 
                         # Thông báo an toàn cho Web (realtime_data)
                         bus.publish_event("realtime_data", {
