@@ -18178,3 +18178,496 @@ ValueError: The default Firebase app does not exist. Make sure to initialize the
 2026-05-11 03:54:50 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
 2026-05-11 03:54:50 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
 2026-05-11 03:55:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:34:00 [INFO][SYNCER] SyncWorker starting...
+2026-05-11 14:34:00 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-11 14:34:00 [INFO][SYNCER] ============================================================
+2026-05-11 14:34:00 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-11 14:34:00 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-11 14:34:00 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-11 14:34:00 [INFO][SYNCER] ============================================================
+2026-05-11 14:34:00 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-11 14:34:00 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-11 14:34:00 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-11 14:34:00 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-11 14:34:01 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-11 14:34:01 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-11 14:34:13 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-11 14:34:13 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-11 14:34:13 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-11 14:34:13 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-11 14:34:13 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-11 14:34:13 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-11 14:34:14 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 14:34:14 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 14:34:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:35:15 [INFO][SYNCER] Firestore: Batch flush 88 sensor history rows
+2026-05-11 14:35:15 [INFO][SYNCER] Flushed 88 sensor history rows to Firestore
+2026-05-11 14:35:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:35:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:36:01 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 14:36:01 [INFO][SYNCER] 192.168.1.131 - - [11/May/2026 14:36:01] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-11 14:36:17 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 14:36:17 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 14:36:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:36:23 [INFO][SYNCER] 10.42.0.51 - - [11/May/2026 14:36:23] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-11 14:36:43 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 14:36:43 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 14:36:43 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 14:36:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:37:17 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 14:37:17 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 14:37:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:37:24 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 14:37:24 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 14:37:24 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 14:37:51 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 14:37:51 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 14:37:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:37:56 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 14:38:18 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 14:38:18 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 14:38:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:38:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:39:00 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-11 14:39:00 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-11.db (mode: sd2)
+2026-05-11 14:39:19 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:39:19 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:39:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:39:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:40:21 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:40:21 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:40:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:40:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:41:21 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:41:21 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:41:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:41:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:42:21 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:42:21 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:42:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:42:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:43:22 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 14:43:22 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 14:43:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:43:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:44:22 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:44:22 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:44:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:45:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:45:23 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:45:23 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:45:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:46:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:46:23 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:46:23 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:46:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:47:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:47:24 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:47:24 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:47:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:48:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:48:24 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:48:24 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:48:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:49:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:49:25 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:49:25 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:49:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:50:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:50:25 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:50:25 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:50:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:51:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:51:26 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:51:26 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:51:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:52:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:52:27 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:52:27 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:52:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:53:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:53:28 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 14:53:28 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 14:53:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:54:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:54:30 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:54:30 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 14:54:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:55:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 14:55:30 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 14:55:30 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:03:34 [INFO][SYNCER] SyncWorker starting...
+2026-05-11 15:03:34 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-11 15:03:34 [INFO][SYNCER] ============================================================
+2026-05-11 15:03:34 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-11 15:03:34 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-11 15:03:34 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-11 15:03:34 [INFO][SYNCER] ============================================================
+2026-05-11 15:03:34 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-11 15:03:34 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-11 15:03:34 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-11 15:03:34 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[BUS] Outbound loop started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Command listener started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-11 15:03:34 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.131:5000
+2026-05-11 15:03:34 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-11 15:03:37 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-11 15:03:37 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-11 15:03:37 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-11 15:03:37 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-11 15:03:37 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-11 15:03:37 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-11 15:03:45 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:03:45 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:04:05 [INFO][SYNCER] 192.168.1.131 - - [11/May/2026 15:04:05] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-11 15:04:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:04:27 [INFO][SYNCER] 10.42.0.51 - - [11/May/2026 15:04:27] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-11 15:04:38 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-11 15:04:38 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-11 15:04:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:04:47 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:04:47 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:04:47 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:05:05 [INFO][SYNCER] 192.168.1.131 - - [11/May/2026 15:05:05] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-11 15:05:07 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:05:07 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:05:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:05:17 [INFO][SYNCER] 10.42.0.51 - - [11/May/2026 15:05:17] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-11 15:05:18 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:05:36 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:05:37 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:05:38 [INFO][SYNCER] Firestore: Batch flush 40 sensor history rows
+2026-05-11 15:05:38 [INFO][SYNCER] Flushed 40 sensor history rows to Firestore
+2026-05-11 15:05:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:05:56 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:06:01 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:06:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:06:38 [INFO][SYNCER] Firestore: Batch flush 28 sensor history rows
+2026-05-11 15:06:38 [INFO][SYNCER] Flushed 28 sensor history rows to Firestore
+2026-05-11 15:06:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:06:48 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:06:49 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:06:49 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:07:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:07:39 [INFO][SYNCER] Firestore: Batch flush 36 sensor history rows
+2026-05-11 15:07:39 [INFO][SYNCER] Flushed 36 sensor history rows to Firestore
+2026-05-11 15:07:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:08:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:08:12 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:08:12 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:08:12 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:08:27 [INFO][SYNCER] 192.168.1.131 - - [11/May/2026 15:08:27] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-11 15:08:34 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-11 15:08:34 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-11.db (mode: sd2)
+2026-05-11 15:08:39 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 15:08:39 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 15:08:39 [INFO][SYNCER] 10.42.0.51 - - [11/May/2026 15:08:39] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-11 15:08:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:08:59 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:09:00 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:09:00 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:09:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:09:39 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 15:09:39 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 15:09:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:10:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:10:19 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:10:19 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:10:20 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:10:39 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 15:10:39 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 15:10:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:11:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:11:39 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:11:39 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:11:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:12:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:12:40 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 15:12:40 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 15:12:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:13:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:13:40 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:13:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:13:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:14:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:14:40 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:14:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:14:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:15:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:15:40 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:15:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:15:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:16:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:16:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:16:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:16:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:17:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:17:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:17:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:17:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:18:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:18:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:18:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:18:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:19:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:19:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:19:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:19:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:20:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:20:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:20:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:20:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:21:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:21:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:21:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:21:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:22:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:22:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:22:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:22:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:23:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:23:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:23:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:23:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:24:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:24:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:24:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:24:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:25:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:25:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:25:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:25:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:26:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:26:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:26:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:26:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:27:19 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:27:20 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:27:20 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:27:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:27:44 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 15:27:44 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 15:27:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:28:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:28:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:28:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:28:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:29:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:29:45 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 15:29:45 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 15:29:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:30:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:30:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:30:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:30:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:31:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:31:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:31:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:31:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:32:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:32:38 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:32:38 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:32:38 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:32:46 [INFO][SYNCER] Firestore: Batch flush 32 sensor history rows
+2026-05-11 15:32:46 [INFO][SYNCER] Flushed 32 sensor history rows to Firestore
+2026-05-11 15:32:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:33:05 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:33:05 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:33:10 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:33:12 [INFO][SYNCER] 192.168.1.131 - - [11/May/2026 15:33:12] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-11 15:33:19 [INFO][SYNCER] 10.42.0.51 - - [11/May/2026 15:33:19] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-11 15:33:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:33:39 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:33:39 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:33:44 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:33:46 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 15:33:46 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 15:33:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:34:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:34:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:34:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:34:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:35:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:35:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:35:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:35:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:36:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:36:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:36:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:36:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:37:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:37:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:37:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:37:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:38:16 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-11 15:38:16 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-11 15:38:29 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:38:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:38:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:38:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:39:09 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:39:11 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:39:14 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:39:19 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:39:25 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:39:27 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:39:28 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:39:29 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:39:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:39:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:39:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:40:01 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:02 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:40:02 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:02 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:03 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:03 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:03 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:04 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:04 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:04 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:40:05 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:05 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:05 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:05 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:06 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:09 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:09 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:10 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:12 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:13 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:13 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:14 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:15 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:15 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:16 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 15:40:16 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:17 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 15:40:18 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 15:40:18 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 15:40:29 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:40:47 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:40:47 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:40:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:41:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:41:48 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:41:48 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:42:00 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:42:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:42:48 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 15:42:48 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 15:43:00 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:43:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:43:48 [INFO][SYNCER] Firestore: Batch flush 8 sensor history rows
+2026-05-11 15:43:48 [INFO][SYNCER] Flushed 8 sensor history rows to Firestore
+2026-05-11 15:44:00 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:44:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:45:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:45:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:46:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:46:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:47:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:47:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:48:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:48:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:49:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:49:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:50:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:50:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:51:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:51:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:52:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:52:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:53:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:53:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:54:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:54:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:55:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:55:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:56:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:56:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:57:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:57:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:58:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:58:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:59:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 15:59:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:00:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:00:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:01:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:01:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:02:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:02:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:03:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:03:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 16:04:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore

@@ -66,6 +66,8 @@ volatile bool otaInProgress = false;
 bool otaAckPending = false;
 String otaAckDocId = "";
 String otaAckVersion = "";
+String otaPendingVersion = "";
+String otaPendingDocId = "";
 unsigned long otaAckStartMs = 0;
 const unsigned long OTA_ACK_TIMEOUT_MS = 15000;
 String currentFirmwareVersion = "2.0.0";  // Hardcode version hiện tại
@@ -186,6 +188,9 @@ void performOTA(const String& url, const String& version, const String& docId) {
         sendMQTT(TOPIC_STATUS_LR, out);
     }
 
+    otaPendingVersion = version;
+    otaPendingDocId = docId;
+
     // Callback tiến trình download
     httpUpdate.onStart([]() {
         Serial.println("[OTA] HTTP Update started");
@@ -196,6 +201,16 @@ void performOTA(const String& url, const String& version, const String& docId) {
     });
     httpUpdate.onEnd([]() {
         Serial.println("[OTA] Download complete. Rebooting...");
+        Preferences ota_pref;
+        if (ota_pref.begin("ota_state", false)) {
+            ota_pref.putString("last_version", otaPendingVersion);
+            ota_pref.putString("doc_id", otaPendingDocId);
+            ota_pref.putBool("just_updated", true);
+            ota_pref.end();
+            Serial.println("[OTA] Marker saved to NVS before reboot");
+        } else {
+            Serial.println("[OTA] WARNING: unable to open ota_state namespace for NVS marker");
+        }
     });
     httpUpdate.onError([](int err) {
         Serial.printf("[OTA] Error: %d\n", err);
@@ -277,11 +292,10 @@ inline void setupHardware() {
         Serial.printf("[OTA] Reboot after OTA! New version: %s\n",
                       currentFirmwareVersion.c_str());
 
-        // Delay nhỏ để MQTT kết nối xong rồi mới gửi
         otaAckPending = true;
         otaAckDocId = docId;
         otaAckVersion = currentFirmwareVersion;
-        otaAckStartMs = millis();
+        otaAckStartMs = 0; // Start timer only after MQTT is connected
         Serial.printf("[OTA] Reboot after OTA! New version: %s, ack pending\n", currentFirmwareVersion.c_str());
     } else {
         ota_pref.end();
@@ -329,20 +343,26 @@ inline void loopHardware() {
 
     if (otaAckPending) {
         if (client.connected()) {
-            Serial.println("[OTA] Sending reboot completion ack to Gateway");
-            StaticJsonDocument<256> ackDoc;
-            ackDoc["source"]  = "ota";
-            ackDoc["event"]   = "ota_done";
-            ackDoc["room_id"] = ROOM_LIVING;
-            ackDoc["version"] = otaAckVersion;
-            ackDoc["doc_id"]  = otaAckDocId;
-            String out; serializeJson(ackDoc, out);
-            sendMQTT(TOPIC_STATUS_LR, out);
-            otaAckPending = false;
-            otaAckDocId = "";
-            otaAckVersion = "";
-            Serial.println("[OTA] ACK sent to Gateway");
-        } else if (millis() - otaAckStartMs > OTA_ACK_TIMEOUT_MS) {
+            if (otaAckStartMs == 0) {
+                otaAckStartMs = millis();
+                Serial.println("[OTA] MQTT ready, starting ACK timer");
+            }
+            if (millis() - otaAckStartMs > 2000) {
+                Serial.println("[OTA] Sending reboot completion ack to Gateway");
+                StaticJsonDocument<256> ackDoc;
+                ackDoc["source"]  = "ota";
+                ackDoc["event"]   = "ota_done";
+                ackDoc["room_id"] = ROOM_LIVING;
+                ackDoc["version"] = otaAckVersion;
+                ackDoc["doc_id"]  = otaAckDocId;
+                String out; serializeJson(ackDoc, out);
+                sendMQTT(TOPIC_STATUS_LR, out);
+                otaAckPending = false;
+                otaAckDocId = "";
+                otaAckVersion = "";
+                Serial.println("[OTA] ACK sent to Gateway");
+            }
+        } else if (otaAckStartMs != 0 && millis() - otaAckStartMs > OTA_ACK_TIMEOUT_MS) {
             Serial.println("[OTA] ACK pending timeout, clearing state");
             otaAckPending = false;
         }

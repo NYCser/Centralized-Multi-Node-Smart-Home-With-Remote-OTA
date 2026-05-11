@@ -87,6 +87,7 @@ def _handle_esp32_ota_event(data: dict):
         ref.update({
             'status':    'done',
             'version':   data.get('version', ''),
+            'error':     '',
             'updatedAt': firestore.SERVER_TIMESTAMP
         })
         # Cập nhật RTDB firmware_versions
@@ -94,11 +95,13 @@ def _handle_esp32_ota_event(data: dict):
         print(f"[OTA] {doc_id}: DONE v{data.get('version')}")
 
     elif event == 'ota_failed':
-        ref.update({
-            'status':    'failed',
-            'error':     data.get('error', 'ESP32 reported failure'),
-            'updatedAt': firestore.SERVER_TIMESTAMP
-        })
+        snap = ref.get()
+        if snap.exists and snap.to_dict().get('status') != 'done':
+            ref.update({
+                'status':    'failed',
+                'error':     data.get('error', 'ESP32 reported failure'),
+                'updatedAt': firestore.SERVER_TIMESTAMP
+            })
         print(f"[OTA] {doc_id}: FAILED — {data.get('error')}")
 
 
@@ -192,15 +195,18 @@ def _dispatch_ota(bus, room: str, url: str, version: str, doc_id: str):
     bus.publish_mqtt(f"home/{room}/command", payload)
     print(f"[OTA] MQTT sent to {room}: ota_update → {url}")
 
-    # Timeout guard: nếu 5 phút không có status callback → đánh dấu failed
+    # Timeout guard: nếu 10 phút không có status callback → đánh dấu failed
     def _timeout_guard():
-        time.sleep(300)
+        time.sleep(600)
         try:
             doc_ref = firestore.client().collection("ota_notices").document(doc_id)
             snap    = doc_ref.get()
             if snap.exists and snap.to_dict().get("status") == "flashing":
-                doc_ref.update({"status": "failed",
-                               "error": "Timeout: ESP32 did not respond"})
+                doc_ref.update({
+                    "status": "failed",
+                    "error": "Timeout: ESP32 did not respond within 10 minutes",
+                    "updatedAt": firestore.SERVER_TIMESTAMP
+                })
                 print(f"[OTA] Timeout for {doc_id}")
         except Exception as ex:
             print(f"[OTA] timeout guard error: {ex}")
