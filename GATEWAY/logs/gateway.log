@@ -17822,3 +17822,359 @@ ValueError: The default Firebase app does not exist. Make sure to initialize the
 2026-05-11 03:18:38 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
 2026-05-11 03:18:38 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
 2026-05-11 03:19:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:19:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:19:38 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:19:38 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:20:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:20:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:20:38 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:20:38 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:21:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:21:21 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 03:21:21 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 03:21:26 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 03:21:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:21:39 [INFO][SYNCER] Firestore: Batch flush 32 sensor history rows
+2026-05-11 03:21:39 [INFO][SYNCER] Flushed 32 sensor history rows to Firestore
+2026-05-11 03:22:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:22:29 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> OFF | Name: Quạt | Type: fan
+2026-05-11 03:22:29 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 03:22:29 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 03:22:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:22:39 [INFO][SYNCER] Firestore: Batch flush 44 sensor history rows
+2026-05-11 03:22:39 [INFO][SYNCER] Flushed 44 sensor history rows to Firestore
+2026-05-11 03:23:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:23:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:23:39 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:23:39 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:24:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:24:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:24:39 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:24:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:25:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:25:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:25:40 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 03:25:40 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 03:26:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:26:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:26:40 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:26:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:27:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:27:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:27:40 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:27:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:28:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:28:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:28:40 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:28:40 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:29:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:29:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:29:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:29:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:30:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:30:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:30:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:30:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:31:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:31:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:31:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:31:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:32:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:32:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:32:41 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:32:41 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:33:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:33:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:33:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:33:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:34:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:34:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:34:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:34:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:35:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:35:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:35:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:35:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:36:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:36:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:36:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:36:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:37:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:37:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+[NET] Initial WiFi status: connected / Lam'S_San Vuon _VT / internet=True
+[OTA] Firebase app is ready
+[OTA] OTA Manager started
+[NET] NTP already synchronized via systemd-timesyncd
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_bedroom_01_1778441518 for room=bedroom_01
+[AUTO] Schedules reloaded: 6
+[OTA] User confirmed update for bedroom_01 v2.1.0
+[OTA] MQTT sent to bedroom_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Timeout for ota_bedroom_01_1778441518
+[AUTO] Schedules reloaded: 6
+[NET] Internet: OFF / N/A
+[AUTO] Schedules reloaded: 6
+[NET] Internet: ON / Lam'S_San Vuon _VT
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_bedroom_01_1778442896 for room=bedroom_01
+[OTA] User confirmed update for bedroom_01 v2.1.0
+[OTA] MQTT sent to bedroom_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_bedroom_01_1778443159 for room=bedroom_01
+[AUTO] Schedules reloaded: 6
+[OTA] User confirmed update for bedroom_01 v2.1.0
+[OTA] MQTT sent to bedroom_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[OTA] Timeout for ota_bedroom_01_1778442896
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_on
+[AUTO] ACK sent for cmd yKv04vkeh6W0yIRCK4QE: light_bd_1 → True
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [manual|p=1]: bedroom_01/light_bd_1 → turn_off
+[AUTO] ACK sent for cmd lHBu14Wp1LJTwZ3gw5yl: light_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd K9zGcpykVaxaQaBf2cMK: fan_bd_1 → False
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_on
+[AUTO] ACK sent for cmd 81Ae6RbwvfPhm91x8WLu: fan_bd_1 → True
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Timeout for ota_bedroom_01_1778443159
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[AUTO] Schedules reloaded: 6
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[OTA] Notice written: ota_bedroom_01_1778443561 for room=bedroom_01
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[AUTO] Schedules reloaded: 6
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[DISPATCH] BLOCKED (manual_override): automation → light_bd_1
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] MANUAL_STATE TTL expired for light_bd_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_bedroom_01_1778443874 for room=bedroom_01
+[OTA] User confirmed update for bedroom_01 v2.1.0
+[OTA] MQTT sent to bedroom_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_bedroom_01_1778444015 for room=bedroom_01
+[OTA] User confirmed update for bedroom_01 v2.1.0
+[OTA] MQTT sent to bedroom_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [manual|p=1]: bedroom_01/fan_bd_1 → turn_off
+[AUTO] ACK sent for cmd 6gbE6YGCtZsOGTXBkhA5: fan_bd_1 → False
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Timeout for ota_bedroom_01_1778443874
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Timeout for ota_bedroom_01_1778444015
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[NET] NTP already synchronized via systemd-timesyncd
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+2026-05-11 03:37:42 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:37:42 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:38:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:38:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:38:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:38:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:39:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:39:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:39:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:39:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:40:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:40:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:40:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:40:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:41:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:41:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:41:43 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:41:43 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:42:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:42:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:42:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:42:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:43:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:43:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:43:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:43:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:44:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:44:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:44:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:44:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:45:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:45:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:45:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:45:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:46:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:46:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:46:44 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:46:44 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:47:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:47:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:47:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:47:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:48:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:48:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:48:45 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-11 03:48:45 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-11 03:49:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:49:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:49:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:49:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:50:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:50:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:50:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:50:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:51:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:51:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:51:45 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:51:45 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:52:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:52:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:52:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:52:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:53:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:53:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:53:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:53:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:54:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:54:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 03:54:46 [INFO][SYNCER] Firestore: Batch flush 48 sensor history rows
+2026-05-11 03:54:46 [INFO][SYNCER] Flushed 48 sensor history rows to Firestore
+2026-05-11 03:54:50 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-11 03:54:50 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-11 03:54:50 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-11 03:55:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
