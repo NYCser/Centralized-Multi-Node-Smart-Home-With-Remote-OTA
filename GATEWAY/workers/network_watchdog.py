@@ -320,6 +320,10 @@ def connect_wifi(ssid: str, password: str, request_id: str, r,
             "current_ssid": ssid, "type": "wifi"
         }
         r.publish("wifi_status", json.dumps(status_payload))
+        try:
+            event_logger.log_wifi_status(room_id="system", status="connected", ssid=ssid)
+        except Exception as e:
+            print(f"[NET] event_logger wifi log error: {e}")
 
     except Exception as e:
         result = {"status": "failed", "error": str(e)}
@@ -328,6 +332,10 @@ def connect_wifi(ssid: str, password: str, request_id: str, r,
             "status": "disconnected", "ssid": "",
             "current_ssid": "", "error": str(e)
         }))
+        try:
+            event_logger.log_wifi_status(room_id="system", status="disconnected", ssid=ssid)
+        except Exception as log_err:
+            print(f"[NET] event_logger wifi log error: {log_err}")
     finally:
         if request_id:
             r.setex(f"wifi_cmd:{request_id}", 60, json.dumps(result, default=json_serializable))
@@ -483,6 +491,14 @@ def run():
         "type":         _initial_status.get("type", "none"),
     }))
     print(f"[NET] Initial WiFi status: {_initial_status.get('status')} / {_initial_status.get('ssid')} / internet={has_internet}")
+    try:
+        event_logger.log_wifi_status(
+            room_id="system",
+            status=_initial_status.get("status", "disconnected"),
+            ssid=_initial_status.get("ssid", "SmartHome_Hub")
+        )
+    except Exception as e:
+        print(f"[NET] event_logger wifi log error: {e}")
 
     while True:
         now = time.time()

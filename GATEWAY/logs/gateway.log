@@ -19242,3 +19242,2184 @@ ValueError: The default Firebase app does not exist. Make sure to initialize the
 2026-05-11 17:57:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
 2026-05-11 17:58:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
 2026-05-11 17:58:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 17:59:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 17:59:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:00:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:00:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:01:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:01:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:02:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:02:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:03:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:03:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:04:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:04:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:05:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:05:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:06:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:06:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:07:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:07:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:08:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:08:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:09:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:09:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:10:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:10:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:11:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:11:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:12:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:12:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:13:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:13:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:14:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:14:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:15:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:15:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:16:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:16:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:17:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:17:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:18:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:18:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:19:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:19:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:20:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:20:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:21:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:21:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:22:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:22:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:23:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:23:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:24:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:24:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:25:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:25:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:26:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:26:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:27:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:27:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:28:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:28:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:29:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:29:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:30:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:30:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:31:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:31:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:32:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:32:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:33:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:33:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:34:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:34:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:35:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:35:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:36:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+[16:41:13] ⚠ [EVENT] DOOR_ACCESS: 🚫 Từ chối vào | UID: admin | Phương thức: RFID
+[AUTH] entrance_01: DENIED -> admin
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 16 networks found
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 17 networks found
+[16:42:44] ℹ [EVENT] DOOR_ACCESS: 🔓 Cấp quyền vào | Người: Thẻ mới | Phương thức: RFID
+[AUTH] entrance_01: GRANTED -> Thẻ mới
+[16:42:45] ⚠ [EVENT] DOOR_ACCESS: 🚫 Từ chối vào | UID: admin | Phương thức: RFID
+[AUTH] entrance_01: DENIED -> admin
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 18 networks found
+[16:44:36] ℹ [EVENT] DOOR_ACCESS: 🔓 Cấp quyền vào | Người: Thẻ mới | Phương thức: RFID
+[AUTH] entrance_01: GRANTED -> Thẻ mới
+[16:44:36] ⚠ [EVENT] DOOR_ACCESS: 🚫 Từ chối vào | UID: admin | Phương thức: RFID
+[AUTH] entrance_01: DENIED -> admin
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[16:45:49] ℹ [EVENT] DOOR_ACCESS: 🔓 Cấp quyền vào | Người: Thẻ mới | Phương thức: RFID
+[AUTH] entrance_01: GRANTED -> Thẻ mới
+[16:45:49] ⚠ [EVENT] DOOR_ACCESS: 🚫 Từ chối vào | UID: admin | Phương thức: RFID
+[AUTH] entrance_01: DENIED -> admin
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[16:46:48] ℹ [EVENT] DOOR_ACCESS: 🔓 Cấp quyền vào | Người: Thẻ mới | Phương thức: RFID
+[AUTH] entrance_01: GRANTED -> Thẻ mới
+[16:46:48] ⚠ [EVENT] DOOR_ACCESS: 🚫 Từ chối vào | UID: admin | Phương thức: RFID
+[AUTH] entrance_01: DENIED -> admin
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[NET] NTP already synchronized via systemd-timesyncd
+[NET] WiFi scan done via wlan1: 1 networks found
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 17 networks found
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[NET] NTP already synchronized via systemd-timesyncd
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+2026-05-11 18:36:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:37:29 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:37:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:38:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:39:00 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:39:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:40:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:40:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:41:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:41:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:42:02 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:42:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:43:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:43:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:44:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:44:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:45:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:45:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:46:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:46:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:47:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:47:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:48:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:48:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:49:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:49:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:50:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:50:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:51:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:51:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:52:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:52:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:53:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:53:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:54:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:54:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:55:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:55:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:56:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:56:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:57:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:57:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:58:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:58:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:59:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 18:59:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:00:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:00:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:01:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:01:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:02:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:02:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:03:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:03:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:04:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:04:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:05:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:05:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:06:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:06:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:07:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:07:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:08:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:08:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:09:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:09:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:10:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:10:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:11:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:11:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:12:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:12:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:13:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:13:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:14:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:14:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:15:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:15:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:16:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:16:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:17:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-11 19:17:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:32:36 [INFO][SYNCER] SyncWorker starting...
+2026-05-13 21:32:36 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-13 21:32:36 [INFO][SYNCER] ============================================================
+2026-05-13 21:32:36 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-13 21:32:36 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-13 21:32:36 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-13 21:32:36 [INFO][SYNCER] ============================================================
+2026-05-13 21:32:37 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-13 21:32:37 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-13 21:32:37 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-13 21:32:37 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-13 21:32:37 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-13 21:32:37 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-13 21:32:45 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-13 21:32:46 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-13 21:32:46 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-13 21:32:46 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-13 21:32:46 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-13 21:32:46 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-13 21:32:46 [INFO][SYNCER] [Downlink] DISPATCH: G6vXe1Tp6j9cMlfBVVDG [turn_on] → Redis[device_commands]
+2026-05-13 21:32:47 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh G6vXe1Tp6j9cMlfBVVDG
+2026-05-13 21:32:47 [INFO][SYNCER] [Downlink] DISPATCH: Z3gyy7OpRzQ0wAMsJawj [turn_off] → Redis[device_commands]
+2026-05-13 21:32:48 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Z3gyy7OpRzQ0wAMsJawj
+2026-05-13 21:32:50 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-13 21:32:51 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-13 21:32:51 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 21:33:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:33:41 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:33:41] "[31m[1mPOST /api/ota/upload HTTP/1.1[0m" 401 -
+2026-05-13 21:33:51 [INFO][SYNCER] Firestore: Batch flush 70 sensor history rows
+2026-05-13 21:33:51 [INFO][SYNCER] Flushed 70 sensor history rows to Firestore
+2026-05-13 21:33:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:34:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:34:52 [INFO][SYNCER] Firestore: Batch flush 65 sensor history rows
+2026-05-13 21:34:52 [INFO][SYNCER] Flushed 65 sensor history rows to Firestore
+2026-05-13 21:34:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:35:05 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:35:05] "[31m[1mPOST /api/ota/upload HTTP/1.1[0m" 401 -
+2026-05-13 21:35:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:35:26 [INFO][SYNCER] [Downlink] DISPATCH: w60Nthwnp5rSFxXpwMQO [turn_on] → Redis[device_commands]
+2026-05-13 21:35:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh w60Nthwnp5rSFxXpwMQO
+2026-05-13 21:35:27 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-13 21:35:28 [INFO][SYNCER] [Downlink] DISPATCH: xJng8JYihjAXjWRi9sAG [turn_off] → Redis[device_commands]
+2026-05-13 21:35:30 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh xJng8JYihjAXjWRi9sAG
+2026-05-13 21:35:32 [INFO][SYNCER] [Downlink] DISPATCH: xBPygDL6zrXni2YdBS06 [turn_off] → Redis[device_commands]
+2026-05-13 21:35:33 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 21:35:34 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh xBPygDL6zrXni2YdBS06
+2026-05-13 21:35:34 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 21:35:54 [INFO][SYNCER] Firestore: Batch flush 65 sensor history rows
+2026-05-13 21:35:54 [INFO][SYNCER] Flushed 65 sensor history rows to Firestore
+2026-05-13 21:35:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:36:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:36:56 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 21:36:56 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 21:36:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:37:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:37:36 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-13 21:37:36 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-13.db (mode: sd2)
+2026-05-13 21:38:07 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 21:38:07 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 21:38:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[OTA] Firebase app is ready
+[OTA] OTA Manager started
+[NET] Initial WiFi status: connected / Lam's_ Phong Lanh 1 / internet=True
+[21:32:39] ℹ [EVENT] WIFI_STATUS: ✓ Kết nối WiFi thành công | Lam's_ Phong Lanh 1 | Tín hiệu: None%
+[NET] NTP already synchronized via systemd-timesyncd
+[21:32:47] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_kt_1 → TURN_ON | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[21:32:49] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_kt_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd Z3gyy7OpRzQ0wAMsJawj: fan_kt_1 → True
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[21:35:27] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_kt_1 → TURN_ON | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_on
+[AUTO] ACK sent for cmd w60Nthwnp5rSFxXpwMQO: fan_kt_1 → True
+[21:35:31] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_kt_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd xJng8JYihjAXjWRi9sAG: fan_kt_1 → False
+[21:35:34] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_kt_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd xBPygDL6zrXni2YdBS06: light_kt_1 → False
+[21:35:41] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:35:43] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:35:47] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:35:53] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[21:35:57] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:02] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:07] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:15] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:19] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:22] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:27] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[21:36:32] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:37] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:43] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:47] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:36:52] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[21:36:59] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:03] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:09] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:13] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:17] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:22] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:29] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[21:37:33] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:38] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:43] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:49] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:37:54] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:38:07] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:38:11] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:38:11] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+2026-05-13 21:38:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:39:09 [INFO][SYNCER] Firestore: Batch flush 35 sensor history rows
+2026-05-13 21:39:09 [INFO][SYNCER] Flushed 35 sensor history rows to Firestore
+2026-05-13 21:39:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:39:33 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 21:39:34 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 21:39:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:40:18 [INFO][SYNCER] Firestore: Batch flush 77 sensor history rows
+2026-05-13 21:40:18 [INFO][SYNCER] Flushed 77 sensor history rows to Firestore
+2026-05-13 21:40:32 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:40:36 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-13 21:41:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:41:19 [INFO][SYNCER] Firestore: Batch flush 50 sensor history rows
+2026-05-13 21:41:19 [INFO][SYNCER] Flushed 50 sensor history rows to Firestore
+2026-05-13 21:41:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:42:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:42:11 [INFO][SYNCER] [Downlink] DISPATCH: RKBDqtMdFWiyoT0j1nl3 [turn_on] → Redis[device_commands]
+2026-05-13 21:42:11 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh RKBDqtMdFWiyoT0j1nl3
+2026-05-13 21:42:12 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> ON | Name: Quạt | Type: fan
+2026-05-13 21:42:14 [INFO][SYNCER] [Downlink] DISPATCH: S0kbG1BrfcixPDtTNl6q [turn_off] → Redis[device_commands]
+2026-05-13 21:42:14 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh S0kbG1BrfcixPDtTNl6q
+2026-05-13 21:42:15 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 21:42:15 [INFO][SYNCER] [Downlink] DISPATCH: hmmqHWyagNhbXRxJ1etU [turn_on] → Redis[device_commands]
+2026-05-13 21:42:16 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh hmmqHWyagNhbXRxJ1etU
+2026-05-13 21:42:20 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> ON | Name: Đèn | Type: light
+2026-05-13 21:42:20 [INFO][SYNCER] [Downlink] DISPATCH: jXFV933x6984DdfQPhl8 [turn_off] → Redis[device_commands]
+2026-05-13 21:42:20 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-13 21:42:20 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-13 21:42:20 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh jXFV933x6984DdfQPhl8
+2026-05-13 21:42:20 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 21:42:21 [INFO][SYNCER] [Downlink] DISPATCH: hghZdBSzQCdmV5kWZBE9 [turn_off] → Redis[device_commands]
+2026-05-13 21:42:21 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh hghZdBSzQCdmV5kWZBE9
+2026-05-13 21:42:22 [INFO][SYNCER] [Downlink] DISPATCH: 7FGZdYBryXhImFpm0Ogx [turn_on] → Redis[device_commands]
+2026-05-13 21:42:23 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 7FGZdYBryXhImFpm0Ogx
+2026-05-13 21:42:24 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> ON | Name: Đèn | Type: light
+2026-05-13 21:42:24 [INFO][SYNCER] [Downlink] DISPATCH: RgvY0v9iE5uoTz7tuHnz [turn_off] → Redis[device_commands]
+2026-05-13 21:42:25 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh RgvY0v9iE5uoTz7tuHnz
+2026-05-13 21:42:25 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 21:42:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:43:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:43:20 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-13 21:43:20 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-13 21:43:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:44:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:44:21 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-13 21:44:21 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-13 21:44:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:45:00 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:45:00] "[31m[1mPOST /api/ota/upload HTTP/1.1[0m" 401 -
+2026-05-13 21:45:01 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-13 21:45:08 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:45:08] "[31m[1mPOST /api/ota/upload HTTP/1.1[0m" 401 -
+2026-05-13 21:45:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:45:21 [INFO][SYNCER] Firestore: Batch flush 79 sensor history rows
+2026-05-13 21:45:21 [INFO][SYNCER] Flushed 79 sensor history rows to Firestore
+2026-05-13 21:45:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:46:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:46:22 [INFO][SYNCER] Firestore: Batch flush 84 sensor history rows
+2026-05-13 21:46:22 [INFO][SYNCER] Flushed 84 sensor history rows to Firestore
+2026-05-13 21:46:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:47:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:47:26 [INFO][SYNCER] Firestore: Batch flush 84 sensor history rows
+2026-05-13 21:47:26 [INFO][SYNCER] Flushed 84 sensor history rows to Firestore
+2026-05-13 21:47:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:48:21 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 21:48:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:48:26 [INFO][SYNCER] Firestore sync [bedroom_01/fan_bd_1] -> ON | Name: Quạt | Type: fan
+2026-05-13 21:48:44 [INFO][SYNCER] Firestore: Batch flush 79 sensor history rows
+2026-05-13 21:48:44 [INFO][SYNCER] Flushed 79 sensor history rows to Firestore
+2026-05-13 21:48:46 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:48:46] "[31m[1mPOST /api/ota/upload HTTP/1.1[0m" 401 -
+2026-05-13 21:48:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:49:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:49:45 [INFO][SYNCER] Firestore: Batch flush 94 sensor history rows
+2026-05-13 21:49:45 [INFO][SYNCER] Flushed 94 sensor history rows to Firestore
+2026-05-13 21:49:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:50:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:50:46 [INFO][SYNCER] Firestore: Batch flush 74 sensor history rows
+2026-05-13 21:50:46 [INFO][SYNCER] Flushed 74 sensor history rows to Firestore
+2026-05-13 21:50:57 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 21:51:16 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-13 21:51:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:51:25 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 21:51:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-13 21:51:44 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 21:52:34 [ERROR][SYNCER] Firestore update_wifi_status error: Timeout of 60.0s exceeded, last exception: 503 failed to connect to all addresses; last error: FAILED_PRECONDITION: ipv6:%5B2404:6800:4003:c00::5f%5D:443: connect failed: addr: ipv6:%5B2404:6800:4003:c00::5f%5D:443 error: Network is unreachable
+2026-05-13 21:52:43 [ERROR][SYNCER] [Downlink] Dispatch error cho lệnh wifi_scan: Timeout of 60.0s exceeded, last exception: 503 failed to connect to all addresses; last error: UNKNOWN: ipv4:74.125.200.95:443: tcp handshaker shutdown
+2026-05-13 21:52:43 [ERROR][SYNCER] Firestore batch commit failed: Timeout of 60.0s exceeded, last exception: 503 failed to connect to all addresses; last error: UNKNOWN: ipv4:74.125.200.95:443: tcp handshaker shutdown
+2026-05-13 21:52:43 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-13 21:52:45 [WARNING][SYNCER] Retrying (Retry(total=9, connect=1, read=0, redirect=None, status=4)) after connection broken by 'RemoteDisconnected('Remote end closed connection without response')': /live/living_room_01.json?print=silent
+2026-05-13 21:52:51 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 21:52:54 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-13 21:52:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:53:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:53:46 [INFO][SYNCER] Firestore: Batch flush 142 sensor history rows
+2026-05-13 21:53:46 [INFO][SYNCER] Flushed 142 sensor history rows to Firestore
+2026-05-13 21:53:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:54:23 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:54:23] "[31m[1mPOST /api/ota/upload HTTP/1.1[0m" 401 -
+2026-05-13 21:54:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+[21:38:13] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:38:18] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:38:24] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:38:28] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[21:39:21] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:24] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:26] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:33] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:35] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:41] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:50] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:54] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:39:58] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[21:40:01] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:40:06] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:40:18] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:40:18] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:40:22] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:40:26] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[21:40:32] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[21:40:35] ℹ [EVENT] SYSTEM: ✓ Chế độ thủ công hết hạn | light_kt_1 → Tự động hoạt động lại
+[DISPATCH] MANUAL_STATE TTL expired for light_kt_1 → auto mode restored
+[DISPATCH] SENT [automation|p=3]: kitchen_01/light_kt_1 → turn_on
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[21:42:11] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_lv_1 → TURN_ON | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/fan_lv_1 → turn_on
+[AUTO] ACK sent for cmd RKBDqtMdFWiyoT0j1nl3: fan_lv_1 → True
+[21:42:14] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_lv_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/fan_lv_1 → turn_off
+[AUTO] ACK sent for cmd S0kbG1BrfcixPDtTNl6q: fan_lv_1 → False
+[21:42:16] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_lv_1 → TURN_ON | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/light_lv_1 → turn_on
+[AUTO] ACK sent for cmd hmmqHWyagNhbXRxJ1etU: light_lv_1 → True
+[21:42:20] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_lv_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/light_lv_1 → turn_off
+[AUTO] ACK sent for cmd jXFV933x6984DdfQPhl8: light_lv_1 → False
+[21:42:21] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_lv_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/light_lv_1 → turn_off
+[AUTO] ACK sent for cmd hghZdBSzQCdmV5kWZBE9: light_lv_1 → False
+[21:42:23] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_lv_1 → TURN_ON | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/light_lv_1 → turn_on
+[AUTO] ACK sent for cmd 7FGZdYBryXhImFpm0Ogx: light_lv_1 → True
+[21:42:25] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_lv_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: living_room_01/light_lv_1 → turn_off
+[AUTO] ACK sent for cmd RgvY0v9iE5uoTz7tuHnz: light_lv_1 → False
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[21:44:02] ℹ [EVENT] DOOR_ACCESS: 🔓 Cấp quyền vào | Người: Thẻ mới | Phương thức: RFID
+[AUTH] entrance_01: GRANTED -> Thẻ mới
+[21:44:02] ⚠ [EVENT] DOOR_ACCESS: 🚫 Từ chối vào | UID: admin | Phương thức: RFID
+[AUTH] entrance_01: DENIED -> admin
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[21:45:00] ℹ [EVENT] SYSTEM: ✓ Chế độ thủ công hết hạn | fan_kt_1 → Tự động hoạt động lại
+[DISPATCH] MANUAL_STATE TTL expired for fan_kt_1 → auto mode restored
+[DISPATCH] SENT [schedule|p=2]: kitchen_01/fan_kt_1 → turn_on
+[21:45:01] ℹ [EVENT] SCHEDULE: Hẹn lịch tắt thiết bị | fan_kt_1 | Đã thực hiện
+[SCHEDULER] Executed: kitchen_01/fan_kt_1 → turn_on
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_off
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[21:50:46] ⚠ [EVENT] WIFI_STATUS: ✗ Mất kết nối WiFi | N/A
+[NET] Internet: OFF / N/A
+[NET] WiFi scan done via wlan1: 1 networks found
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 8 networks found
+[NET] WiFi scan done via wlan1: 9 networks found
+[EVENT] Log error: Timeout of 60.0s exceeded, last exception: 503 failed to connect to all addresses; last error: UNKNOWN: ipv4:74.125.200.95:443: tcp handshaker shutdown
+[NET] Internet: ON / Lam's_ Phong Lanh 1
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 9 networks found
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+2026-05-13 21:54:47 [INFO][SYNCER] Firestore: Batch flush 74 sensor history rows
+2026-05-13 21:54:47 [INFO][SYNCER] Flushed 74 sensor history rows to Firestore
+2026-05-13 21:54:55 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:54:55] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2026-05-13 21:54:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:55:19 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:55:19] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2026-05-13 21:55:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:55:32 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:55:32] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2026-05-13 21:55:48 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-05-13 21:55:48 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-13 21:55:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:56:07 [INFO][SYNCER] Firestore sync [bedroom_01/light_bd_1] -> ON | Name: Đèn | Type: light
+2026-05-13 21:56:29 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:56:49 [INFO][SYNCER] Firestore: Batch flush 76 sensor history rows
+2026-05-13 21:56:49 [INFO][SYNCER] Flushed 76 sensor history rows to Firestore
+2026-05-13 21:56:51 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:56:51] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2026-05-13 21:56:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:57:14 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 21:57:14] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2026-05-13 21:57:29 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:57:50 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-05-13 21:57:50 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-13 21:58:00 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:58:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:58:51 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-05-13 21:58:51 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-13 21:59:00 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:59:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 21:59:52 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-05-13 21:59:52 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-13 22:00:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:00:04 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:00:04] "POST /api/auth/login HTTP/1.1" 200 -
+2026-05-13 22:00:36 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:00:52 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-05-13 22:00:52 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-13 22:01:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:01:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:01:59 [INFO][SYNCER] Firestore: Batch flush 78 sensor history rows
+2026-05-13 22:01:59 [INFO][SYNCER] Flushed 78 sensor history rows to Firestore
+2026-05-13 22:02:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:02:30 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:02:30] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:02:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:02:53 [INFO][SYNCER] 10.42.0.52 - - [13/May/2026 22:02:53] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-13 22:03:00 [INFO][SYNCER] Firestore: Batch flush 75 sensor history rows
+2026-05-13 22:03:00 [INFO][SYNCER] Flushed 75 sensor history rows to Firestore
+2026-05-13 22:03:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:03:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:04:02 [INFO][SYNCER] Firestore: Batch flush 82 sensor history rows
+2026-05-13 22:04:02 [INFO][SYNCER] Flushed 82 sensor history rows to Firestore
+2026-05-13 22:04:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:04:17 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:04:17] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:04:27 [INFO][SYNCER] 10.42.0.52 - - [13/May/2026 22:04:27] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-13 22:04:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:05:04 [INFO][SYNCER] Firestore: Batch flush 84 sensor history rows
+2026-05-13 22:05:04 [INFO][SYNCER] Flushed 84 sensor history rows to Firestore
+2026-05-13 22:05:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:05:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:06:05 [INFO][SYNCER] Firestore: Batch flush 86 sensor history rows
+2026-05-13 22:06:05 [INFO][SYNCER] Flushed 86 sensor history rows to Firestore
+2026-05-13 22:06:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:06:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:07:07 [INFO][SYNCER] Firestore: Batch flush 89 sensor history rows
+2026-05-13 22:07:08 [INFO][SYNCER] Flushed 89 sensor history rows to Firestore
+2026-05-13 22:07:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:07:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:08:09 [INFO][SYNCER] Firestore: Batch flush 84 sensor history rows
+2026-05-13 22:08:09 [INFO][SYNCER] Flushed 84 sensor history rows to Firestore
+2026-05-13 22:08:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:08:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:09:09 [INFO][SYNCER] Firestore: Batch flush 42 sensor history rows
+2026-05-13 22:09:09 [INFO][SYNCER] Flushed 42 sensor history rows to Firestore
+2026-05-13 22:09:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:09:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:10:09 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:10:09 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:10:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:10:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:11:10 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:11:10 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:11:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:11:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:12:11 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:12:11 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:12:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:12:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:13:11 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:13:11 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:13:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:13:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:14:12 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:14:12 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:14:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:14:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:15:12 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:15:12 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:15:18 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:15:18] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:15:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:15:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:16:01 [INFO][SYNCER] 10.42.0.52 - - [13/May/2026 22:16:01] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-13 22:16:15 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:16:15 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:16:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:16:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:17:16 [INFO][SYNCER] Firestore: Batch flush 30 sensor history rows
+2026-05-13 22:17:16 [INFO][SYNCER] Flushed 30 sensor history rows to Firestore
+2026-05-13 22:17:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:17:56 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:17:56] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:17:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:18:03 [INFO][SYNCER] 10.42.0.52 - - [13/May/2026 22:18:03] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-13 22:18:16 [INFO][SYNCER] Firestore: Batch flush 45 sensor history rows
+2026-05-13 22:18:16 [INFO][SYNCER] Flushed 45 sensor history rows to Firestore
+2026-05-13 22:18:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:18:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:19:16 [INFO][SYNCER] Firestore: Batch flush 55 sensor history rows
+2026-05-13 22:19:16 [INFO][SYNCER] Flushed 55 sensor history rows to Firestore
+2026-05-13 22:19:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:19:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:20:17 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:20:17 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:20:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:20:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:21:17 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:21:17 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:21:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:21:31 [INFO][SYNCER] [Downlink] DISPATCH: msR52GqB3ibfYpmFYBqD [turn_off] → Redis[device_commands]
+2026-05-13 22:21:31 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh msR52GqB3ibfYpmFYBqD
+2026-05-13 22:21:31 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 22:21:34 [INFO][SYNCER] [Downlink] DISPATCH: pp1bsAS1nE0MxDYxCHEi [turn_off] → Redis[device_commands]
+2026-05-13 22:21:34 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh pp1bsAS1nE0MxDYxCHEi
+2026-05-13 22:21:34 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 22:22:01 [INFO][SYNCER] Firestore sync [kitchen_01/fan_kt_1] -> ON | Name: Quạt | Type: fan
+2026-05-13 22:22:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:22:18 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:22:18 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:22:33 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[DISPATCH] SENT [automation|p=3]: bedroom_01/light_bd_1 → turn_on
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_kitchen_01_1778684550 for room=kitchen_01
+[AUTO] Schedules reloaded: 6
+[OTA] User confirmed update for kitchen_01 v2.1.0
+[AUTO] OTA status routed: kitchen_01 ota_start
+[22:02:52] ℹ [EVENT] OTA_UPDATE: 🔄 OTA update bắt đầu | Phiên bản: 2.1.0
+[OTA] MQTT sent to kitchen_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[AUTO] OTA status routed: kitchen_01 ota_done
+[22:03:23] ℹ [EVENT] OTA_UPDATE: ✓ OTA update thành công | Phiên bản: 2.1.0
+[OTA] ota_kitchen_01_1778684550: DONE v2.1.0
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_kitchen_01_1778684657 for room=kitchen_01
+[OTA] User confirmed update for kitchen_01 v2.1.0
+[AUTO] OTA status routed: kitchen_01 ota_start
+[22:04:26] ℹ [EVENT] OTA_UPDATE: 🔄 OTA update bắt đầu | Phiên bản: 2.1.0
+[OTA] MQTT sent to kitchen_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[AUTO] OTA status routed: kitchen_01 ota_done
+[22:04:55] ℹ [EVENT] OTA_UPDATE: ✓ OTA update thành công | Phiên bản: 2.1.0
+[OTA] ota_kitchen_01_1778684657: DONE v2.1.0
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[22:12:44] ⚠ [EVENT] WIFI_STATUS: ✗ Mất kết nối WiFi | N/A
+[NET] Internet: OFF / N/A
+[AUTO] Schedules reloaded: 6
+[22:13:15] ℹ [EVENT] WIFI_STATUS: ✓ Kết nối WiFi thành công | Lam's_ Phong Lanh 1 | Tín hiệu: 100%
+[NET] Internet: ON / Lam's_ Phong Lanh 1
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_kitchen_01_1778685318 for room=kitchen_01
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] User confirmed update for kitchen_01 v2.1.0
+[AUTO] OTA status routed: kitchen_01 ota_start
+[22:16:00] ℹ [EVENT] OTA_UPDATE: 🔄 OTA update bắt đầu | Phiên bản: 2.1.0
+[OTA] MQTT sent to kitchen_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[OTA] Notice written: ota_kitchen_01_1778685476 for room=kitchen_01
+[AUTO] Schedules reloaded: 6
+[OTA] User confirmed update for kitchen_01 v2.1.0
+[AUTO] OTA status routed: kitchen_01 ota_start
+[22:18:02] ℹ [EVENT] OTA_UPDATE: 🔄 OTA update bắt đầu | Phiên bản: 2.1.0
+[OTA] MQTT sent to kitchen_01: ota_update → http://10.42.0.1:5000/firmware/firmware.bin
+[AUTO] Schedules reloaded: 6
+[AUTO] OTA status routed: kitchen_01 ota_done
+[22:18:34] ℹ [EVENT] OTA_UPDATE: ✓ OTA update thành công | Phiên bản: 2.1.0
+[OTA] ota_kitchen_01_1778685476: DONE v2.1.0
+[22:18:54] ⚠ [EVENT] WIFI_STATUS: ✗ Mất kết nối WiFi | N/A
+[NET] Internet: OFF / N/A
+[AUTO] Schedules reloaded: 6
+[22:19:20] ℹ [EVENT] WIFI_STATUS: ✓ Kết nối WiFi thành công | Lam's_ Phong Lanh 1 | Tín hiệu: 100%
+[NET] Internet: ON / Lam's_ Phong Lanh 1
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[AUTO] Schedules reloaded: 6
+[22:21:31] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | fan_kt_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/fan_kt_1 → turn_off
+[AUTO] ACK sent for cmd msR52GqB3ibfYpmFYBqD: fan_kt_1 → False
+[22:21:34] ℹ [EVENT] MANUAL_CONTROL: Điều khiển thủ công | light_kt_1 → TURN_OFF | Automation sẽ bị chặn 5 phút
+[DISPATCH] SENT [manual|p=1]: kitchen_01/light_kt_1 → turn_off
+[AUTO] ACK sent for cmd pp1bsAS1nE0MxDYxCHEi: light_kt_1 → False
+[22:21:38] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:21:50] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:21:53] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:21:53] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:21:54] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 693 ppm - Phòng: kitchen_01
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 693 ppm - Phòng: kitchen_01
+[22:21:55] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 693 ppm - Phòng: kitchen_01
+[22:22:01] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:22:03] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[AUTO] Schedules reloaded: 6
+[22:22:11] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:22:13] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:22:20] ℹ [EVENT] SAFETY_ALERT: ✓ Cảnh báo GAS được xử lý | Hệ thống bình thường
+[22:22:20] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01: SAFE — lock released
+[22:22:24] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 4095 ppm - Phòng: kitchen_01
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 4095 ppm - Phòng: kitchen_01
+[22:22:24] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:22:24] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 4095 ppm - Phòng: kitchen_01
+[22:22:28] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:22:29] ℹ [EVENT] SAFETY_ALERT: ✓ Cảnh báo GAS được xử lý | Hệ thống bình thường
+[WATCHDOG] kitchen_01: SAFE — lock released
+[22:22:33] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[22:22:38] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:22:43] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+2026-05-13 22:22:56 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 22:22:56 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-13 22:23:03 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:23:12 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 22:23:13 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-13 22:23:19 [INFO][SYNCER] Firestore: Batch flush 65 sensor history rows
+2026-05-13 22:23:19 [INFO][SYNCER] Flushed 65 sensor history rows to Firestore
+2026-05-13 22:23:33 [INFO][SYNCER] [Downlink] DISPATCH: wifi_scan [scan_wifi] → Redis[wifi_setup]
+2026-05-13 22:23:33 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh wifi_scan
+2026-05-13 22:23:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:24:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:24:19 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:24:19 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:24:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:25:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:25:19 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:25:19 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:25:27 [INFO][SYNCER] [Downlink] DISPATCH: uaxeDPzZ8PEhcM5VMHwX [smart_mute_alert] → Redis[alert_commands]
+2026-05-13 22:25:27 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh uaxeDPzZ8PEhcM5VMHwX
+2026-05-13 22:25:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:22:50] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:22:53] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[NET] WiFi scan done via wlan1: 1 networks found
+[22:23:02] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:03] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[22:23:08] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:12] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[NET] WiFi scan done via wlan1: 7 networks found
+[22:23:18] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:23] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:31] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:32] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[AUTO] Schedules reloaded: 6
+[NET] WiFi scan done via wlan1: 9 networks found
+[22:23:38] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:42] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:43] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 974 ppm - Phòng: kitchen_01
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 974 ppm - Phòng: kitchen_01
+[22:23:44] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 974 ppm - Phòng: kitchen_01
+[22:23:48] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:23:53] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:23:53] ℹ [EVENT] SAFETY_ALERT: ✓ Cảnh báo GAS được xử lý | Hệ thống bình thường
+[WATCHDOG] kitchen_01: SAFE — lock released
+[22:23:58] ⚠ [EVENT] AUTOMATION: Tự động hóa bị chặn | light_kt_1 | Vừa điều khiển thủ công (tạm dừng 5 phút)
+[DISPATCH] BLOCKED (manual_override): automation → light_kt_1
+[22:23:58] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 762 ppm - Phòng: kitchen_01
+[WATCHDOG] DANGER DETECTED kitchen_01: RÒ RỈ KHÍ GAS! 762 ppm - Phòng: kitchen_01
+[22:23:58] 🚨 [EVENT] SAFETY_ALERT: RÒ RỈ KHÍ GAS! 762 ppm - Phòng: kitchen_01
+[22:24:02] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[AUTO] Schedules reloaded: 6
+[22:24:08] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:13] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:18] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:23] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:28] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:33] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[AUTO] Schedules reloaded: 6
+[22:24:38] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:42] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:48] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:52] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:24:57] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:25:02] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[AUTO] Schedules reloaded: 6
+[22:25:08] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:25:12] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:25:18] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:25:23] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[WATCHDOG] kitchen_01 smart_muted (alert read) — buzzer off for 180s
+[22:25:28] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[22:25:32] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+[AUTO] Schedules reloaded: 6
+[22:25:37] ⚠ [EVENT] SYSTEM: ⚠️ Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: light_kt_1
+[DISPATCH] BLOCKED (safety_lock): automation → kitchen_01/light_kt_1 turn_on
+2026-05-13 22:26:06 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:26:20 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:26:20 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:26:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:27:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:27:20 [INFO][SYNCER] Firestore sync [kitchen_01/light_kt_1] -> ON | Name: Đèn | Type: light
+2026-05-13 22:27:21 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:27:21 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:27:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:28:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:28:22 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:28:22 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:28:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:29:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:29:23 [INFO][SYNCER] Firestore: Batch flush 60 sensor history rows
+2026-05-13 22:29:23 [INFO][SYNCER] Flushed 60 sensor history rows to Firestore
+2026-05-13 22:29:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:30:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:30:23 [INFO][SYNCER] Firestore: Batch flush 35 sensor history rows
+2026-05-13 22:30:23 [INFO][SYNCER] Flushed 35 sensor history rows to Firestore
+2026-05-13 22:30:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:31:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:31:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:32:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:32:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:33:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:33:27 [INFO][SYNCER] Firestore: Batch flush 14 sensor history rows
+2026-05-13 22:33:27 [INFO][SYNCER] Flushed 14 sensor history rows to Firestore
+2026-05-13 22:33:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:34:19 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:34:19] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:34:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:34:28 [INFO][SYNCER] Firestore: Batch flush 26 sensor history rows
+2026-05-13 22:34:28 [INFO][SYNCER] Flushed 26 sensor history rows to Firestore
+2026-05-13 22:34:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:35:29 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-13 22:35:29 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-13 22:35:30 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:35:54 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:35:54] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:36:01 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:36:29 [INFO][SYNCER] Firestore: Batch flush 6 sensor history rows
+2026-05-13 22:36:29 [INFO][SYNCER] Flushed 6 sensor history rows to Firestore
+2026-05-13 22:36:31 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:37:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:37:28 [INFO][SYNCER] [Downlink] DISPATCH: Y8DkXIj04JlyNslerjM9 [turn_on] → Redis[device_commands]
+2026-05-13 22:37:28 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Y8DkXIj04JlyNslerjM9
+2026-05-13 22:37:29 [INFO][SYNCER] [Downlink] DISPATCH: UuRf1QxbQczYrw8giHdG [turn_off] → Redis[device_commands]
+2026-05-13 22:37:29 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh UuRf1QxbQczYrw8giHdG
+2026-05-13 22:37:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:38:07 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:38:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:39:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:39:38 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:40:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:40:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:41:06 [INFO][SYNCER] [Downlink] DISPATCH: ZkGMMx3jLxuuzlMfJoJR [smart_mute_alert] → Redis[alert_commands]
+2026-05-13 22:41:06 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh ZkGMMx3jLxuuzlMfJoJR
+2026-05-13 22:41:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:41:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:42:09 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:42:10 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 22:42:10] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 22:42:29 [INFO][SYNCER] Firestore: Batch flush 18 sensor history rows
+2026-05-13 22:42:29 [INFO][SYNCER] Flushed 18 sensor history rows to Firestore
+2026-05-13 22:42:39 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:43:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:43:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:44:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:44:40 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:45:10 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:45:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:46:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:46:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:47:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:47:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:48:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:48:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:49:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:49:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:50:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:50:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:51:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:51:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:52:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:52:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:53:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:53:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:54:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:54:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:55:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:55:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:56:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:56:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:57:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:57:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:58:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:58:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:59:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 22:59:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:00:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:00:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:01:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:01:38 [INFO][SYNCER] SyncWorker starting...
+2026-05-13 23:01:38 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-13 23:01:38 [INFO][SYNCER] ============================================================
+2026-05-13 23:01:38 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-13 23:01:38 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-13 23:01:38 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-13 23:01:38 [INFO][SYNCER] ============================================================
+2026-05-13 23:01:38 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-13 23:01:38 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-13 23:01:38 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-13 23:01:38 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[AUTO] Command listener started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-13 23:01:39 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-13 23:01:39 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-13 23:01:41 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-13 23:01:41 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-13 23:01:41 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-13 23:01:41 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-13 23:01:41 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-13 23:01:41 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-13 23:01:48 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 23:01:48 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 23:01:54 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 23:01:54] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 23:02:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:02:42 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-13 23:02:42 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-13 23:02:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:03:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:03:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:04:11 [INFO][SYNCER] 192.168.1.158 - - [13/May/2026 23:04:11] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-13 23:04:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:04:42 [INFO][SYNCER] Firestore: Batch flush 10 sensor history rows
+2026-05-13 23:04:42 [INFO][SYNCER] Flushed 10 sensor history rows to Firestore
+2026-05-13 23:04:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:05:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:05:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:06:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:06:38 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-13 23:06:38 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-13.db (mode: sd2)
+2026-05-13 23:06:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:07:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:07:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:08:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:08:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:09:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:09:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:10:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:10:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:11:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:11:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:12:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:12:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:13:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:13:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:14:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:14:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:15:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:15:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:16:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:35:13 [INFO][SYNCER] SyncWorker starting...
+2026-05-13 23:35:13 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-13 23:35:13 [INFO][SYNCER] ============================================================
+2026-05-13 23:35:13 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-13 23:35:13 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-13 23:35:13 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-13 23:35:13 [INFO][SYNCER] ============================================================
+2026-05-13 23:35:13 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-13 23:35:13 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-13 23:35:13 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-13 23:35:13 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[API] Registered /api: sensors
+[SCHEDULER] Started
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Command listener started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-13 23:35:13 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-13 23:35:13 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-13 23:35:17 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-13 23:35:17 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-13 23:35:17 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-13 23:35:17 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-13 23:35:17 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-13 23:35:17 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-13 23:35:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:36:17 [INFO][SYNCER] Firestore: Batch flush 14 sensor history rows
+2026-05-13 23:36:17 [INFO][SYNCER] Flushed 14 sensor history rows to Firestore
+2026-05-13 23:36:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:36:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:37:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:37:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:38:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:38:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:39:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:39:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:40:13 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-13 23:40:13 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-13.db (mode: sd2)
+2026-05-13 23:40:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:40:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:41:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:41:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:42:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:56:30 [INFO][SYNCER] SyncWorker starting...
+2026-05-13 23:56:30 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-13 23:56:30 [INFO][SYNCER] ============================================================
+2026-05-13 23:56:30 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-13 23:56:30 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-13 23:56:30 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-13 23:56:30 [INFO][SYNCER] ============================================================
+2026-05-13 23:56:30 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-13 23:56:30 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-13 23:56:30 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-13 23:56:30 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-13 23:56:31 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-13 23:56:31 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-13 23:56:33 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-13 23:56:33 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-13 23:56:33 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-13 23:56:33 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-13 23:56:33 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-13 23:56:33 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-13 23:57:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:57:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:57:58 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-13 23:57:59 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-13 23:58:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:58:33 [INFO][SYNCER] Firestore: Batch flush 18 sensor history rows
+2026-05-13 23:58:33 [INFO][SYNCER] Flushed 18 sensor history rows to Firestore
+2026-05-13 23:58:34 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:59:04 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-13 23:59:34 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-13 23:59:34 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-13 23:59:35 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:00:05 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:01:20 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 00:01:20 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 00:01:20 [INFO][SYNCER] ============================================================
+2026-05-14 00:01:20 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 00:01:20 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 00:01:20 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 00:01:20 [INFO][SYNCER] ============================================================
+2026-05-14 00:01:20 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 00:01:20 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 00:01:20 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 00:01:20 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MQTT connected & subscribed
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[BUS] Outbound loop started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+[AUTO] Command listener started
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 00:01:20 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 00:01:20 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 00:01:23 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 00:01:23 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 00:01:23 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 00:01:23 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 00:01:23 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 00:01:23 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 00:01:51 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 00:01:51 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 00:01:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:02:08 [INFO][SYNCER] [Downlink] DISPATCH: Mi3dE6Z7CMOwzoRhjMhj [turn_on] → Redis[device_commands]
+2026-05-14 00:02:08 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh Mi3dE6Z7CMOwzoRhjMhj
+2026-05-14 00:02:09 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> ON | Name: Quạt | Type: fan
+2026-05-14 00:02:10 [INFO][SYNCER] [Downlink] DISPATCH: ve2usYErDimP2sN3glbB [turn_off] → Redis[device_commands]
+2026-05-14 00:02:10 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh ve2usYErDimP2sN3glbB
+2026-05-14 00:02:10 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 00:02:11 [INFO][SYNCER] [Downlink] DISPATCH: 4SR4qEbfAMAYjPWSFbvN [turn_on] → Redis[device_commands]
+2026-05-14 00:02:11 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh 4SR4qEbfAMAYjPWSFbvN
+2026-05-14 00:02:12 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> ON | Name: Đèn | Type: light
+2026-05-14 00:02:13 [INFO][SYNCER] [Downlink] DISPATCH: n8lnpAjtRpRMuSd8Yozj [turn_off] → Redis[device_commands]
+2026-05-14 00:02:13 [INFO][SYNCER] [Downlink] CLEANUP: Đã xóa lệnh n8lnpAjtRpRMuSd8Yozj
+2026-05-14 00:02:13 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 00:02:23 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-14 00:02:23 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-14 00:02:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:02:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:03:23 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 00:03:23 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 00:03:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:03:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:04:24 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 00:04:24 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 00:04:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:04:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:05:24 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 00:05:24 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 00:05:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:05:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:06:20 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-14 00:06:20 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-14.db (mode: sd2)
+2026-05-14 00:06:24 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 00:06:24 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 00:06:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:06:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:07:24 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 00:07:24 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 00:07:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:23:18 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 00:23:18 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 00:23:18 [INFO][SYNCER] ============================================================
+2026-05-14 00:23:18 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 00:23:18 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 00:23:18 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 00:23:18 [INFO][SYNCER] ============================================================
+2026-05-14 00:23:18 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 00:23:18 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 00:23:18 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 00:23:18 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[BUS] Outbound loop started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[OTA] Firebase app is ready
+[OTA] OTA Manager started
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 00:23:18 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 00:23:18 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 00:23:21 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 00:23:21 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 00:23:21 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 00:23:21 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 00:23:21 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 00:23:21 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 00:23:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:24:21 [INFO][SYNCER] Firestore: Batch flush 2 sensor history rows
+2026-05-14 00:24:21 [INFO][SYNCER] Flushed 2 sensor history rows to Firestore
+2026-05-14 00:24:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:24:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 00:25:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:12:02 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 01:12:02 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 01:12:02 [INFO][SYNCER] ============================================================
+2026-05-14 01:12:02 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 01:12:02 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 01:12:02 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 01:12:02 [INFO][SYNCER] ============================================================
+2026-05-14 01:12:03 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 01:12:03 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 01:12:03 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 01:12:03 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] MQTT connected & subscribed
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: sensors
+[AUTO] Command listener started
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 01:12:03 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 01:12:03 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 01:12:06 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 01:12:06 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 01:12:06 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 01:12:06 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 01:12:06 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 01:12:06 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 01:13:55 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 01:13:55 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 01:13:55 [INFO][SYNCER] ============================================================
+2026-05-14 01:13:55 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 01:13:55 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 01:13:55 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 01:13:55 [INFO][SYNCER] ============================================================
+2026-05-14 01:13:55 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 01:13:55 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 01:13:55 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 01:13:55 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[BUS] Outbound loop started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+Address already in use
+Port 5000 is in use by another program. Either identify and stop that program, or start the server with a different port.
+2026-05-14 01:13:58 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 01:13:58 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 01:13:58 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 01:13:58 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 01:13:58 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 01:13:58 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 01:14:01 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 01:14:01 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 01:14:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:14:58 [INFO][SYNCER] Firestore: Batch flush 72 sensor history rows
+2026-05-14 01:14:58 [INFO][SYNCER] Flushed 72 sensor history rows to Firestore
+2026-05-14 01:14:59 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:15:45 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 01:15:45 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 01:15:45 [INFO][SYNCER] ============================================================
+2026-05-14 01:15:45 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 01:15:45 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 01:15:45 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 01:15:45 [INFO][SYNCER] ============================================================
+2026-05-14 01:15:45 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 01:15:45 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 01:15:45 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 01:15:45 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[BUS] Outbound loop started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[AUTO] Command listener started
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 01:15:46 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 01:15:46 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 01:15:49 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 01:15:49 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 01:15:49 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 01:15:49 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 01:15:49 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 01:15:49 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 01:15:51 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 01:15:51 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 01:16:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:16:49 [INFO][SYNCER] Firestore: Batch flush 52 sensor history rows
+2026-05-14 01:16:49 [INFO][SYNCER] Flushed 52 sensor history rows to Firestore
+2026-05-14 01:16:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:17:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:17:49 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 01:17:49 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 01:17:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:18:06 [INFO][SYNCER] 127.0.0.1 - - [14/May/2026 01:18:06] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:18:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:18:49 [INFO][SYNCER] Firestore: Batch flush 8 sensor history rows
+2026-05-14 01:18:49 [INFO][SYNCER] Flushed 8 sensor history rows to Firestore
+2026-05-14 01:18:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:19:20 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:19:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:20:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:25:04 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 01:25:04 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 01:25:04 [INFO][SYNCER] ============================================================
+2026-05-14 01:25:04 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 01:25:04 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 01:25:04 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 01:25:04 [INFO][SYNCER] ============================================================
+2026-05-14 01:25:05 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 01:25:05 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 01:25:05 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 01:25:05 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[OTA] Firebase app is ready
+[OTA] OTA Manager started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: auth
+[AUTO] Command listener started
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 01:25:05 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 01:25:05 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 01:25:07 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 01:25:07 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 01:25:07 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 01:25:07 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 01:25:07 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 01:25:07 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 01:25:10 [INFO][SYNCER] 192.168.1.158 - - [14/May/2026 01:25:10] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:25:13 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 01:25:13 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 01:25:37 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:26:08 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:28:05 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 01:28:05 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 01:28:05 [INFO][SYNCER] ============================================================
+2026-05-14 01:28:05 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 01:28:05 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 01:28:05 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 01:28:05 [INFO][SYNCER] ============================================================
+2026-05-14 01:28:06 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 01:28:06 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 01:28:06 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 01:28:06 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[BUS] Outbound loop started
+[MAIN] FirebaseSync worker started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[AUTO] Command listener started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 01:28:06 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 01:28:06 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 01:28:10 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 01:28:11 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 01:28:11 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 01:28:11 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 01:28:11 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 01:28:11 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 01:28:20 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 01:28:20 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 01:28:31 [INFO][SYNCER] 192.168.1.158 - - [14/May/2026 01:28:31] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:28:41 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:29:11 [INFO][SYNCER] Firestore: Batch flush 18 sensor history rows
+2026-05-14 01:29:11 [INFO][SYNCER] Flushed 18 sensor history rows to Firestore
+2026-05-14 01:29:11 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:29:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:30:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:30:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:31:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:31:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:32:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:32:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:33:05 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-14 01:33:05 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-14.db (mode: sd2)
+2026-05-14 01:33:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:33:21 [INFO][SYNCER] 127.0.0.1 - - [14/May/2026 01:33:21] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:33:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:34:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:34:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:39:35 [INFO][SYNCER] SyncWorker starting...
+2026-05-14 01:39:35 [INFO][SYNCER] Waiting for SD2 (timeout 300s before degraded mode)...
+2026-05-14 01:39:35 [INFO][SYNCER] ============================================================
+2026-05-14 01:39:35 [INFO][SYNCER] firebase_sync v2.2 starting — project: nhathongminh-myhome
+2026-05-14 01:39:35 [INFO][SYNCER] FIX A1: Single Writer RTDB (mqtt_inbound only)
+2026-05-14 01:39:35 [INFO][SYNCER] FIX B1: No force_update — ESP32 feedback is source of truth
+2026-05-14 01:39:35 [INFO][SYNCER] ============================================================
+2026-05-14 01:39:35 [INFO][SYNCER] Sử dụng Service Account: /home/pi/smarthome_prj/GATEWAY/firebase-service-account.json
+2026-05-14 01:39:35 [INFO][SYNCER] Redis connected at localhost:6379
+2026-05-14 01:39:35 [INFO][SYNCER] Chạy auto-provisioning...
+2026-05-14 01:39:35 [INFO][SYNCER] === AUTO-PROVISIONING BẮT ĐẦU ===
+=======================================================
+  SmartHome Gateway — Starting
+=======================================================
+[MAIN] DB schema applied
+[MAIN] DB init complete
+[BUS] MessageBus started
+[BUS] MQTT connected & subscribed
+[WATCHDOG] Safety watchdog started (thread-safe sensor read + Firestore alert sync)
+[MAIN] FirebaseSync worker started
+[BUS] Outbound loop started
+[MAIN] OTA Manager worker started
+[MAIN] All workers started
+[NET] Dual interface detected: Hotspot=wlan0, Uplink=wlan1
+[NET] Network watchdog started — Hotspot:wlan0 Uplink:wlan1
+[BRIDGE] Realtime bridge started
+[API] Registered /api: auth
+[API] Registered /api: sensors
+[API] Registered /api: devices
+[API] Registered /api: automation
+[AUTO] Cache loaded: 2 rules, 6 schedules
+[SCHEDULER] Started
+[API] Registered /api: logs
+[API] Registered /api: rfid
+[API] Registered /api: wifi
+[API] Registered /api: ota
+[AUTO] Command listener started
+[API] Registered /api: system
+=======================================================
+[MAIN] Gateway LIVE → http://0.0.0.0:5000/
+[MAIN] API prefix:  http://0.0.0.0:5000/api/
+=======================================================
+ * Serving Flask app 'gateway_main'
+ * Debug mode: off
+2026-05-14 01:39:36 [INFO][SYNCER] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.158:5000
+2026-05-14 01:39:36 [INFO][SYNCER] [33mPress CTRL+C to quit[0m
+2026-05-14 01:39:41 [INFO][SYNCER] === AUTO-PROVISIONING HOÀN TẤT (3 rooms) ===
+2026-05-14 01:39:42 [INFO][SYNCER] Synced 3 rooms to Firestore (userId=aN2XKzWrzieBhBsOFhp7zFzHQaG3)
+2026-05-14 01:39:42 [INFO][SYNCER] [Uplink] Stream started (FIX A1: mqtt_inbound only for RTDB sensor)
+2026-05-14 01:39:42 [INFO][SYNCER] [Downlink] CommandDispatcher started — listening Firestore /commands
+2026-05-14 01:39:42 [INFO][SYNCER] Sensor history flush loop started (interval: 60s)
+2026-05-14 01:39:42 [INFO][SYNCER] [AutoSync] Automation/Schedule sync loop started (interval: 30s)
+2026-05-14 01:40:12 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:40:42 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:41:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:41:43 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:42:13 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:42:44 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:43:14 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:43:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:43:55 [INFO][SYNCER] 127.0.0.1 - - [14/May/2026 01:43:55] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:44:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:44:35 [INFO][SYNCER] SyncWorker running (storage: sd2)
+2026-05-14 01:44:35 [INFO][SYNCER] DB rotated → /mnt/sd2/data/data_2026-05-14.db (mode: sd2)
+2026-05-14 01:44:45 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:45:15 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:45:26 [INFO][SYNCER] 127.0.0.1 - - [14/May/2026 01:45:26] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:45:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:46:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:46:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:47:16 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:47:46 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:48:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:48:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:49:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:49:47 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:50:05 [INFO][SYNCER] Firestore sync [living_room_01/light_lv_1] -> OFF | Name: Đèn | Type: light
+2026-05-14 01:50:05 [INFO][SYNCER] Firestore sync [living_room_01/fan_lv_1] -> OFF | Name: Quạt | Type: fan
+2026-05-14 01:50:17 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:50:42 [INFO][SYNCER] Firestore: Batch flush 18 sensor history rows
+2026-05-14 01:50:42 [INFO][SYNCER] Flushed 18 sensor history rows to Firestore
+2026-05-14 01:50:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:51:18 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:51:42 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 01:51:42 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 01:51:48 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:52:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:52:43 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 01:52:43 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 01:52:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:53:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:53:43 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 01:53:43 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 01:53:49 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:54:19 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:54:43 [INFO][SYNCER] Firestore: Batch flush 14 sensor history rows
+2026-05-14 01:54:43 [INFO][SYNCER] Flushed 14 sensor history rows to Firestore
+2026-05-14 01:54:50 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:55:11 [INFO][SYNCER] 192.168.1.158 - - [14/May/2026 01:55:11] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:55:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:55:43 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-14 01:55:43 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-14 01:55:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:56:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:56:43 [INFO][SYNCER] Firestore: Batch flush 20 sensor history rows
+2026-05-14 01:56:43 [INFO][SYNCER] Flushed 20 sensor history rows to Firestore
+2026-05-14 01:56:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:57:21 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:57:43 [INFO][SYNCER] Firestore: Batch flush 14 sensor history rows
+2026-05-14 01:57:43 [INFO][SYNCER] Flushed 14 sensor history rows to Firestore
+2026-05-14 01:57:51 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:58:13 [INFO][SYNCER] 192.168.1.158 - - [14/May/2026 01:58:13] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 01:58:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:58:44 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-14 01:58:44 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-14 01:58:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:59:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 01:59:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:00:02 [INFO][SYNCER] CSV exported: /mnt/sd2/data/exports/sensor_2026-05-14.csv
+2026-05-14 02:00:22 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:00:52 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:01:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:01:44 [INFO][SYNCER] Firestore: Batch flush 6 sensor history rows
+2026-05-14 02:01:44 [INFO][SYNCER] Flushed 6 sensor history rows to Firestore
+2026-05-14 02:01:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:02:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:02:44 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:02:44 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:02:53 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:03:23 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:03:44 [INFO][SYNCER] Firestore: Batch flush 12 sensor history rows
+2026-05-14 02:03:44 [INFO][SYNCER] Flushed 12 sensor history rows to Firestore
+2026-05-14 02:03:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:04:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:04:34 [INFO][SYNCER] 192.168.1.158 - - [14/May/2026 02:04:34] "POST /api/ota/upload HTTP/1.1" 200 -
+2026-05-14 02:04:44 [INFO][SYNCER] Firestore: Batch flush 16 sensor history rows
+2026-05-14 02:04:44 [INFO][SYNCER] Flushed 16 sensor history rows to Firestore
+2026-05-14 02:04:54 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:04:54 [INFO][SYNCER] 10.42.0.50 - - [14/May/2026 02:04:54] "GET /firmware/firmware.bin HTTP/1.0" 200 -
+2026-05-14 02:05:24 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:05:44 [INFO][SYNCER] Firestore: Batch flush 14 sensor history rows
+2026-05-14 02:05:44 [INFO][SYNCER] Flushed 14 sensor history rows to Firestore
+2026-05-14 02:05:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:06:25 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:06:45 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:06:45 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:06:55 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:07:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:07:45 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:07:45 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:07:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:08:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:08:45 [INFO][SYNCER] Firestore: Batch flush 22 sensor history rows
+2026-05-14 02:08:45 [INFO][SYNCER] Flushed 22 sensor history rows to Firestore
+2026-05-14 02:08:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:09:26 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:09:45 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:09:45 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:09:56 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:10:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:10:45 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:10:45 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:10:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:11:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:11:46 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:11:46 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:11:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:12:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:12:46 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:12:46 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:12:57 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:13:27 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:13:46 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:13:46 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:13:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:14:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:14:46 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:14:46 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore
+2026-05-14 02:14:58 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:15:28 [INFO][SYNCER] [AutoSync] Schedules updated in SQLite from Firestore
+2026-05-14 02:15:46 [INFO][SYNCER] Firestore: Batch flush 24 sensor history rows
+2026-05-14 02:15:46 [INFO][SYNCER] Flushed 24 sensor history rows to Firestore

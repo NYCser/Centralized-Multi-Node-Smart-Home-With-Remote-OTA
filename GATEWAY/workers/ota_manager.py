@@ -67,7 +67,16 @@ def _redis_listener(bus):
 
             if channel == "ota_commands":
                 if data.get("action") == "new_firmware":
-                    _write_ota_notice(bus, data)
+                    doc_ref, doc_id = _write_ota_notice(bus, data)
+                    if data.get("direct", False) and doc_ref is not None:
+                        try:
+                            doc_ref.update({
+                                'status': 'flashing',
+                                'updatedAt': firestore.SERVER_TIMESTAMP
+                            })
+                        except Exception as e:
+                            print(f"[OTA] failed to update direct notice status: {e}")
+                        _dispatch_ota(bus, data['room'], data['url'], data['version'], doc_id)
 
             elif channel == "ota_status":
                 _handle_esp32_ota_event(data)
@@ -93,6 +102,27 @@ def _handle_esp32_ota_event(data: dict):
         })
         # Cập nhật RTDB firmware_versions
         _update_rtdb_version(data.get('room_id'), data.get('version'))
+        try:
+            event_logger.log_ota_update(
+                room_id=data.get('room_id', 'system'),
+                version=data.get('version', ''),
+                status='completed'
+            )
+        except Exception as e:
+            print(f"[OTA] event_logger log error: {e}")
+        
+        # [SAFETY] Mở khóa sau khi OTA thành công
+        room_id = data.get('room_id')
+        if room_id == "living_room_01":
+            print(f"[OTA] SAFETY: Unlocking door after successful OTA for {room_id}")
+            bus.publish_mqtt("home/entrance_01/command", {
+                "action": "unlock_door_after_ota",
+                "ota_room": room_id,
+                "ota_status": "completed"
+            })
+            # Xóa safety lock
+            bus.get_redis().delete(f"safety_lock:{room_id}")
+        
         print(f"[OTA] {doc_id}: DONE v{data.get('version')}")
 
     elif event == 'ota_failed':
@@ -103,6 +133,28 @@ def _handle_esp32_ota_event(data: dict):
                 'error':     data.get('error', 'ESP32 reported failure'),
                 'updatedAt': firestore.SERVER_TIMESTAMP
             })
+        try:
+            event_logger.log_ota_update(
+                room_id=data.get('room_id', 'system'),
+                version=data.get('version', ''),
+                status='failed',
+                error=data.get('error', 'ESP32 reported failure')
+            )
+        except Exception as e:
+            print(f"[OTA] event_logger log error: {e}")
+        
+        # [SAFETY] Mở khóa sau khi OTA thất bại
+        room_id = data.get('room_id')
+        if room_id == "living_room_01":
+            print(f"[OTA] SAFETY: Unlocking door after failed OTA for {room_id}")
+            bus.publish_mqtt("home/entrance_01/command", {
+                "action": "unlock_door_after_ota",
+                "ota_room": room_id,
+                "ota_status": "failed"
+            })
+            # Xóa safety lock
+            bus.get_redis().delete(f"safety_lock:{room_id}")
+        
         print(f"[OTA] {doc_id}: FAILED — {data.get('error')}")
 
 
@@ -125,8 +177,9 @@ def _write_ota_notice(bus, data: dict):
         fs = firestore.client()
         room = data["room"]
         doc_id = f"ota_{room}_{int(time.time())}"
+        doc_ref = fs.collection("ota_notices").document(doc_id)
 
-        fs.collection("ota_notices").document(doc_id).set({
+        doc_ref.set({
             "room":          room,
             "filename":      data["filename"],
             "url":           data["url"],
@@ -143,8 +196,10 @@ def _write_ota_notice(bus, data: dict):
             "url": data["url"], "version": data["version"]
         }))
         print(f"[OTA] Notice written: {doc_id} for room={room}")
+        return doc_ref, doc_id
     except Exception as e:
         print(f"[OTA] write notice error: {e}")
+        return None, None
 
 
 def _firestore_poller(bus):
@@ -193,23 +248,17 @@ def _dispatch_ota(bus, room: str, url: str, version: str, doc_id: str):
         "version": version,
         "doc_id":  doc_id   # ESP32 gửi lại doc_id trong status callback
     }
-    bus.publish_mqtt(f"home/{room}/command", payload)
+    
+    # [SAFETY] Nếu OTA cho living_room, tích hợp safety lock vào ota_update command
+    if room == "living_room_01":
+        payload["lock_door_for_ota"] = True
+        print(f"[OTA] SAFETY: Including door lock in OTA command for {room}")
+        # Đặt safety lock cho phòng khách
+        bus.get_redis().setex(f"safety_lock:{room}", 600, "1")  # Lock 10 phút cho OTA
+    
     print(f"[OTA] MQTT sent to {room}: ota_update → {url}")
-
-    # Timeout guard: nếu 10 phút không có status callback → đánh dấu failed
-    def _timeout_guard():
-        time.sleep(600)
-        try:
-            doc_ref = firestore.client().collection("ota_notices").document(doc_id)
-            snap    = doc_ref.get()
-            if snap.exists and snap.to_dict().get("status") == "flashing":
-                doc_ref.update({
-                    "status": "failed",
-                    "error": "Timeout: ESP32 did not respond within 10 minutes",
-                    "updatedAt": firestore.SERVER_TIMESTAMP
-                })
-                print(f"[OTA] Timeout for {doc_id}")
-        except Exception as ex:
-            print(f"[OTA] timeout guard error: {ex}")
-
-    threading.Thread(target=_timeout_guard, daemon=True).start()
+    bus.publish_mqtt(f"home/{room}/command", payload)
+    try:
+        event_logger.log_ota_update(room_id=room, version=version, status='started')
+    except Exception as e:
+        print(f"[OTA] event_logger log error: {e}")

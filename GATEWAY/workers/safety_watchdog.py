@@ -111,6 +111,11 @@ def _save_alert(room_id: str, alert_type: str, message: str):
     except Exception as e:
         print(f"[WATCHDOG] safety_alert publish error: {e}")
 
+    try:
+        event_logger.log_safety_alert(room_id=room_id, alert_type=alert_type, message=message)
+    except Exception as e:
+        print(f"[WATCHDOG] event_logger safety log error: {e}")
+
     # Lưu active alert vào Redis để /system/safety_status endpoint trả về
     bus.get_redis().setex(
         f"active_alert:{room_id}",

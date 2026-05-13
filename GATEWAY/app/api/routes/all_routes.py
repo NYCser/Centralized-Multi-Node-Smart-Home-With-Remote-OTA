@@ -939,9 +939,10 @@ def ota_upload():
         return jsonify({"error": "no file"}), 400
 
     f        = request.files["file"]
-    room     = request.form.get("room", "all")
-    version  = request.form.get("version", "unknown")
-    notes    = request.form.get("release_notes", "")
+    room          = request.form.get("room", "all")
+    version       = request.form.get("version", "unknown")
+    notes         = request.form.get("release_notes", "")
+    direct_reload = request.form.get("direct", "false").lower() in ("1", "true", "yes")
 
     filename = secure_filename(f.filename)
     filepath = os.path.join(UPLOAD_FOLDER, filename)
@@ -953,30 +954,65 @@ def ota_upload():
     url    = f"http://{pi_ip}:{pi_port}/firmware/{filename}"
 
     # Lưu vào SQLite ota_logs
-    conn = get_db()
+    ota_log_id = None
     try:
-        conn.execute(
+        conn = get_db()
+        cursor = conn.execute(
             "INSERT INTO ota_logs(room,filename,url,version,release_notes,triggered_by,status)"
             " VALUES(?,?,?,?,?,?,?)",
             (room, filename, url, version, notes,
              request.current_user.get('email',''), 'pending')
         )
         conn.commit()
+        ota_log_id = cursor.lastrowid
+    except Exception as e:
+        print(f"[OTA] Database error: {e}")
+        # Continue anyway - publish is more important
     finally:
-        conn.close()
+        if 'conn' in locals():
+            conn.close()
 
-    # Publish Redis → ota_manager worker xử lý → ghi Firestore
     from bridge.message_bus import MessageBus
-    MessageBus.get_instance().get_redis().publish("ota_commands", json.dumps({
-        "action":        "new_firmware",
-        "room":          room,
-        "filename":      filename,
-        "url":           url,
-        "version":       version,
-        "release_notes": notes
-    }))
+    bus = MessageBus.get_instance()
 
-    return jsonify({"status": "uploaded", "filename": filename, "url": url})
+    # Direct MQTT dispatch for living room, bypass ota_manager
+    if room == "living_room_01":
+        payload = {
+            "action": "ota_update",
+            "url": url,
+            "version": version,
+            "doc_id": f"direct_ota_{room}_{int(time.time())}",
+            "lock_door_for_ota": True
+        }
+        try:
+            bus.publish_mqtt(f"home/{room}/command", payload)
+            if ota_log_id is not None:
+                conn = get_db()
+                conn.execute("UPDATE ota_logs SET status = ? WHERE id = ?", ("flashing", ota_log_id))
+                conn.commit()
+                conn.close()
+            print(f"[OTA] Direct MQTT dispatch for {room}: {url}")
+        except Exception as e:
+            print(f"[OTA] Direct MQTT publish error: {e}")
+            return jsonify({"error": "Failed to publish direct MQTT OTA command"}), 500
+    else:
+        # Publish Redis → ota_manager worker xử lý → ghi Firestore
+        try:
+            bus.get_redis().publish("ota_commands", json.dumps({
+                "action":        "new_firmware",
+                "room":          room,
+                "filename":      filename,
+                "url":           url,
+                "version":       version,
+                "release_notes": notes,
+                "direct":        direct_reload
+            }))
+            print(f"[OTA] Published to Redis: room={room}, direct={direct_reload}")
+        except Exception as e:
+            print(f"[OTA] Redis publish error: {e}")
+            return jsonify({"error": "Failed to publish OTA command"}), 500
+
+    return jsonify({"status": "uploaded", "filename": filename, "url": url, "direct": direct_reload})
 
 
 @ota_bp.route("/ota/update", methods=["POST"])
