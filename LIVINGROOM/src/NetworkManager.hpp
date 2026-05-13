@@ -64,33 +64,43 @@ void setupNetwork(MsgCallback callback) {
 // ================= MAINTAIN CONNECTION =================
 
 inline void maintainConnection() {
+    // 1. Kiểm tra WiFi trước
+    if (WiFi.status() != WL_CONNECTED) {
+        long now = millis();
+        if (now - lastReconnectAttempt > 5000) {
+            lastReconnectAttempt = now;
+            Serial.println(" [WIFI] Mat ket noi. Dang thu lai...");
+            
+            // Chỉ gọi WiFi.begin() nếu thực sự không còn đang trong quá trình kết nối
+            // Điều này giúp tránh việc reset kết nối liên tục
+            WiFi.disconnect();
+            if (String(WIFI_PASS) == "") WiFi.begin(WIFI_SSID, NULL);
+            else                         WiFi.begin(WIFI_SSID, WIFI_PASS);
+        }
+        return; // Thoát sớm, không thử kết nối MQTT nếu WiFi chưa xong
+    }
+
+    // 2. Nếu WiFi đã OK, kiểm tra MQTT
     if (!client.connected()) {
         long now = millis();
         if (now - lastReconnectAttempt > 5000) {
             lastReconnectAttempt = now;
 
-            if (WiFi.status() != WL_CONNECTED) {
-                Serial.println(" Mat Wifi. Dang ket noi lai...");
-                if (String(WIFI_PASS) == "") WiFi.begin(WIFI_SSID, NULL);
-                else                         WiFi.begin(WIFI_SSID, WIFI_PASS);
-                return;
-            }
-
             String clientId = String(DEVICE_NODE_ID) + "_" + String(random(0xffff), HEX);
-            Serial.print("Connecting to MQTT Broker (" + String(MQTT_SERVER) + ")... ");
+            Serial.print(" [MQTT] Dang ket noi Broker (" + String(MQTT_SERVER) + ")... ");
 
             if (client.connect(clientId.c_str())) {
-                Serial.println(" Broker Connected!");
+                Serial.println("Thanh cong!");
                 client.subscribe(TOPIC_CMD_LIVING);
                 client.subscribe(TOPIC_CMD_ENTRANCE);
-                Serial.println(" Subscribed: " + String(TOPIC_CMD_LIVING));
-                Serial.println(" Subscribed: " + String(TOPIC_CMD_ENTRANCE));
+                Serial.println(" [MQTT] Da dang ky topics: " + String(TOPIC_CMD_LIVING) + ", " + String(TOPIC_CMD_ENTRANCE));
             } else {
-                Serial.print(" Failed, rc=");
+                Serial.print("That bai, rc=");
                 Serial.println(client.state());
             }
         }
     } else {
+        // 3. Nếu mọi thứ đều ổn, duy trì vòng lặp MQTT
         client.loop();
     }
 }
@@ -104,10 +114,8 @@ inline void sendMQTT(const char* topic, String jsonString) {
 }
 
 // ================= OTA UPDATE =================
-
-// Forward declare lcd để dùng trong performOTA
-// lcd được định nghĩa trong HardwareControl.hpp (include sau)
-extern LiquidCrystal_I2C lcd;
+// Node Living Room có LCD nên log OTA qua LCD và Serial.
+// Nếu không có LCD, chỉ log Serial.
 
 void performOTA(String url) {
     Serial.println("[OTA] Starting update from: " + url);
@@ -117,18 +125,11 @@ void performOTA(String url) {
     client.disconnect();
     delay(200);
 
-    // Hiển thị trên LCD
-    lcd.clear();
-    lcd.setCursor(0, 0); lcd.print("OTA UPDATE...   ");
-    lcd.setCursor(0, 1); lcd.print("Please wait...  ");
-
-    // Callback tiến trình — cập nhật % lên LCD
+    // Callback tiến trình — log % qua Serial
     httpUpdate.onProgress([](int cur, int total) {
         if (total > 0) {
             int pct = (cur * 100) / total;
             Serial.printf("[OTA] Progress: %d%%\n", pct);
-            lcd.setCursor(0, 1);
-            lcd.printf("Progress: %3d%%  ", pct);
         }
     });
 
@@ -144,19 +145,10 @@ void performOTA(String url) {
             Serial.printf("[OTA] FAILED (%d): %s\n",
                 httpUpdate.getLastError(),
                 httpUpdate.getLastErrorString().c_str());
-            lcd.clear();
-            lcd.setCursor(0, 0); lcd.print("OTA FAILED!     ");
-            lcd.setCursor(0, 1); lcd.printf("ERR: %d          ", httpUpdate.getLastError());
-            delay(3000);
-            lcd.clear();
             break;
 
         case HTTP_UPDATE_NO_UPDATES:
             Serial.println("[OTA] No update available.");
-            lcd.clear();
-            lcd.setCursor(0, 0); lcd.print("OTA: No update  ");
-            delay(2000);
-            lcd.clear();
             break;
 
         case HTTP_UPDATE_OK:

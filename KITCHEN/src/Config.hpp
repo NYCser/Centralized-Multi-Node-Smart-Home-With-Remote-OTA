@@ -44,6 +44,11 @@
 // Cấu hình Buzzer (True nếu còi kêu ở mức thấp - Low Trigger)
 #define BUZZER_ACTIVE_LOW true 
 
+// Cấu hình LCD
+#define LCD_ADDR 0x27
+#define LCD_COLS 16
+#define LCD_ROWS 2
+
 // ================= 4. MQTT TOPICS =================
 const char* TOPIC_CMD = "home/" ROOM_KITCHEN "/command";
 const char* TOPIC_SENSORS = "home/" ROOM_KITCHEN "/sensors"; 
