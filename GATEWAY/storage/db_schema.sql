@@ -1,11 +1,5 @@
 -- ═══════════════════════════════════════════════════════════
 -- SmartHome Local - SQLite Schema  (UPDATED)
--- PRAGMA journal_mode = WAL  ← chạy khi connect để bảo vệ SD
---
--- CHANGES vs original:
---   - sensor_data: thêm cột firebase_synced (0/1) cho firebase_sync.py
---   - automations: thêm cột co2_threshold cho BUG-H-01
---   - schedules: KHÔNG xóa enabled sau khi chạy (fix BUG-C-05)
 -- ═══════════════════════════════════════════════════════════
 
 PRAGMA journal_mode = WAL;

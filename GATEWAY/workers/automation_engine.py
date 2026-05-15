@@ -549,7 +549,7 @@ def _handle_auth(room_id: str, payload: dict):
             })
             bus.publish_event("rfid_enrollment_result", {
                 "status":      "success",
-                "result_type": "rfid",
+                "result_type": "combo",    # [FIX-D] ESP32 đăng ký cả thẻ + vân tay cùng lúc
                 "value":       uid,
                 "owner_name":  owner_name,
                 "timestamp":   datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -590,40 +590,42 @@ def _handle_auth(room_id: str, payload: dict):
     finally:
         conn.close()
 
+    # [FIX-A] Đọc method từ ESP32 payload (rfid/finger/remote)
+    method = payload.get("method", "rfid").upper()
+
     if card_row:
         owner = card_row["owner_name"]
-        bus.publish_mqtt(f"home/{room_id}/command", {
-            "action": "open_door", "message": f"Xin chao {owner}"
-        })
-        _log_access(room_id, uid, owner, "open_door", True)
+        # Không cần gửi open_door ngược lại — ESP32 đã tự mở cửa rồi
+        # chỉ log và thông báo lên Web
+        _log_access(room_id, uid, owner, "open_door", True, method=method)
         event_logger.log_door_access(
             room_id=room_id,
             uid=uid,
             owner_name=owner,
             access_type="granted",
-            method="RFID"
+            method=method   # [FIX-A] "RFID" hoặc "FINGER"
         )
-        print(f"[AUTH] {room_id}: GRANTED -> {owner}")
+        print(f"[AUTH] {room_id}: GRANTED -> {owner} (method={method})")
     else:
-        bus.publish_mqtt(f"home/{room_id}/command", {"action": "access_denied"})
-        _log_access(room_id, uid, "Khách lạ", "attempt_failed", False)
+        _log_access(room_id, uid, "Khách lạ", "attempt_failed", False, method=method)
         event_logger.log_door_access(
             room_id=room_id,
             uid=uid,
             owner_name="Khách lạ",
             access_type="denied",
-            method="RFID"
+            method=method
         )
-        print(f"[AUTH] {room_id}: DENIED -> {uid}")
+        print(f"[AUTH] {room_id}: DENIED -> {uid} (method={method})")
 
 
-def _log_access(room_id, uid, user_name, action, success):
+def _log_access(room_id, uid, user_name, action, success, method: str = "RFID"):
     """
     [FIX-ACCESS-LOG] Ghi log vào SQLite + push lên Firestore system_alerts
     qua "safety_alert" channel → UplinkStream → push_alert().
     
     - success=True  → level="info"  → thông báo xanh trên Web
     - success=False → level="critical" → thông báo đỏ (báo động) trên Web
+    - method: "RFID" | "FINGER" | "REMOTE"
     """
     try:
         conn = get_db()
@@ -652,11 +654,12 @@ def _log_access(room_id, uid, user_name, action, success):
         # [FIX-ACCESS-LOG] Push lên Firestore system_alerts qua safety_alert channel
         # UplinkStream subscribe "safety_alert" → fs_writer.push_alert() → Firestore
         if success:
-            alert_msg   = f"Mở cửa thành công: {user_name} ({uid}) lúc {now}"
+            method_vn   = "Vân tay" if "FINGER" in method.upper() else "Thẻ RFID"
+            alert_msg   = f"Mở cửa thành công | {user_name} ({uid}) | Phương thức: {method_vn} | {now}"
             alert_level = "info"
             alert_type  = "access"
         else:
-            alert_msg   = f"Cảnh báo! Thẻ/vân tay không hợp lệ: {uid} tại {room_id} lúc {now}"
+            alert_msg   = f"🚨 Cảnh báo đột nhập! Thẻ/vân tay chưa đăng ký: {uid} tại {room_id} lúc {now}"
             alert_level = "critical"
             alert_type  = "intrusion"
 
@@ -780,7 +783,7 @@ def command_listener():
                     print(f"[AUTO] Enrollment MQTT sent to {MQTT_TOPIC_ENTRANCE}")
 
                 elif action == "delete" and uid:
-                    # [FIX-TOPIC-1] delete_user cũng phải gửi về TOPIC_CMD_ENTRANCE
+                    # [FIX-TOPIC-1] delete_user gửi về TOPIC_CMD_ENTRANCE
                     bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
                         "action": "delete_user",
                         "uid":    uid,
@@ -798,6 +801,30 @@ def command_listener():
                         print(f"[AUTO] rfid_cards deleted from SQLite: {uid}")
                     except Exception as e:
                         print(f"[AUTO] rfid_cards delete error: {e}")
+
+                elif action == "clear_all":
+                    # [FIX-C] Xóa toàn bộ users trên ESP32 SPIFFS + SQLite + Firestore
+                    # Trigger từ Web khi cần reset hoàn toàn danh sách thẻ
+                    bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
+                        "action": "clear_all_users",
+                    })
+                    print(f"[AUTO] clear_all_users MQTT sent to {MQTT_TOPIC_ENTRANCE}")
+
+                    # Xóa toàn bộ rfid_cards khỏi SQLite
+                    try:
+                        conn = get_db()
+                        try:
+                            deleted = conn.execute("DELETE FROM rfid_cards").rowcount
+                            conn.commit()
+                        finally:
+                            conn.close()
+                        print(f"[AUTO] Cleared {deleted} users from SQLite rfid_cards")
+                        bus.publish_event("realtime_data", {
+                            "event":   "all_users_cleared",
+                            "message": f"Đã xóa {deleted} thẻ khỏi hệ thống",
+                        })
+                    except Exception as e:
+                        print(f"[AUTO] clear_all_users SQLite error: {e}")
 
             elif channel == "rfid_register":
                 action = data.get("action")

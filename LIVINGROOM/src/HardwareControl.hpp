@@ -72,10 +72,6 @@ unsigned long otaAckStartMs = 0;
 const unsigned long OTA_ACK_TIMEOUT_MS = 15000;
 String currentFirmwareVersion = "2.0.0";  // Hardcode version hiện tại
 
-// Safety variables for OTA
-bool doorLockedForOTA = false;
-unsigned long otaStartTime = 0;
-
 // State Machine
 enum SysState { IDLE, DOOR_OPEN, SHOW_MSG, ENROLL_WAIT_RFID, ENROLL_WAIT_FP1, ENROLL_WAIT_REMOVE, ENROLL_WAIT_FP2 };
 SysState currentState = IDLE;
@@ -160,10 +156,13 @@ void openDoor(String method, String uid) {
     // [DEBUG]
     Serial.printf(" [DOOR] OPEN by %s (User: %s)\n", method.c_str(), uid.c_str());
     
-    // Gửi sự kiện mở cửa (Quan trọng nên cố gửi ngay, không buffer log này)
+    // Gửi sự kiện mở cửa — gồm "method" để Pi biết rfid hay finger
     if(client.connected()) {
         StaticJsonDocument<256> doc;
-        doc["cardUid"] = uid; doc["action"] = "entry"; doc["success"] = true;
+        doc["cardUid"] = uid;
+        doc["action"]  = "entry";
+        doc["success"] = true;
+        doc["method"]  = method;   // [FIX-A] "rfid" | "finger" | "remote"
         String out; serializeJson(doc, out);
         sendMQTT(TOPIC_AUTH_EN, out);
     }
@@ -176,16 +175,9 @@ void performOTA(const String& url, const String& version, const String& docId) {
         return;
     }
     otaInProgress = true;
-    otaStartTime = millis();
 
     Serial.printf("[OTA] Starting OTA update from: %s\n", url.c_str());
     Serial.printf("[OTA] Target version: %s\n", version.c_str());
-
-    // [SAFETY] Đóng cửa và khóa hệ thống an toàn khi OTA bắt đầu
-    digitalWrite(PIN_DOOR_RELAY, LOW);  // Đảm bảo cửa đóng
-    doorLockedForOTA = true;
-    showMsg("OTA UPDATE", "Door Locked - SAFE");
-    Serial.println("[OTA] Door locked for safety during OTA");
 
     // Gửi status 'starting' về Gateway trước khi flash
     if (client.connected()) {
@@ -227,33 +219,15 @@ void performOTA(const String& url, const String& version, const String& docId) {
         Serial.printf("[OTA] Error: %d\n", err);
     });
 
-    // Kiểm tra WiFi connection trước khi OTA
-    if (WiFi.status() != WL_CONNECTED) {
-        Serial.println("[OTA] WiFi not connected! Aborting OTA.");
-        doorLockedForOTA = false;
-        resetToIdle();
-        otaInProgress = false;
-        return;
-    }
-
-    Serial.printf("[OTA] WiFi connected, IP: %s\n", WiFi.localIP().toString().c_str());
-    Serial.printf("[OTA] Starting HTTP update from URL: %s\n", url.c_str());
-
     // Thực hiện OTA
     WiFiClient wifiClient;
     t_httpUpdate_return ret = httpUpdate.update(wifiClient, url);
-
-    Serial.printf("[OTA] HTTP update returned: %d\n", ret);
 
     switch (ret) {
         case HTTP_UPDATE_FAILED:
             Serial.printf("[OTA] FAILED: (%d) %s\n",
                           httpUpdate.getLastError(),
                           httpUpdate.getLastErrorString().c_str());
-            // [SAFETY] Mở khóa cửa sau khi OTA thất bại
-            doorLockedForOTA = false;
-            resetToIdle();
-            Serial.println("[OTA] Door unlocked after failed OTA");
             // Gửi báo lỗi về Gateway
             if (client.connected()) {
                 StaticJsonDocument<256> errDoc;
@@ -271,10 +245,6 @@ void performOTA(const String& url, const String& version, const String& docId) {
 
         case HTTP_UPDATE_NO_UPDATES:
             Serial.println("[OTA] No update available");
-            // [SAFETY] Mở khóa cửa
-            doorLockedForOTA = false;
-            resetToIdle();
-            Serial.println("[OTA] Door unlocked after no update");
             otaInProgress = false;
             break;
 
@@ -293,7 +263,6 @@ void performOTA(const String& url, const String& version, const String& docId) {
             // httpUpdate.update() sẽ tự gọi ESP.restart()
             break;
     }
-
 }
 
 // ================= SETUP =================
@@ -325,10 +294,6 @@ inline void setupHardware() {
 
         Serial.printf("[OTA] Reboot after OTA! New version: %s\n",
                       currentFirmwareVersion.c_str());
-
-        // [SAFETY] Mở khóa cửa sau khi OTA thành công
-        doorLockedForOTA = false;
-        Serial.println("[OTA] Door unlocked after successful OTA reboot");
 
         otaAckPending = true;
         otaAckDocId = docId;
@@ -406,14 +371,8 @@ inline void loopHardware() {
         }
     }
 
-    // 2. State Machine (Cửa & Đăng ký - với kiểm tra an toàn OTA)
+    // 2. State Machine (Cửa & Đăng ký - GIỮ NGUYÊN)
     if (currentState == IDLE) {
-        // [SAFETY] Ngăn chặn truy cập khi OTA đang diễn ra
-        if (doorLockedForOTA) {
-            showMsg("SYSTEM LOCKED", "OTA in Progress");
-            return;  // Không xử lý RFID/fingerprint khi OTA
-        }
-
         // Quét thẻ
         if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
             String uid = "";
@@ -564,57 +523,6 @@ inline void processCommand(String topic, String payload) {
 
     Serial.printf(" [CMD] %s -> %s\n", device.c_str(), action.c_str());
 
-    // Lệnh OTA/door lock có thể tới từ living room hoặc entrance topic
-    if (action == "lock_door_for_ota") {
-        doorLockedForOTA = true;
-        digitalWrite(PIN_DOOR_RELAY, LOW);  // Đóng cửa
-        showMsg("DOOR LOCKED", "OTA in Progress");
-        Serial.println(" [CMD] Door locked for OTA safety");
-        return;
-    }
-
-    if (action == "unlock_door_after_ota") {
-        doorLockedForOTA = false;
-        resetToIdle();
-        Serial.println(" [CMD] Door unlocked after OTA completion");
-        return;
-    }
-
-    if (action == "ota_update") {
-        String url     = doc["url"]     | "";
-        String version = doc["version"] | "unknown";
-        String docId   = doc["doc_id"]  | "";
-
-        Serial.printf("[CMD] ota_update payload url=%s version=%s doc_id=%s\n",
-                      url.c_str(), version.c_str(), docId.c_str());
-
-        if (doc.containsKey("lock_door_for_ota") && doc["lock_door_for_ota"]) {
-            doorLockedForOTA = true;
-            digitalWrite(PIN_DOOR_RELAY, LOW);
-            showMsg("DOOR LOCKED", "OTA in Progress");
-            Serial.println("[CMD] Door locked for OTA safety (integrated)");
-        }
-
-        if (url.length() > 0) {
-            Serial.println("[CMD] OTA Update received!");
-            struct OtaParams { String url; String ver; String docId; };
-            OtaParams* p = new OtaParams{url, version, docId};
-
-            BaseType_t taskResult = xTaskCreatePinnedToCore([](void* arg) {
-                OtaParams* p = (OtaParams*)arg;
-                performOTA(p->url, p->ver, p->docId);
-                delete p;
-                vTaskDelete(NULL);
-            }, "OTATask", 16384, p, 5, NULL, 1);
-
-            if (taskResult != pdPASS) {
-                Serial.printf("[OTA] Failed to create OTA task: %d\n", taskResult);
-                delete p;
-            }
-        }
-        return;
-    }
-
     // Lệnh cho Phòng Khách
     if (topic == TOPIC_CMD_LIVING) {
         bool state = (action == "turn_on");
@@ -638,6 +546,72 @@ inline void processCommand(String topic, String payload) {
             currentState = ENROLL_WAIT_RFID;
             Serial.println(" [CMD] Start Enrollment Mode");
             showMsg("Enroll Mode", "Scan New Card");
+        }
+        else if (action == "delete_user") {
+            String uid = doc["uid"];
+            Serial.println(" [CMD] Delete User: " + uid);
+            int fpDel = -1;
+            for(auto it=users.begin(); it!=users.end(); ) { 
+                if(it->uid == uid) { fpDel = it->fp_id; it = users.erase(it); } else ++it; 
+            }
+            if(fpDel != -1) { 
+                finger.deleteModel(fpDel); saveUsers(); 
+                showMsg("User Deleted", uid, 2000); 
+                Serial.println(" [CMD] Deleted Successfully");
+                // [FIX-C] Gửi xác nhận xóa về Pi
+                if(client.connected()) {
+                    StaticJsonDocument<200> ack;
+                    ack["event"]  = "user_deleted";
+                    ack["uid"]    = uid;
+                    ack["success"] = true;
+                    String out; serializeJson(ack, out);
+                    sendMQTT(TOPIC_AUTH_EN, out);
+                }
+            } else {
+                Serial.println(" [CMD] Delete: UID not found in SPIFFS");
+            }
+        }
+        // [FIX-C] Xóa toàn bộ users trong SPIFFS — dùng khi cần reset
+        else if (action == "clear_all_users") {
+            Serial.println(" [CMD] Clearing ALL users from SPIFFS...");
+            // Xóa toàn bộ fingerprint models
+            for(auto &u : users) {
+                if(u.fp_id > 0) {
+                    finger.deleteModel(u.fp_id);
+                    Serial.printf(" [CMD] Deleted FP model #%d\n", u.fp_id);
+                }
+            }
+            users.clear();
+            saveUsers();
+            showMsg("All Users", "Cleared!", 2000);
+            Serial.println(" [CMD] All users cleared from SPIFFS & Sensor");
+            // Gửi xác nhận về Pi
+            if(client.connected()) {
+                StaticJsonDocument<200> ack;
+                ack["event"]   = "all_users_cleared";
+                ack["success"] = true;
+                String out; serializeJson(ack, out);
+                sendMQTT(TOPIC_AUTH_EN, out);
+            }
+        }
+        else if (action == "ota_update") {
+            String url     = doc["url"]     | "";
+            String version = doc["version"] | "unknown";
+            String docId   = doc["doc_id"]  | "";
+
+            if (url.length() > 0) {
+                Serial.println("[CMD] OTA Update received!");
+                // Chạy OTA trong task riêng để không block loop
+                struct OtaParams { String url; String ver; String docId; };
+                OtaParams* p = new OtaParams{url, version, docId};
+
+                xTaskCreate([](void* arg) {
+                    OtaParams* p = (OtaParams*)arg;
+                    performOTA(p->url, p->ver, p->docId);
+                    delete p;
+                    vTaskDelete(NULL);
+                }, "OTATask", 8192, p, 5, NULL);
+            }
         }
     }
 }

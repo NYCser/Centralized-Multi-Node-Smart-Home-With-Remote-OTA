@@ -61,6 +61,7 @@ def init_db():
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
 
+    # 1. Chạy Schema gốc (Tạo bảng nếu chưa tồn tại)
     if os.path.exists(schema_path):
         with open(schema_path, "r") as f:
             conn.executescript(f.read())
@@ -68,9 +69,27 @@ def init_db():
     else:
         print("[MAIN] Warning: db_schema.sql not found")
 
-    # FIX BUG-07/08: SHA256 hash, không tự close conn
-    _ensure_admin(conn)
+    # 2. MIGRATION: Cập nhật các thay đổi nhỏ cho DB cũ mà không làm mất dữ liệu
+    # Thêm các cột mới phát sinh vào đây
+    MIGRATIONS = [
+        "ALTER TABLE sensor_data ADD COLUMN firebase_synced INTEGER DEFAULT 0",
+        "ALTER TABLE automations ADD COLUMN co2_threshold REAL DEFAULT 1000",
+        "ALTER TABLE schedules ADD COLUMN last_run TEXT DEFAULT ''"
+    ]
 
+    for sql in MIGRATIONS:
+        try:
+            conn.execute(sql)
+            print(f"[MAIN] Migration applied: {sql[:40]}...")
+        except sqlite3.OperationalError as e:
+            # Nếu lỗi là do cột đã tồn tại (duplicate column), SQLite sẽ báo lỗi này
+            if "duplicate column name" in str(e).lower():
+                pass 
+            else:
+                print(f"[MAIN] Migration warning: {e}")
+
+    # 3. Đảm bảo Admin và hoàn tất
+    _ensure_admin(conn)
     conn.commit()
     conn.close()
     print("[MAIN] DB init complete")

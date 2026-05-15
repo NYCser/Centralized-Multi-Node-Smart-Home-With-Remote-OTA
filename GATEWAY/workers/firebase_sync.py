@@ -741,28 +741,54 @@ class UplinkStream(threading.Thread):
 
     def _on_rfid_enrollment_result(self, p: dict):
         """
-        [FIX] Ghi kết quả enrollment về Firestore commands/entrance_register.
-        settings.js đang listen onSnapshot doc này để hiển thị kết quả cho user.
+        [FIX-D] Ghi kết quả enrollment về Firestore commands/entrance_register.
+        result_type="combo" vì ESP32 đăng ký cả thẻ (RFID) + vân tay (Fingerprint) cùng lúc.
+        settings.js dùng onSnapshot để hiển thị kết quả cho user.
         """
+        uid        = p.get("value", "")
+        status     = p.get("status", "success")
+        owner_name = p.get("owner_name", "Thẻ mới")
+        # [FIX-D] result_type: "combo" = card+finger đăng ký cùng lúc trên ESP32
+        result_type = p.get("result_type", "combo")
+
         try:
+            # Cập nhật commands/entrance_register → settings.js onSnapshot hiện thông báo
             self.fs_writer.fs.collection("commands").document("entrance_register").set({
-                "status":      p.get("status", "success"),
-                "result_type": p.get("result_type", "rfid"),
-                "value":       p.get("value", ""),
-                "owner_name":  p.get("owner_name", ""),
+                "status":      status,
+                "result_type": result_type,
+                "value":       uid,
+                "owner_name":  owner_name,
                 "timestamp":   firestore.SERVER_TIMESTAMP,
             }, merge=True)
-            logger.info("[Uplink] RFID enrollment result written to Firestore: %s", p.get("value"))
+            logger.info("[Uplink] RFID enrollment result written to Firestore: %s", uid)
 
-            # Nếu enroll thành công, đồng bộ luôn thẻ mới vào collection rfid_cards
-            if p.get("status") == "success" and p.get("value"):
-                self.fs_writer.fs.collection("rfid_cards").document(p.get("value")).set({
-                    "uid":       p.get("value"),
-                    "name":      p.get("owner_name", "Thẻ mới"),
-                    "createdAt": firestore.SERVER_TIMESTAMP,
-                    "is_active": True,
+            # [FIX-D] Ghi thẻ vào collection rfid_cards (Web hiển thị danh sách thẻ)
+            if status == "success" and uid:
+                self.fs_writer.fs.collection("rfid_cards").document(uid).set({
+                    "uid":        uid,
+                    "name":       owner_name,
+                    "owner_name": owner_name,
+                    "createdAt":  firestore.SERVER_TIMESTAMP,
+                    "is_active":  True,
+                    "has_finger": True,      # Luôn True vì ESP32 yêu cầu cả thẻ + vân tay
                 }, merge=True)
-                logger.info("[Uplink] RFID card written to Firestore rfid_cards: %s", p.get("value"))
+                logger.info("[Uplink] RFID card written to Firestore rfid_cards: %s", uid)
+
+                # [FIX-D] Thêm log vào system_alerts để Web notification hiện thông báo
+                try:
+                    self.fs_writer.fs.collection("system_alerts").add({
+                        "type":        "rfid_enroll",
+                        "message":     f"Đăng ký thành công | Người: {owner_name} | UID: {uid} | Thẻ + Vân tay",
+                        "room_id":     "living_room_01",
+                        "level":       "info",
+                        "isResolved":  False,
+                        "timestamp":   firestore.SERVER_TIMESTAMP,
+                        "metadata":    {"uid": uid, "owner_name": owner_name, "result_type": result_type},
+                    })
+                    logger.info("[Uplink] Enrollment system_alert written for: %s", uid)
+                except Exception as alert_e:
+                    logger.warning("[Uplink] Enrollment alert write failed: %s", alert_e)
+
         except Exception as e:
             logger.error("[Uplink] RFID enrollment result write error: %s", e)
 
@@ -814,8 +840,9 @@ class CommandDispatcher:
             channel = "rfid_register"
         elif action == "delete_rfid":
             # [FIX-DELETE-1] settings.js gửi delete_rfid → rfid_commands
-            # → automation_engine → MQTT home/entrance_01/command {delete_user, uid}
-            # → ESP32 xóa uid khỏi SPIFFS users.json
+            channel = "rfid_commands"
+        elif action == "clear_all_rfid":
+            # [FIX-C] Web gửi lệnh xóa toàn bộ thẻ → rfid_commands
             channel = "rfid_commands"
         elif action == "smart_mute_alert":
             channel = "alert_commands"
@@ -835,6 +862,11 @@ class CommandDispatcher:
             msg = {
                 "action": "delete",
                 "uid":    data.get("uid", ""),
+            }
+        elif action == "clear_all_rfid":
+            # [FIX-C] Xóa toàn bộ thẻ
+            msg = {
+                "action": "clear_all",
             }
         else:
             msg = {

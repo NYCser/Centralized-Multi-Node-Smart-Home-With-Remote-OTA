@@ -975,42 +975,25 @@ def ota_upload():
     from bridge.message_bus import MessageBus
     bus = MessageBus.get_instance()
 
-    # Direct MQTT dispatch for living room, bypass ota_manager
-    if room == "living_room_01":
-        payload = {
-            "action": "ota_update",
-            "url": url,
-            "version": version,
-            "doc_id": f"direct_ota_{room}_{int(time.time())}",
-            "lock_door_for_ota": True
-        }
-        try:
-            bus.publish_mqtt(f"home/{room}/command", payload)
-            if ota_log_id is not None:
-                conn = get_db()
-                conn.execute("UPDATE ota_logs SET status = ? WHERE id = ?", ("flashing", ota_log_id))
-                conn.commit()
-                conn.close()
-            print(f"[OTA] Direct MQTT dispatch for {room}: {url}")
-        except Exception as e:
-            print(f"[OTA] Direct MQTT publish error: {e}")
-            return jsonify({"error": "Failed to publish direct MQTT OTA command"}), 500
-    else:
-        # Publish Redis → ota_manager worker xử lý → ghi Firestore
-        try:
-            bus.get_redis().publish("ota_commands", json.dumps({
-                "action":        "new_firmware",
-                "room":          room,
-                "filename":      filename,
-                "url":           url,
-                "version":       version,
-                "release_notes": notes,
-                "direct":        direct_reload
-            }))
-            print(f"[OTA] Published to Redis: room={room}, direct={direct_reload}")
-        except Exception as e:
-            print(f"[OTA] Redis publish error: {e}")
-            return jsonify({"error": "Failed to publish OTA command"}), 500
+    # [FIX-B] Tất cả rooms (kể cả living_room_01) đều qua ota_manager
+    # → ghi Firestore ota_notices → Web hiện popup confirm → user xác nhận → OTA
+    # Không còn direct MQTT bypass để đảm bảo user luôn được confirm trước khi flash.
+    try:
+        bus.get_redis().publish("ota_commands", json.dumps({
+            "action":        "new_firmware",
+            "room":          room,
+            "filename":      filename,
+            "url":           url,
+            "version":       version,
+            "release_notes": notes,
+            "direct":        direct_reload,
+            # living_room_01 vẫn cần lock_door khi OTA (gửi trong _dispatch_ota)
+            "lock_door_for_ota": room == "living_room_01",
+        }))
+        print(f"[OTA] Published to Redis ota_commands: room={room}, direct={direct_reload}")
+    except Exception as e:
+        print(f"[OTA] Redis publish error: {e}")
+        return jsonify({"error": "Failed to publish OTA command"}), 500
 
     return jsonify({"status": "uploaded", "filename": filename, "url": url, "direct": direct_reload})
 
