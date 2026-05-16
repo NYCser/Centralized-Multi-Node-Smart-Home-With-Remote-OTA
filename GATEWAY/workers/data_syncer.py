@@ -306,6 +306,55 @@ _EVENT_ROUTE: list[tuple[str, str]] = [
 
 _META_KEYS = frozenset({"event", "event_type"})
 
+# ══════════════════════════════════════════════════════════
+# TABLE COLUMN WHITELIST
+# Maps table name → valid SQLite columns (from db_schema.sql)
+# flush_events uses this to filter + normalize row dicts before INSERT
+# ══════════════════════════════════════════════════════════
+_TABLE_COLUMNS: dict[str, set] = {
+    "system_alerts": {
+        "room", "type", "message", "level", "is_resolved", "resolved_at", "timestamp"
+    },
+    "system_events": {
+        "event", "data", "timestamp"
+    },
+    "access_logs": {
+        "room", "uid", "user_name", "action", "success", "duration_s", "timestamp"
+    },
+    "automation_logs": {
+        "room", "scenario", "actions", "triggered_by", "timestamp"
+    },
+    "login_logs": {
+        "email", "success", "ip_address", "device_hint", "user_agent", "reason", "timestamp"
+    },
+    "notifications": {
+        "type", "title", "message", "is_read", "room", "created_at"
+    },
+    "ota_logs": {
+        "room", "filename", "url", "version", "release_notes", "triggered_by", "status", "created_at"
+    },
+    "device_status": {
+        "room", "device_id", "is_on", "source", "updated_at"
+    },
+    "schedules": {
+        "room_id", "device_id", "action", "time", "enabled", "last_run", "created_at"
+    },
+    "system_snapshots": {
+        "wifi_ssid", "wifi_status", "room_count", "device_count", "alert_count", "timestamp"
+    },
+}
+
+# Field alias map: rename incoming field names to match SQLite column names
+_FIELD_ALIASES: dict[str, str] = {
+    "location":    "room",       # safety_alert uses "location"
+    "room_id":     "room",       # some events use "room_id" → system_alerts uses "room"
+    "isResolved":  "is_resolved",
+    "owner_name":  "user_name",  # access_logs
+    "user":        "user_name",
+    "device":      "device_id",  # device_status
+    "updated_at":  "updated_at",
+}
+
 
 # ══════════════════════════════════════════════════════════
 # LAYER 1 — StorageLayer
@@ -409,17 +458,44 @@ class StorageLayer:
             conn.commit()
 
     def insert_routed_event(self, table: str, row: dict) -> bool:
+        """
+        Insert a row into table after normalizing field names to match SQLite columns.
+        Uses _FIELD_ALIASES to rename fields and _TABLE_COLUMNS to filter unknowns.
+        """
         with self._db_lock:
             conn = self.get_conn()
-            columns      = ", ".join(row.keys())
-            placeholders = ", ".join(["?"] * len(row))
+
+            # Step 1: Apply field aliases (e.g. location→room, room_id→room, isResolved→is_resolved)
+            normalized = {}
+            for k, v in row.items():
+                alias = _FIELD_ALIASES.get(k, k)
+                # Keep last value if alias collision (prefer non-aliased original)
+                if alias not in normalized:
+                    normalized[alias] = v
+
+            # Step 2: Filter to only valid columns for this table
+            valid_cols = _TABLE_COLUMNS.get(table)
+            if valid_cols:
+                normalized = {k: v for k, v in normalized.items() if k in valid_cols}
+
+            # Step 3: Drop _META_KEYS leftovers
+            for mk in _META_KEYS:
+                normalized.pop(mk, None)
+
+            if not normalized:
+                log.warning("insert_routed_event: empty row after normalization for table=%s", table)
+                return False
+
+            columns      = ", ".join(normalized.keys())
+            placeholders = ", ".join(["?"] * len(normalized))
             sql = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
             try:
-                conn.execute(sql, list(row.values()))
+                conn.execute(sql, list(normalized.values()))
                 conn.commit()
                 return True
             except sqlite3.OperationalError as e:
-                log.warning("insert_routed_event table=%s schema mismatch: %s", table, e)
+                log.warning("insert_routed_event table=%s schema mismatch: %s | row_keys=%s",
+                            table, e, list(normalized.keys()))
                 return False
 
     def export_csv(self, date_str: str, export_dir: str) -> str:

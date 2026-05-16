@@ -72,9 +72,21 @@ def init_db():
     # 2. MIGRATION: Cập nhật các thay đổi nhỏ cho DB cũ mà không làm mất dữ liệu
     # Thêm các cột mới phát sinh vào đây
     MIGRATIONS = [
+        # Cột bị thiếu trong DB tạo từ schema cũ
         "ALTER TABLE sensor_data ADD COLUMN firebase_synced INTEGER DEFAULT 0",
         "ALTER TABLE automations ADD COLUMN co2_threshold REAL DEFAULT 1000",
-        "ALTER TABLE schedules ADD COLUMN last_run TEXT DEFAULT ''"
+        "ALTER TABLE schedules ADD COLUMN last_run TEXT DEFAULT ''",
+        # system_events table cho data_syncer fallback (có thể không có trong schema cũ)
+        """CREATE TABLE IF NOT EXISTS system_events (
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            event     TEXT NOT NULL,
+            data      TEXT,
+            timestamp TEXT NOT NULL
+        )""",
+        # ota_logs: các cột mới
+        "ALTER TABLE ota_logs ADD COLUMN version TEXT DEFAULT 'unknown'",
+        "ALTER TABLE ota_logs ADD COLUMN release_notes TEXT DEFAULT ''",
+        "ALTER TABLE ota_logs ADD COLUMN triggered_by TEXT DEFAULT ''",
     ]
 
     for sql in MIGRATIONS:
