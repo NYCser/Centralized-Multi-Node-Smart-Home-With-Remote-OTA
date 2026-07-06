@@ -1,40 +1,41 @@
 """
-workers/automation_engine.py  — v2.7  (SCHEDULE-OFF BLOCKS AUTOMATION)
+workers/automation_engine.py  — v2.4  (RFID TOPIC FIX + SCHEDULE TURN_OFF)
 ══════════════════════════════════════════════════════════════════════════════
-FIXES trong phiên bản này (so với v2.6):
+FIXES trong phiên bản này (so với v2.3):
 
-  [FIX-SCHED-OFF-REBLOCK — BUG CRITICAL]
+  [FIX-TOPIC-1 — CRITICAL] enroll/delete_user gửi sai topic → ESP32 không phản hồi
       ─────────────────────────────────────────────
-      Vấn đề: Schedule "turn_off" thực thi thành công, ESP32 tắt quạt,
-              nhưng 5 giây sau sensor gửi temperature=34°C > fan_threshold=32°C
-              → _try_turn_on() thấy CACHED_DEVICE_STATES=False → bật lại ngay.
-              → Quạt không bao giờ tắt được theo schedule khi nhiệt độ còn cao.
+      Root cause: ESP32 chỉ xử lý action "enroll" và "delete_user" khi topic ==
+                  TOPIC_CMD_ENTRANCE (ví dụ "home/entrance_01/command").
+                  Pi đang gửi lên "home/living_room_01/command" (TOPIC_CMD_LIVING)
+                  → ESP32 nhận nhưng bỏ qua (không match if-else block) → LCD
+                  không chuyển sang enroll mode.
+      Fix: Tất cả lệnh enroll/delete_user/cancel_enroll gửi lên MQTT_TOPIC_ENTRANCE.
+           enrollment_success phản hồi cũng gửi về MQTT_TOPIC_ENTRANCE.
 
-      Root cause: MANUAL_STATE chỉ được set khi USER điều khiển thủ công.
-              Schedule turn_off không set MANUAL_STATE → automation không biết
-              "vừa có schedule tắt" → bật lại theo nhiệt độ.
+  [FIX-TOPIC-2 — CRITICAL] enrollment_success gửi về TOPIC_CMD_LIVING → ESP32 không lưu SPIFFS
+      ─────────────────────────────────────────────
+      Sau khi ESP32 quét thẻ, Pi nhận → gửi "enrollment_success" về
+      "home/living_room_01/command" → ESP32 xử lý ở TOPIC_CMD_LIVING block
+      → không có case "enrollment_success" → ESP32 không lưu users.json.
+      Fix: enrollment_success gửi về MQTT_TOPIC_ENTRANCE để ESP32 lưu SPIFFS.
 
-      Fix: Khi schedule "turn_off" dispatch thành công:
-              → Set MANUAL_STATE[device_id] với source="schedule_off"
-              → TTL = SCHEDULE_OFF_TTL_S (mặc định 3600s = 1 giờ)
-              → Automation bị block trong 1 giờ sau khi schedule tắt thiết bị
-              → User vẫn có thể bật lại thủ công bất cứ lúc nào (source="manual")
-              → Khi bật lại thủ công: MANUAL_STATE bị replace với source="manual",
-                automation lại bị block 5 phút như bình thường
+  [FIX-ACCESS-LOG — HIGH] Access log không được push lên Firestore system_alerts
+      ─────────────────────────────────────────────
+      _log_access() chỉ ghi SQLite + publish "realtime_data".
+      UplinkStream không subscribe "realtime_data" cho Firestore system_alerts.
+      Fix: _log_access() publish thêm lên "safety_alert" channel cho access events.
+           UplinkStream đã subscribe "safety_alert" → push_alert() → Firestore.
 
-      Tại sao 1 giờ?
-              - Schedule thường được đặt để tắt thiết bị vào buổi tối/đêm
-              - 1 giờ đủ để ngăn automation bật lại trong khoảng thời gian user
-                muốn nghỉ ngơi, ngay cả khi nhiệt độ vẫn cao
-              - Sau 1 giờ, nếu nhiệt độ vẫn cao, automation tự hoạt động lại
-              - Configurable qua SCHEDULE_OFF_TTL_S
+  [FIX-SCHEDULE-TURNOFF] Schedule action phải là turn_off (thiết bị tắt đúng giờ)
+      ─────────────────────────────────────────────
+      Yêu cầu nghiệp vụ: schedule dùng để hẹn giờ TẮT thiết bị (không phải bật).
+      scheduler_loop đã đọc action từ SQLite nên chỉ cần đảm bảo firebase_sync
+      sync đúng action="turn_off" từ Firestore. Code scheduler_loop giữ nguyên.
 
-  [Giữ nguyên từ v2.6]
-      FIX-SCHED-MANUAL-BLOCK: Schedule không bị block bởi MANUAL_STATE
-      FIX-SCHED-LASTRUN-ON-FAIL: Luôn ghi SCHEDULE_LAST_RUN dù dispatch fail
-      FIX-AUTO-ONEWAY: Automation chỉ bật thiết bị (1 chiều)
-      FIX-TOPIC-1/2, FIX-ACCESS-LOG, FIX-AUTO-1/2, FIX-RFID-1/2,
-      FIX C1, D1, BUG-ACK-01, BUG-DEVICE-SYNC-01, BUG-H-01/02, BUG-C-05
+  [Giữ nguyên từ v2.3]
+      FIX-AUTO-1/2, FIX-RFID-1/2, FIX C1, D1, BUG-ACK-01, BUG-DEVICE-SYNC-01,
+      BUG-H-01/02, BUG-C-05
 """
 
 import time
@@ -51,18 +52,17 @@ DB_PATH            = "/data/smarthome.db"
 ENROLLMENT_TIMEOUT = 60
 CLOCK_WARN_YEAR    = 2024
 
-MIN_SWITCH_DELAY_S   = 60       # Tối thiểu 60s giữa 2 lần gửi lệnh bật cùng thiết bị
-DEVICE_LAST_SWITCH: dict = {}   # device cache_key → datetime lần bật cuối
+HYSTERESIS_OFFSET  = 2.0
+MIN_SWITCH_DELAY_S = 30
+DEVICE_LAST_SWITCH: dict = {}
 
-MANUAL_STATE_TTL_S    = 300     # 5 phút — block automation sau khi user điều khiển thủ công
+MANUAL_STATE_TTL_S = 300   # 5 phút
 
-# [FIX-SCHED-OFF-REBLOCK]
-# TTL block automation sau khi schedule turn_off chạy thành công.
-# Mặc định 1 giờ — đủ để ngăn automation bật lại khi nhiệt độ vẫn cao
-# nhưng user đã muốn tắt thiết bị theo lịch.
-# Sau TTL này, nếu nhiệt độ vẫn > threshold, automation sẽ tự bật lại.
-SCHEDULE_OFF_TTL_S    = 3600    # 1 giờ
-
+# ══════════════════════════════════════════════════════
+# [FIX-TOPIC-1] MQTT_TOPIC_ENTRANCE: topic ESP32 entrance-slave lắng nghe lệnh
+# Phải khớp với TOPIC_CMD_ENTRANCE trong Config.hpp của ESP32.
+# Nếu Config.hpp của bạn dùng tên khác, sửa hằng số này.
+# ══════════════════════════════════════════════════════
 MQTT_TOPIC_ENTRANCE  = "home/entrance_01/command"
 MQTT_TOPIC_LIVING    = "home/living_room_01/command"
 
@@ -76,9 +76,6 @@ CACHED_AUTOMATIONS:   dict = {}
 CACHED_SCHEDULES:     list = []
 CACHED_DEVICE_STATES: dict = {}
 
-# MANUAL_STATE: device_id → {mode, is_on, set_at, source, ttl_s}
-# source có thể là: "web", "physical_button", "schedule_off"
-# ttl_s: override TTL riêng cho từng entry (None = dùng MANUAL_STATE_TTL_S)
 MANUAL_STATE:         dict = {}
 
 ENROLLMENT_STATE:     dict = {"active": False, "start_time": None, "pending_name": ""}
@@ -111,24 +108,11 @@ SOURCE_PRIORITY = {
 }
 
 
-def _manual_state_expired(device_id: str) -> bool:
-    """Kiểm tra MANUAL_STATE có hết TTL chưa. Trả về True nếu hết hạn hoặc không tồn tại."""
-    manual = MANUAL_STATE.get(device_id)
-    if not manual:
-        return True
-    set_at = manual.get("set_at")
-    if set_at is None:
-        return True
-    ttl = manual.get("ttl_s", MANUAL_STATE_TTL_S)
-    return (datetime.now() - set_at).total_seconds() > ttl
-
-
 def dispatch_command(bus: MessageBus, source: str, room_id: str,
                      device_id: str, action: str, cmd_id: str = "",
                      extra: dict = None) -> bool:
     priority = SOURCE_PRIORITY.get(source, 99)
 
-    # ── Safety lock: block tất cả ngoại trừ safety ──────────────────────────
     if _is_safety_locked(room_id) and source != "safety":
         event_logger.log_system_message(
             room_id=room_id,
@@ -144,71 +128,41 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
         })
         return False
 
-    # ── MANUAL_STATE check ───────────────────────────────────────────────────
-    #
-    # Bảng ưu tiên:
-    #   source="manual"/"web"  → set MANUAL_STATE, không bị block
-    #   source="schedule"      → KHÔNG bị block, xóa MANUAL_STATE nếu còn
-    #   source="automation"    → bị block nếu MANUAL_STATE còn TTL
-    #
-    # MANUAL_STATE.source có thể là:
-    #   "web" / "physical_button" → TTL = MANUAL_STATE_TTL_S (5 phút)
-    #   "schedule_off"            → TTL = SCHEDULE_OFF_TTL_S (1 giờ)
-    #     → Block automation bật lại sau khi schedule tắt thiết bị
-    # ─────────────────────────────────────────────────────────────────────────
     if source in ("schedule", "automation"):
         manual = MANUAL_STATE.get(device_id)
         if manual and manual.get("mode") == "manual":
-            if _manual_state_expired(device_id):
-                # TTL hết hạn → xóa MANUAL_STATE
+            set_at = manual.get("set_at")
+            if set_at and (datetime.now() - set_at).total_seconds() > MANUAL_STATE_TTL_S:
                 MANUAL_STATE.pop(device_id, None)
-                ms = manual.get("source", "?")
                 event_logger.log_system_message(
                     room_id=room_id,
-                    message=f"✓ Manual state hết hạn ({ms}) | {device_id} → Tự động hoạt động lại",
+                    message=f"✓ Chế độ thủ công hết hạn | {device_id} → Tự động hoạt động lại",
                     level="info"
                 )
-                print(f"[DISPATCH] MANUAL_STATE expired (source={ms}) for {device_id}")
-
-            elif source == "automation":
-                # Automation bị block — có thể do user thủ công hoặc schedule_off
-                ms = manual.get("source", "manual")
-                reason = (
-                    "Schedule vừa tắt thiết bị (block automation 1 giờ)"
-                    if ms == "schedule_off"
-                    else "Vừa điều khiển thủ công (tạm dừng 5 phút)"
-                )
-                event_logger.log_automation_blocked(
-                    room_id=room_id,
-                    device_id=device_id,
-                    device_name=device_id,
-                    reason=reason
-                )
-                print(f"[DISPATCH] BLOCKED (manual_state source={ms}): automation → {device_id}")
+                print(f"[DISPATCH] MANUAL_STATE TTL expired for {device_id} → auto mode restored")
+            else:
+                if source == "automation":
+                    event_logger.log_automation_blocked(
+                        room_id=room_id,
+                        device_id=device_id,
+                        device_name=device_id,
+                        reason="Vừa điều khiển thủ công (tạm dừng 5 phút)"
+                    )
+                print(f"[DISPATCH] BLOCKED (manual_override): {source} → {device_id}")
                 return False
 
-            else:
-                # source == "schedule": xóa MANUAL_STATE, thực thi lệnh
-                ms = manual.get("source", "?")
-                MANUAL_STATE.pop(device_id, None)
-                print(
-                    f"[DISPATCH] MANUAL_STATE cleared by schedule for {device_id} "
-                    f"(was: source={ms})"
-                )
-
-    # ── Schedule conflict: block automation nếu schedule vừa chạy ≤60 phút ──
     if source == "automation":
         today_key = datetime.now().strftime("%Y-%m-%d")
         for sched in CACHED_SCHEDULES:
             if not sched.get("enabled") or sched.get("device_id") != device_id:
                 continue
-            sched_id = sched.get("id", "")
-            last_run = SCHEDULE_LAST_RUN.get(sched_id, "")
+            sched_id  = sched.get("id", "")
+            last_run  = SCHEDULE_LAST_RUN.get(sched_id, "")
             if last_run and today_key in last_run:
                 sched_time = sched.get("time", "")
                 try:
-                    now_mins   = datetime.now().hour * 60 + datetime.now().minute
-                    h, m       = map(int, sched_time.split(":"))
+                    now_mins  = datetime.now().hour * 60 + datetime.now().minute
+                    h, m      = map(int, sched_time.split(":"))
                     sched_mins = h * 60 + m
                     if abs(now_mins - sched_mins) <= 60:
                         event_logger.log_automation_blocked(
@@ -217,15 +171,11 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
                             device_name=device_id,
                             reason="Schedule đã chạy trong 60 phút qua"
                         )
-                        print(
-                            f"[DISPATCH] BLOCKED (schedule_active_60m): "
-                            f"automation → {device_id}"
-                        )
+                        print(f"[DISPATCH] BLOCKED (schedule_active_60m): automation → {device_id}")
                         return False
                 except Exception:
                     pass
 
-    # ── Gửi lệnh qua MQTT ───────────────────────────────────────────────────
     mqtt_payload = {
         "device": device_id,
         "action": action,
@@ -255,15 +205,10 @@ def load_cache():
         for row in conn.execute("SELECT * FROM automations WHERE enabled=1").fetchall():
             CACHED_AUTOMATIONS[row["room_id"]] = dict(row)
         CACHED_SCHEDULES = [dict(r) for r in
-                            conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
-        for row in conn.execute("SELECT room, device_id, is_on FROM device_status").fetchall():
-            cache_key = f"{row['room']}_{row['device_id']}"
-            CACHED_DEVICE_STATES[cache_key] = bool(row["is_on"])
+                           conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
     finally:
         conn.close()
-    print(f"[AUTO] Cache loaded: {len(CACHED_AUTOMATIONS)} rules, "
-          f"{len(CACHED_SCHEDULES)} schedules, "
-          f"{len(CACHED_DEVICE_STATES)} device states")
+    print(f"[AUTO] Cache loaded: {len(CACHED_AUTOMATIONS)} rules, {len(CACHED_SCHEDULES)} schedules")
 
 
 def _is_safety_locked(room_id: str) -> bool:
@@ -271,46 +216,39 @@ def _is_safety_locked(room_id: str) -> bool:
     return bool(bus.get_redis().exists(f"safety_lock:{room_id}"))
 
 
-def _try_turn_on(bus: MessageBus, room_id: str, device_type: str,
+def _try_control(bus: MessageBus, room_id: str, device_type: str,
                  value: float, threshold: float):
-    """
-    [FIX-AUTO-ONEWAY] Automation CHỈ bật thiết bị (1 chiều).
-
-    value > threshold  → gửi turn_on NẾU thiết bị chưa bật VÀ không bị block
-    value <= threshold → không làm gì
-
-    Block cases:
-      - MANUAL_STATE source="web"/"physical_button": 5 phút sau khi user tắt thủ công
-      - MANUAL_STATE source="schedule_off": 1 giờ sau khi schedule tắt thiết bị
-        (fix chính của v2.7 — ngăn automation bật lại ngay sau schedule turn_off)
-    """
     device_id = DEVICE_MAP.get(room_id, {}).get(device_type)
     if not device_id:
         return
 
-    if value <= threshold:
-        return
+    cache_key    = f"{room_id}_{device_id}"
+    current_on   = CACHED_DEVICE_STATES.get(cache_key)
 
-    cache_key  = f"{room_id}_{device_id}"
-    current_on = CACHED_DEVICE_STATES.get(cache_key)
-
+    threshold_off = threshold - HYSTERESIS_OFFSET
     if current_on is True:
+        should_on = value > threshold_off
+    elif current_on is False:
+        should_on = value > threshold
+    else:
+        should_on = value > threshold
+
+    if current_on == should_on:
         return
 
-    now         = datetime.now()
+    now = datetime.now()
     last_switch = DEVICE_LAST_SWITCH.get(cache_key)
     if last_switch and (now - last_switch).total_seconds() < MIN_SWITCH_DELAY_S:
         return
 
-    sent = dispatch_command(bus, "automation", room_id, device_id, "turn_on")
+    action = "turn_on" if should_on else "turn_off"
+    sent = dispatch_command(bus, "automation", room_id, device_id, action)
     if sent:
-        CACHED_DEVICE_STATES[cache_key] = True
+        CACHED_DEVICE_STATES[cache_key] = should_on
         DEVICE_LAST_SWITCH[cache_key]   = now
-        _log_automation(
-            room_id, f"auto_{device_type}",
-            [f"{device_id} → turn_on (value={value:.1f} > threshold={threshold})"],
-            f"sensor_{device_type}"
-        )
+        _log_automation(room_id, f"auto_{device_type}",
+                        [f"{device_id} → {action} (value={value:.1f}, thresh={threshold})"],
+                        f"sensor_{device_type}")
 
 
 def _log_automation(room_id: str, scenario: str, actions: list, triggered_by: str):
@@ -338,19 +276,18 @@ def process_sensor(room_id: str, sensor_data: dict):
     if "temperature" in sensor_data:
         val = float(sensor_data["temperature"])
         if rule.get("fan_threshold"):
-            _try_turn_on(bus, room_id, "fan", val, float(rule["fan_threshold"]))
+            _try_control(bus, room_id, "fan", val, float(rule["fan_threshold"]))
         if rule.get("light_threshold"):
-            _try_turn_on(bus, room_id, "light", val, float(rule["light_threshold"]))
+            _try_control(bus, room_id, "light", val, float(rule["light_threshold"]))
 
-    if "humidity" in sensor_data and rule.get("humidity_threshold"):
+    if "humidity" in sensor_data and rule.get("fan_threshold"):
         val = float(sensor_data["humidity"])
-        _try_turn_on(bus, room_id, "fan", val, float(rule["humidity_threshold"]))
+        _try_control(bus, room_id, "fan", val, float(rule["fan_threshold"]))
 
-    if "co2" in sensor_data:
+    if "co2" in sensor_data and rule.get("fan_threshold"):
         val = float(sensor_data["co2"])
-        co2_thresh = float(rule.get("co2_threshold") or 0)
-        if co2_thresh > 0:
-            _try_turn_on(bus, room_id, "fan", val, co2_thresh)
+        co2_thresh = float(rule.get("co2_threshold") or float(rule["fan_threshold"]) * 10)
+        _try_control(bus, room_id, "fan", val, co2_thresh)
 
 
 def _check_clock_validity() -> bool:
@@ -367,22 +304,8 @@ def _check_clock_validity() -> bool:
 
 def scheduler_loop():
     """
-    Schedule hẹn giờ bật/tắt thiết bị.
-
-    [FIX-SCHED-OFF-REBLOCK] v2.7:
-    Khi schedule "turn_off" thực thi thành công:
-      → Set MANUAL_STATE[device_id] với source="schedule_off", ttl=SCHEDULE_OFF_TTL_S (1h)
-      → Automation bị block 1 giờ, không thể bật lại thiết bị dù nhiệt độ vẫn cao
-      → User vẫn có thể bật lại thủ công bất cứ lúc nào
-
-    Luồng hoàn chỉnh:
-      22:00 → schedule turn_off quạt bếp
-      22:00 → MANUAL_STATE[fan_kt_1] = {source="schedule_off", ttl=3600}
-      22:00 → sensor temp=34°C > 32°C → _try_turn_on() → dispatch BLOCKED
-      22:05 → user bật thủ công → MANUAL_STATE replace {source="web", ttl=300}
-      22:10 → MANUAL_STATE hết TTL → automation có thể bật lại
-      23:00 → MANUAL_STATE schedule_off hết TTL (nếu user không can thiệp)
-              → automation tự bật lại nếu temp vẫn > threshold
+    Schedule chạy turn_off (hẹn giờ TẮT thiết bị).
+    action được đọc từ SQLite — firebase_sync.py sync từ Firestore với action='turn_off'.
     """
     print("[SCHEDULER] Started")
     while True:
@@ -399,78 +322,36 @@ def scheduler_loop():
             for sched in list(CACHED_SCHEDULES):
                 if not sched.get("enabled"):
                     continue
-
                 sched_time_raw = sched.get("time", "")
                 try:
                     h, m = sched_time_raw.split(":")
                     sched_time_norm = f"{int(h):02d}:{int(m):02d}"
                 except Exception:
                     sched_time_norm = sched_time_raw
-
                 if sched_time_norm != current_hhmm:
                     continue
                 if not sched.get("device_id"):
                     continue
 
-                sched_id = sched.get("id", "")
-                run_key  = f"{sched_id}_{current_hhmm}_{today_key}"
-
-                if SCHEDULE_LAST_RUN.get(sched_id) == run_key:
+                run_key = f"{sched['id']}_{current_hhmm}_{today_key}"
+                if SCHEDULE_LAST_RUN.get(sched["id"]) == run_key:
                     continue
 
                 room_id   = sched["room_id"]
                 device_id = sched["device_id"]
+                # action từ SQLite (đã sync từ Firestore): mặc định "turn_off"
                 action    = sched.get("action", "turn_off")
 
                 sent = dispatch_command(bus, "schedule", room_id, device_id, action)
-
-                # Luôn mark last_run dù thành công hay không → tránh retry loop
-                SCHEDULE_LAST_RUN[sched_id] = run_key
-
                 if sent:
-                    cache_key = f"{room_id}_{device_id}"
-
-                    if action == "turn_off":
-                        CACHED_DEVICE_STATES[cache_key] = False
-
-                        # [FIX-SCHED-OFF-REBLOCK] Block automation 1 giờ sau schedule turn_off.
-                        # Lý do: automation dựa vào sensor (nhiệt độ/CO2) không phải ý định user.
-                        # Khi user đặt lịch tắt, có nghĩa họ KHÔNG muốn thiết bị bật lại tự động
-                        # dù điều kiện sensor vẫn vượt ngưỡng.
-                        MANUAL_STATE[device_id] = {
-                            "mode":   "manual",
-                            "is_on":  False,
-                            "set_at": datetime.now(),
-                            "source": "schedule_off",
-                            "ttl_s":  SCHEDULE_OFF_TTL_S,
-                        }
-                        print(
-                            f"[SCHEDULER] schedule_off block set: {device_id} "
-                            f"→ automation blocked {SCHEDULE_OFF_TTL_S}s"
-                        )
-
-                    elif action == "turn_on":
-                        CACHED_DEVICE_STATES[cache_key] = True
-                        # Schedule turn_on: xóa block (nếu có) để automation hoạt động bình thường
-                        MANUAL_STATE.pop(device_id, None)
-
+                    SCHEDULE_LAST_RUN[sched["id"]] = run_key
                     event_logger.log_schedule_executed(
                         room_id=room_id,
                         device_id=device_id,
                         device_name=device_id
                     )
                     print(f"[SCHEDULER] Executed: {room_id}/{device_id} → {action}")
-                    _log_automation(
-                        room_id, "schedule",
-                        [f"{device_id} → {action}"],
-                        "schedule"
-                    )
-                else:
-                    print(
-                        f"[SCHEDULER] DISPATCH FAILED (blocked): "
-                        f"{room_id}/{device_id} → {action} "
-                        f"(safety lock active?)"
-                    )
+                    _log_automation(room_id, "schedule", [f"{device_id} → {action}"], "schedule")
 
             if len(SCHEDULE_LAST_RUN) > 1000:
                 SCHEDULE_LAST_RUN.clear()
@@ -542,9 +423,10 @@ def handle_inbound(envelope: dict):
         bus = MessageBus.get_instance()
         r   = bus.get_redis()
 
+        # [OTA STATUS ROUTE] Route OTA status messages to ota_manager
         if payload.get("source") == "ota":
             r.publish("ota_status", json.dumps({
-                "event":   payload.get("event"),
+                "event":   payload.get("event"),         # ota_done, ota_failed
                 "version": payload.get("version", ""),
                 "doc_id":  payload.get("doc_id", ""),
                 "room_id": room_id,
@@ -561,8 +443,7 @@ def handle_inbound(envelope: dict):
             try:
                 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 conn.execute(
-                    "INSERT OR REPLACE INTO device_status "
-                    "(room, device_id, is_on, source, updated_at) VALUES (?,?,?,?,?)",
+                    "INSERT OR REPLACE INTO device_status (room, device_id, is_on, source, updated_at) VALUES (?,?,?,?,?)",
                     (room_id, device_id, 1 if is_on else 0,
                      payload.get("source", "esp32"), now)
                 )
@@ -600,7 +481,6 @@ def handle_inbound(envelope: dict):
                     "is_on":  is_on,
                     "set_at": datetime.now(),
                     "source": "physical_button",
-                    "ttl_s":  MANUAL_STATE_TTL_S,
                 }
                 print(f"[AUTO] Physical button detected: {device_id} → MANUAL mode set")
 
@@ -620,6 +500,7 @@ def handle_inbound(envelope: dict):
         _handle_auth(room_id, payload)
 
     elif category == "enroll":
+        # ESP32 gửi enrollment result qua TOPIC_ENROLL_EN = home/living_room_01/enroll
         _check_enrollment_timeout()
         payload["_is_enroll_result"] = True
         _handle_auth(room_id, payload)
@@ -630,7 +511,8 @@ def _handle_auth(room_id: str, payload: dict):
               payload.get("fingerprintId", ""))
     bus = MessageBus.get_instance()
 
-    is_success = payload.get("success", True)
+    is_success       = payload.get("success", True)
+    is_enroll_result = payload.get("_is_enroll_result", False)
 
     if ENROLLMENT_STATE["active"]:
         if not uid:
@@ -652,11 +534,14 @@ def _handle_auth(room_id: str, payload: dict):
             ENROLLMENT_STATE["active"]     = False
             ENROLLMENT_STATE["start_time"] = None
 
+            # [FIX-TOPIC-2] Gửi enrollment_success về TOPIC_CMD_ENTRANCE
+            # để ESP32 entrance slave nhận và lưu vào SPIFFS users.json
             bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
                 "action":  "enrollment_success",
                 "uid":     uid,
                 "message": f"Da luu the: {owner_name}"
             })
+
             bus.publish_event("realtime_data", {
                 "event":      "enrollment_success",
                 "uid":        uid,
@@ -664,17 +549,20 @@ def _handle_auth(room_id: str, payload: dict):
             })
             bus.publish_event("rfid_enrollment_result", {
                 "status":      "success",
-                "result_type": "combo",
+                "result_type": "combo",    # [FIX-D] ESP32 đăng ký cả thẻ + vân tay cùng lúc
                 "value":       uid,
                 "owner_name":  owner_name,
                 "timestamp":   datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
+
+            # [FIX-ACCESS-LOG] Push thông báo đăng ký thẻ mới lên Firestore notifications
             bus.publish_event("safety_alert", {
                 "type":     "access",
                 "message":  f"Đã đăng ký thẻ mới: {uid} — {owner_name}",
                 "level":    "info",
                 "location": room_id,
             })
+
             print(f"[AUTH] Enrolled new card: {uid} -> {owner_name}")
         except Exception as e:
             print(f"[AUTH] enrollment error: {e}")
@@ -685,6 +573,7 @@ def _handle_auth(room_id: str, payload: dict):
             })
         return
 
+    # Không trong chế độ đăng ký — kiểm tra access
     if not uid:
         return
 
@@ -701,33 +590,49 @@ def _handle_auth(room_id: str, payload: dict):
     finally:
         conn.close()
 
+    # [FIX-A] Đọc method từ ESP32 payload (rfid/finger/remote)
     method = payload.get("method", "rfid").upper()
 
     if card_row:
         owner = card_row["owner_name"]
+        # Không cần gửi open_door ngược lại — ESP32 đã tự mở cửa rồi
+        # chỉ log và thông báo lên Web
         _log_access(room_id, uid, owner, "open_door", True, method=method)
         event_logger.log_door_access(
-            room_id=room_id, uid=uid, owner_name=owner,
-            access_type="granted", method=method
+            room_id=room_id,
+            uid=uid,
+            owner_name=owner,
+            access_type="granted",
+            method=method   # [FIX-A] "RFID" hoặc "FINGER"
         )
         print(f"[AUTH] {room_id}: GRANTED -> {owner} (method={method})")
     else:
         _log_access(room_id, uid, "Khách lạ", "attempt_failed", False, method=method)
         event_logger.log_door_access(
-            room_id=room_id, uid=uid, owner_name="Khách lạ",
-            access_type="denied", method=method
+            room_id=room_id,
+            uid=uid,
+            owner_name="Khách lạ",
+            access_type="denied",
+            method=method
         )
         print(f"[AUTH] {room_id}: DENIED -> {uid} (method={method})")
 
 
 def _log_access(room_id, uid, user_name, action, success, method: str = "RFID"):
+    """
+    [FIX-ACCESS-LOG] Ghi log vào SQLite + push lên Firestore system_alerts
+    qua "safety_alert" channel → UplinkStream → push_alert().
+    
+    - success=True  → level="info"  → thông báo xanh trên Web
+    - success=False → level="critical" → thông báo đỏ (báo động) trên Web
+    - method: "RFID" | "FINGER" | "REMOTE"
+    """
     try:
         conn = get_db()
         now  = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         try:
             conn.execute(
-                "INSERT INTO access_logs (room, uid, user_name, action, success, timestamp) "
-                "VALUES (?,?,?,?,?,?)",
+                "INSERT INTO access_logs (room, uid, user_name, action, success, timestamp) VALUES (?,?,?,?,?,?)",
                 (room_id, uid, user_name, action, 1 if success else 0, now)
             )
             conn.commit()
@@ -735,6 +640,8 @@ def _log_access(room_id, uid, user_name, action, success, method: str = "RFID"):
             conn.close()
 
         bus = MessageBus.get_instance()
+
+        # Publish lên realtime_data cho SocketIO/Web dashboard
         bus.publish_event("realtime_data", {
             "event":     "access_log",
             "room":      room_id,
@@ -744,6 +651,8 @@ def _log_access(room_id, uid, user_name, action, success, method: str = "RFID"):
             "timestamp": now
         })
 
+        # [FIX-ACCESS-LOG] Push lên Firestore system_alerts qua safety_alert channel
+        # UplinkStream subscribe "safety_alert" → fs_writer.push_alert() → Firestore
         if success:
             method_vn   = "Vân tay" if "FINGER" in method.upper() else "Thẻ RFID"
             alert_msg   = f"Mở cửa thành công | {user_name} ({uid}) | Phương thức: {method_vn} | {now}"
@@ -760,11 +669,17 @@ def _log_access(room_id, uid, user_name, action, success, method: str = "RFID"):
             "level":    alert_level,
             "location": room_id,
         })
+
     except Exception as e:
         print(f"[AUTH] log error: {e}")
 
 
 def command_listener():
+    """
+    FIX-TOPIC-1: enroll/delete_user gửi lên MQTT_TOPIC_ENTRANCE (không phải LIVING).
+    FIX D1: Tất cả device commands đi qua dispatch_command().
+    FIX BUG-H-02: Chấp nhận cả "room" và "roomId".
+    """
     global CACHED_AUTOMATIONS, CACHED_SCHEDULES
 
     bus    = MessageBus.get_instance()
@@ -801,7 +716,7 @@ def command_listener():
 
                 if action == "set_auto_mode":
                     MANUAL_STATE.pop(device_id, None)
-                    print(f"[AUTO] {device_id} → Auto mode restored")
+                    print(f"[AUTO] {device_id} → Auto mode (Automation re-enabled)")
                     bus.publish_event("realtime_data", {
                         "event":     "auto_mode_restored",
                         "room":      room_id,
@@ -810,19 +725,18 @@ def command_listener():
                     })
                     continue
 
-                # Điều khiển thủ công → override MANUAL_STATE (kể cả đang schedule_off)
                 MANUAL_STATE[device_id] = {
                     "mode":   "manual",
-                    "is_on":  is_on,
+                    "is_on":  data.get("is_on", False),
                     "set_at": datetime.now(),
                     "source": data.get("source", "web"),
-                    "ttl_s":  MANUAL_STATE_TTL_S,
                 }
 
                 if cmd_id:
                     PENDING_COMMANDS[device_id] = cmd_id
 
                 mqtt_action = "turn_on" if is_on else "turn_off"
+                # Log manual control
                 event_logger.log_manual_control(
                     room_id=room_id,
                     device_id=device_id,
@@ -844,8 +758,7 @@ def command_listener():
                     conn = get_db()
                     try:
                         CACHED_AUTOMATIONS = {}
-                        for row in conn.execute(
-                                "SELECT * FROM automations WHERE enabled=1").fetchall():
+                        for row in conn.execute("SELECT * FROM automations WHERE enabled=1").fetchall():
                             CACHED_AUTOMATIONS[row["room_id"]] = dict(row)
                     finally:
                         conn.close()
@@ -859,6 +772,9 @@ def command_listener():
                     ENROLLMENT_STATE["start_time"]   = datetime.now()
                     ENROLLMENT_STATE["pending_name"] = data.get("owner_name", "Thẻ mới")
                     print(f"[AUTO] Enrollment mode ON (timeout: {ENROLLMENT_TIMEOUT}s)")
+
+                    # [FIX-TOPIC-1] Gửi lên MQTT_TOPIC_ENTRANCE (không phải LIVING)
+                    # TOPIC_CMD_ENTRANCE của ESP32 mới xử lý action="enroll"
                     bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
                         "action":     "enroll",
                         "owner_name": data.get("owner_name", "Thẻ mới"),
@@ -867,11 +783,14 @@ def command_listener():
                     print(f"[AUTO] Enrollment MQTT sent to {MQTT_TOPIC_ENTRANCE}")
 
                 elif action == "delete" and uid:
+                    # [FIX-TOPIC-1] delete_user gửi về TOPIC_CMD_ENTRANCE
                     bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
                         "action": "delete_user",
                         "uid":    uid,
                     })
                     print(f"[AUTO] delete_user MQTT sent to {MQTT_TOPIC_ENTRANCE}: {uid}")
+
+                    # Xóa khỏi SQLite
                     try:
                         conn = get_db()
                         try:
@@ -884,8 +803,14 @@ def command_listener():
                         print(f"[AUTO] rfid_cards delete error: {e}")
 
                 elif action == "clear_all":
-                    bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {"action": "clear_all_users"})
+                    # [FIX-C] Xóa toàn bộ users trên ESP32 SPIFFS + SQLite + Firestore
+                    # Trigger từ Web khi cần reset hoàn toàn danh sách thẻ
+                    bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
+                        "action": "clear_all_users",
+                    })
                     print(f"[AUTO] clear_all_users MQTT sent to {MQTT_TOPIC_ENTRANCE}")
+
+                    # Xóa toàn bộ rfid_cards khỏi SQLite
                     try:
                         conn = get_db()
                         try:
@@ -908,6 +833,8 @@ def command_listener():
                     ENROLLMENT_STATE["start_time"]   = datetime.now()
                     ENROLLMENT_STATE["pending_name"] = data.get("owner_name", "Thẻ mới")
                     print("[AUTO] Enrollment started via Firebase command")
+
+                    # [FIX-TOPIC-1] Gửi lên MQTT_TOPIC_ENTRANCE
                     bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
                         "action":     "enroll",
                         "owner_name": data.get("owner_name", "Thẻ mới"),
@@ -919,16 +846,18 @@ def command_listener():
                     ENROLLMENT_STATE["active"]     = False
                     ENROLLMENT_STATE["start_time"] = None
                     print("[AUTO] Enrollment cancelled via Firebase command")
-                    bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {"action": "cancel_enroll"})
+
+                    # [FIX-TOPIC-1] cancel_enroll cũng về TOPIC_CMD_ENTRANCE
+                    bus.publish_mqtt(MQTT_TOPIC_ENTRANCE, {
+                        "action": "cancel_enroll",
+                    })
 
             elif channel == "schedule_commands":
                 if data.get("action") == "reload":
                     conn = get_db()
                     try:
                         CACHED_SCHEDULES = [dict(r) for r in
-                                            conn.execute(
-                                                "SELECT * FROM schedules WHERE enabled=1"
-                                            ).fetchall()]
+                                           conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall()]
                     finally:
                         conn.close()
                     print(f"[AUTO] Schedules reloaded: {len(CACHED_SCHEDULES)}")

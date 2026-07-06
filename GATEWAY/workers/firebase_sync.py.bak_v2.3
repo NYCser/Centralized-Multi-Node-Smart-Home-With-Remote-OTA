@@ -67,27 +67,7 @@ SERVICE_ACCOUNT_FILE = os.getenv("FIREBASE_SERVICE_ACCOUNT",
                                   "/home/pi/smarthome_prj/GATEWAY/firebase-service-account.json")
 REDIS_HOST   = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT   = int(os.getenv("REDIS_PORT", 6379))
-DEFAULT_SQLITE_PATH = "/data/smarthome.db"
-FALLBACK_SQLITE_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "storage", "smarthome.db")
-)
-
-
-def _resolve_sqlite_path() -> str:
-    configured_path = os.getenv("SQLITE_PATH")
-    if configured_path:
-        return configured_path
-
-    try:
-        os.makedirs(os.path.dirname(DEFAULT_SQLITE_PATH), exist_ok=True)
-        with sqlite3.connect(DEFAULT_SQLITE_PATH, timeout=10):
-            return DEFAULT_SQLITE_PATH
-    except Exception:
-        os.makedirs(os.path.dirname(FALLBACK_SQLITE_PATH), exist_ok=True)
-        return FALLBACK_SQLITE_PATH
-
-
-SQLITE_PATH = _resolve_sqlite_path()
+SQLITE_PATH  = os.getenv("SQLITE_PATH", "/data/smarthome.db")
 PI_OWNER_UID = os.getenv("PI_OWNER_UID", "")
 
 # Thời điểm gateway start — dùng để filter Firestore docs mới hơn
@@ -111,45 +91,32 @@ DEFAULT_ROOMS = [
 # ─────────────────────────────────────────────
 #  FIREBASE INIT
 # ─────────────────────────────────────────────
-_FIREBASE_INIT_LOCK = threading.Lock()
-
-
 def init_firebase():
-    try:
-        firebase_admin.get_app()
-        return firestore.client(), rtdb
-    except ValueError:
-        pass
+    if not firebase_admin._apps:
+        options = {"projectId": FIREBASE_PROJECT_ID}
+        db_url  = FIREBASE_DB_URL or \
+            f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
+        options["databaseURL"] = db_url
 
-    with _FIREBASE_INIT_LOCK:
-        try:
-            firebase_admin.get_app()
-            return firestore.client(), rtdb
-        except ValueError:
-            options = {"projectId": FIREBASE_PROJECT_ID}
-            db_url  = FIREBASE_DB_URL or \
-                f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
-            options["databaseURL"] = db_url
-
-            cred = None
-            if os.path.exists(SERVICE_ACCOUNT_FILE):
-                try:
-                    cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
-                    logger.info("Sử dụng Service Account: %s", SERVICE_ACCOUNT_FILE)
-                except Exception as e:
-                    logger.error("Lỗi đọc file service account: %s", e)
-
+        cred = None
+        if os.path.exists(SERVICE_ACCOUNT_FILE):
             try:
-                if cred:
-                    firebase_admin.initialize_app(cred, options)
-                else:
-                    firebase_admin.initialize_app(options=options)
-                    logger.warning("Dùng ADC (Application Default Credentials).")
+                cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
+                logger.info("Sử dụng Service Account: %s", SERVICE_ACCOUNT_FILE)
             except Exception as e:
-                logger.critical("Không thể khởi tạo Firebase: %s", e)
-                raise
+                logger.error("Lỗi đọc file service account: %s", e)
 
-            return firestore.client(), rtdb
+        try:
+            if cred:
+                firebase_admin.initialize_app(cred, options)
+            else:
+                firebase_admin.initialize_app(options=options)
+                logger.warning("Dùng ADC (Application Default Credentials).")
+        except Exception as e:
+            logger.critical("Không thể khởi tạo Firebase: %s", e)
+            raise
+
+    return firestore.client(), rtdb
 
 
 # ─────────────────────────────────────────────
@@ -1081,22 +1048,19 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                                 room_id, device_id, time_val, old["time"]
                             )
 
-                # [PATCH] DELETE tắt tạm thời — chỉ DELETE nếu Firestore có ít nhất 1 doc hợp lệ
-                if len(fs_by_device) > 0:
-                    for dev_key in existing:
-                        if dev_key not in seen_keys:
-                            parts     = dev_key.split("__", 1)
-                            room_id   = parts[0]
-                            device_id = parts[1] if len(parts) > 1 else ""
-                            conn.execute(
-                                "DELETE FROM schedules WHERE room_id=? AND device_id=?",
-                                (room_id, device_id)
-                            )
-                            changed_sched = True
-                            logger.info("[AutoSync] Schedule DELETE: %s/%s (không còn trong Firestore)",
-                                        room_id, device_id)
-                else:
-                    logger.warning("[AutoSync] Schedule DELETE skipped — Firestore trả về 0 docs (quota/empty)")
+                # Xóa schedule của device không còn trong Firestore
+                for dev_key in existing:
+                    if dev_key not in seen_keys:
+                        parts     = dev_key.split("__", 1)
+                        room_id   = parts[0]
+                        device_id = parts[1] if len(parts) > 1 else ""
+                        conn.execute(
+                            "DELETE FROM schedules WHERE room_id=? AND device_id=?",
+                            (room_id, device_id)
+                        )
+                        changed_sched = True
+                        logger.info("[AutoSync] Schedule DELETE: %s/%s (không còn trong Firestore)",
+                                    room_id, device_id)
 
                 conn.commit()
             finally:

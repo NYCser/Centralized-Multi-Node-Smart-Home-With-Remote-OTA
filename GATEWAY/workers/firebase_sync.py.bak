@@ -1,35 +1,31 @@
 """
-workers/firebase_sync.py  — v2.4  (SCHEDULE SYNC FIX: Firestore → SQLite one-way, no override)
-════════════════════════════════════════════════════════════════════════════════════════════════
-FIXES trong phiên bản này (so với v2.3):
+workers/firebase_sync.py  — v2.3  (SCHEDULE ONE-PER-DEVICE FIX)
+═════════════════════════════════════════════════════════════════
+FIXES trong phiên bản này (so với v2.2):
 
-  [FIX-SCHED-3 — CRITICAL] AutoSync override schedule SQLite bằng giá trị cũ từ Firestore
+  [FIX-SCHED-1 — HIGH] Schedule conflict do nhiều doc cùng device
       ─────────────────────────────────────────────
-      Root cause v2.3:
-        - AutoSync chạy mỗi 30 giây, pull tất cả docs từ Firestore collection "schedules"
-        - Khi SQLite có time='11:15' nhưng Firestore có time='14:30' (giá trị cũ)
-          → AutoSync UPDATE SQLite về 14:30 → schedule sai hoàn toàn
-        - updatedAt comparison trong v2.3 patch không đủ vì migration lúc startup
-          đã set updatedAt = SERVER_TIMESTAMP mới cho tất cả docs → Firestore luôn
-          "mới hơn" SQLite dù time cũ hơn
+      Root cause: Doc ID Firestore dạng {uid}_{room}_{device}_{action}
+                  → turn_on và turn_off là 2 doc riêng biệt.
+                  Khi user đổi logic sang "hẹn giờ tắt", doc turn_on cũ vẫn tồn tại
+                  → scheduler chạy cả 2 → thiết bị bật rồi tắt liên tục.
 
-      Fix v2.4:
-        - AutoSync CHỈ INSERT device mới chưa có trong SQLite
-        - AutoSync KHÔNG UPDATE schedule đã tồn tại trong SQLite
-        - Việc UPDATE schedule chỉ xảy ra khi:
-            (a) Web dashboard ghi Firestore doc với updatedAt MỚI HƠN gateway_start_time
-            (b) AutoSync so sánh updatedAt với GATEWAY_START_TIME — chỉ update nếu
-                Firestore doc được tạo/sửa SAU khi gateway start lần này
-        - DELETE vẫn hoạt động bình thường (device bị xóa khỏi Firestore → xóa SQLite)
+      Fix: sync_loop dùng composite key = room_id + device_id (KHÔNG có time/action).
+           Mỗi device chỉ được phép có 1 schedule duy nhất trong SQLite.
+           Khi Firestore có doc mới hơn cho cùng device → UPDATE row SQLite (ghi đè).
+           Khi Firestore có nhiều doc cùng device → chỉ giữ doc có updatedAt mới nhất
+           (fallback: ưu tiên action=turn_off theo yêu cầu nghiệp vụ).
 
-  [FIX-SCHED-4 — HIGH] migrate_schedule_doc_ids chạy lại mỗi startup không cần thiết
+  [FIX-SCHED-2 — HIGH] Migration Firestore: dọn doc cũ _{action} suffix
       ─────────────────────────────────────────────
-      Fix: Chỉ chạy migration nếu thực sự có doc với suffix cũ (_turn_off, _turn_on).
-           Nếu collection trống hoặc tất cả doc đã đúng format → skip hoàn toàn,
-           không gọi batch.commit() → tiết kiệm Firestore quota.
+      Script migration (chạy 1 lần) được tích hợp vào startup:
+        - Đọc tất cả schedules collection
+        - Group theo {uid}_{room}_{device}
+        - Mỗi group: giữ lại doc turn_off (hoặc mới nhất), xóa các doc thừa
+        - Ghi lại doc với ID mới = {uid}_{room}_{device} (không có _{action})
+      Sau migration, Web setDoc cùng ID → tự ghi đè, không conflict.
 
-  [Giữ nguyên từ v2.3]
-      FIX-SCHED-1 (1-device-1-schedule key), FIX-SCHED-2 (doc ID migration),
+  [Giữ nguyên từ v2.2]
       FIX A1 (Single Writer RTDB), FIX B1 (No force_update),
       On-Change device cache, auto-provisioning, sensor history flush, heartbeat.
 """
@@ -67,31 +63,8 @@ SERVICE_ACCOUNT_FILE = os.getenv("FIREBASE_SERVICE_ACCOUNT",
                                   "/home/pi/smarthome_prj/GATEWAY/firebase-service-account.json")
 REDIS_HOST   = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT   = int(os.getenv("REDIS_PORT", 6379))
-DEFAULT_SQLITE_PATH = "/data/smarthome.db"
-FALLBACK_SQLITE_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "storage", "smarthome.db")
-)
-
-
-def _resolve_sqlite_path() -> str:
-    configured_path = os.getenv("SQLITE_PATH")
-    if configured_path:
-        return configured_path
-
-    try:
-        os.makedirs(os.path.dirname(DEFAULT_SQLITE_PATH), exist_ok=True)
-        with sqlite3.connect(DEFAULT_SQLITE_PATH, timeout=10):
-            return DEFAULT_SQLITE_PATH
-    except Exception:
-        os.makedirs(os.path.dirname(FALLBACK_SQLITE_PATH), exist_ok=True)
-        return FALLBACK_SQLITE_PATH
-
-
-SQLITE_PATH = _resolve_sqlite_path()
+SQLITE_PATH  = os.getenv("SQLITE_PATH", "/data/smarthome.db")
 PI_OWNER_UID = os.getenv("PI_OWNER_UID", "")
-
-# Thời điểm gateway start — dùng để filter Firestore docs mới hơn
-GATEWAY_START_TIME = datetime.now(tz=timezone.utc)
 
 # Redis channels
 CHANNEL_DEVICE      = "device_status"
@@ -111,45 +84,32 @@ DEFAULT_ROOMS = [
 # ─────────────────────────────────────────────
 #  FIREBASE INIT
 # ─────────────────────────────────────────────
-_FIREBASE_INIT_LOCK = threading.Lock()
-
-
 def init_firebase():
-    try:
-        firebase_admin.get_app()
-        return firestore.client(), rtdb
-    except ValueError:
-        pass
+    if not firebase_admin._apps:
+        options = {"projectId": FIREBASE_PROJECT_ID}
+        db_url  = FIREBASE_DB_URL or \
+            f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
+        options["databaseURL"] = db_url
 
-    with _FIREBASE_INIT_LOCK:
-        try:
-            firebase_admin.get_app()
-            return firestore.client(), rtdb
-        except ValueError:
-            options = {"projectId": FIREBASE_PROJECT_ID}
-            db_url  = FIREBASE_DB_URL or \
-                f"https://{FIREBASE_PROJECT_ID}-default-rtdb.asia-southeast1.firebasedatabase.app"
-            options["databaseURL"] = db_url
-
-            cred = None
-            if os.path.exists(SERVICE_ACCOUNT_FILE):
-                try:
-                    cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
-                    logger.info("Sử dụng Service Account: %s", SERVICE_ACCOUNT_FILE)
-                except Exception as e:
-                    logger.error("Lỗi đọc file service account: %s", e)
-
+        cred = None
+        if os.path.exists(SERVICE_ACCOUNT_FILE):
             try:
-                if cred:
-                    firebase_admin.initialize_app(cred, options)
-                else:
-                    firebase_admin.initialize_app(options=options)
-                    logger.warning("Dùng ADC (Application Default Credentials).")
+                cred = credentials.Certificate(SERVICE_ACCOUNT_FILE)
+                logger.info("Sử dụng Service Account: %s", SERVICE_ACCOUNT_FILE)
             except Exception as e:
-                logger.critical("Không thể khởi tạo Firebase: %s", e)
-                raise
+                logger.error("Lỗi đọc file service account: %s", e)
 
-            return firestore.client(), rtdb
+        try:
+            if cred:
+                firebase_admin.initialize_app(cred, options)
+            else:
+                firebase_admin.initialize_app(options=options)
+                logger.warning("Dùng ADC (Application Default Credentials).")
+        except Exception as e:
+            logger.critical("Không thể khởi tạo Firebase: %s", e)
+            raise
+
+    return firestore.client(), rtdb
 
 
 # ─────────────────────────────────────────────
@@ -235,28 +195,22 @@ def json_serializable(obj):
     return str(obj)
 
 
-def _fs_ts_to_datetime(ts_val) -> Optional[datetime]:
-    """Convert Firestore timestamp (DatetimeWithNanoseconds hoặc datetime) sang datetime UTC."""
-    if ts_val is None:
-        return None
-    try:
-        if hasattr(ts_val, "tzinfo") and ts_val.tzinfo is not None:
-            return ts_val.astimezone(timezone.utc)
-        if hasattr(ts_val, "timestamp"):
-            return datetime.fromtimestamp(ts_val.timestamp(), tz=timezone.utc)
-    except Exception:
-        pass
-    return None
-
-
 # ─────────────────────────────────────────────
-#  [FIX-SCHED-2 + FIX-SCHED-4] FIRESTORE SCHEDULE MIGRATION
-#  Chỉ chạy nếu thực sự có doc với suffix cũ — không commit nếu không cần.
+#  [FIX-SCHED-2] FIRESTORE SCHEDULE MIGRATION
+#  Chạy 1 lần khi startup: dọn doc cũ có _{action} suffix,
+#  ghi lại với ID = {uid}_{room}_{device} (không có action).
+#  Sau đó Web setDoc cùng ID → tự ghi đè, không bao giờ conflict.
 # ─────────────────────────────────────────────
 def migrate_schedule_doc_ids(fs_client) -> int:
     """
     Gộp tất cả schedule docs của cùng 1 device về 1 doc duy nhất.
-    [FIX-SCHED-4]: Skip hoàn toàn nếu không có doc nào còn suffix cũ.
+
+    Quy tắc chọn doc nào giữ lại khi 1 device có nhiều doc:
+      1. Ưu tiên action="turn_off" (nghiệp vụ hẹn giờ tắt)
+      2. Nếu không có turn_off → lấy doc cuối cùng trong list (thường mới nhất)
+
+    ID mới: bỏ phần _{action} ở cuối nếu có.
+    Ví dụ: "uid_bedroom_01_fan_bd_1_turn_off" → "uid_bedroom_01_fan_bd_1"
     """
     try:
         all_docs = fs_client.collection("schedules").get()
@@ -264,20 +218,14 @@ def migrate_schedule_doc_ids(fs_client) -> int:
             logger.info("[Migration] Không có schedule nào trong Firestore — bỏ qua")
             return 0
 
-        # Kiểm tra nhanh: có doc nào còn suffix cũ không?
-        has_any_old = any(
-            doc.id.endswith("_turn_off") or doc.id.endswith("_turn_on")
-            for doc in all_docs
-        )
-        if not has_any_old:
-            logger.info("[Migration] Tất cả doc đã đúng format mới — bỏ qua migration")
-            return 0
-
-        # Group theo device key
+        # Group theo device key (bỏ phần _turn_on / _turn_off ở cuối doc ID)
+        # Doc ID format: {uid}_{room_id}_{device_id}_{action}  (cũ)
+        #            hoặc {uid}_{room_id}_{device_id}           (mới, đã migrate)
         groups: Dict[str, list] = defaultdict(list)
         for doc in all_docs:
-            doc_id    = doc.id
-            data      = doc.to_dict()
+            doc_id = doc.id
+            data   = doc.to_dict()
+            # Tính canonical key = bỏ _turn_on / _turn_off ở cuối (nếu có)
             canonical = doc_id
             for suffix in ("_turn_off", "_turn_on"):
                 if canonical.endswith(suffix):
@@ -285,19 +233,23 @@ def migrate_schedule_doc_ids(fs_client) -> int:
                     break
             groups[canonical].append((doc_id, data))
 
+        # Chỉ xử lý các group có > 1 doc HOẶC doc ID còn suffix cũ
         ops_count = 0
         for canonical_id, docs in groups.items():
+            # Kiểm tra xem có doc nào còn suffix cũ không
             has_old_suffix = any(
                 did.endswith("_turn_off") or did.endswith("_turn_on")
                 for did, _ in docs
             )
             if not has_old_suffix and len(docs) == 1:
+                # Doc ID đã đúng format mới, không cần làm gì
                 continue
 
-            # Chọn winner: ưu tiên turn_off, fallback doc cuối
+            # Chọn doc "winner": ưu tiên turn_off, fallback doc cuối
             turn_off_docs = [(did, d) for did, d in docs if d.get("action") == "turn_off"]
             winner_id, winner_data = turn_off_docs[0] if turn_off_docs else docs[-1]
 
+            # Chuẩn hóa data: luôn ghi action=turn_off theo nghiệp vụ mới
             new_data = {
                 "roomId":    winner_data.get("roomId")   or winner_data.get("room_id", ""),
                 "deviceId":  winner_data.get("deviceId") or winner_data.get("device_id", ""),
@@ -307,7 +259,8 @@ def migrate_schedule_doc_ids(fs_client) -> int:
                 "updatedAt": firestore.SERVER_TIMESTAMP,
             }
 
-            batch   = fs_client.batch()
+            # Batch: set doc mới (canonical ID) + xóa tất cả doc cũ
+            batch = fs_client.batch()
             new_ref = fs_client.collection("schedules").document(canonical_id)
             batch.set(new_ref, new_data)
             ops_count += 1
@@ -319,8 +272,10 @@ def migrate_schedule_doc_ids(fs_client) -> int:
                     logger.info("[Migration] Xóa doc cũ: %s", old_id)
 
             batch.commit()
-            logger.info("[Migration] ✓ %s → turn_off @ %s (từ %d doc)",
-                        canonical_id, new_data["time"], len(docs))
+            logger.info(
+                "[Migration] ✓ %s → turn_off @ %s (từ %d doc)",
+                canonical_id, new_data["time"], len(docs)
+            )
 
         logger.info("[Migration] Hoàn tất: %d operations", ops_count)
         return ops_count
@@ -477,11 +432,19 @@ class RTDBWriter:
 #  FIRESTORE WRITER
 # ─────────────────────────────────────────────
 class FirestoreWriter:
+    """
+    v2.3: Writer duy nhất cho device status (feedback từ ESP32).
+    Không còn force_update — xem FIX B1 từ v2.2.
+    """
+
     def __init__(self, fs_client):
         self.fs = fs_client
         self._device_state_cache: Dict[str, dict] = {}
 
     def update_device(self, room_id: str, device_id: str, payload: dict):
+        """
+        Cập nhật trạng thái thiết bị On-Change: chỉ ghi Firestore khi thực sự thay đổi.
+        """
         key    = f"{room_id}_{device_id}"
         is_on  = bool(payload.get("is_on", payload.get("isOn", False)))
         status = payload.get("status", "online")
@@ -639,9 +602,16 @@ class FirestoreWriter:
 
 
 # ─────────────────────────────────────────────
-#  UPLINK STREAM
+#  UPLINK STREAM — FIX A1 (giữ nguyên từ v2.2)
 # ─────────────────────────────────────────────
 class UplinkStream(threading.Thread):
+    """
+    Single Writer Pattern:
+      - Sensor → RTDB: CHỈ từ "mqtt_inbound"
+      - Device status → Firestore: từ "device_status" (ESP32 feedback)
+      - Alerts → Firestore: từ "safety_alert"
+    """
+
     def __init__(self, rtdb_writer: RTDBWriter,
                  fs_writer: FirestoreWriter,
                  redis_client: redis.Redis):
@@ -789,9 +759,12 @@ class UplinkStream(threading.Thread):
 
 
 # ─────────────────────────────────────────────
-#  DOWNLINK STREAM
+#  DOWNLINK STREAM — FIX B1 (giữ nguyên từ v2.2)
 # ─────────────────────────────────────────────
 class CommandDispatcher:
+    """
+    Không còn force_update_device() — ESP32 feedback là source of truth.
+    """
     REDIS_CHANNEL = "device_commands"
 
     def __init__(self, fs_writer: FirestoreWriter, redis_client: redis.Redis, db):
@@ -903,20 +876,14 @@ def run_heartbeat_loop(rtdb_writer: RTDBWriter, stop_event: threading.Event):
 
 def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: threading.Event):
     """
-    [v2.4] FIX-SCHED-3: AutoSync KHÔNG override schedule đã có trong SQLite.
+    [v2.3] FIX-SCHED-1: Sync schedule Firestore → SQLite theo logic 1-device-1-schedule.
 
-    Logic mới:
-      - INSERT: device chưa có trong SQLite → insert từ Firestore (bình thường)
-      - UPDATE: CHỈ update nếu Firestore doc có updatedAt SAU GATEWAY_START_TIME
-                → tức là user đã thay đổi schedule trên web SAU KHI gateway start
-      - DELETE: device không còn trong Firestore → xóa khỏi SQLite (bình thường)
-
-    Điều này đảm bảo:
-      - Schedule được set thủ công (sqlite3 UPDATE) không bị AutoSync ghi đè
-      - Schedule set qua web dashboard vẫn sync đúng (vì web ghi updatedAt mới)
+    Key SQLite đổi từ (room+device+time) → (room+device).
+    Mỗi device chỉ có tối đa 1 row trong bảng schedules.
+    Khi Firestore cập nhật schedule mới → UPDATE row cũ (ghi đè time, action).
+    → automation_engine.scheduler_loop sẽ chạy đúng giờ mới, không bị conflict.
     """
     logger.info("[AutoSync] Automation/Schedule sync loop started (interval: 30s)")
-    logger.info("[AutoSync] GATEWAY_START_TIME = %s", GATEWAY_START_TIME.isoformat())
     SYNC_INTERVAL = 30
 
     def get_sqlite_conn():
@@ -930,7 +897,7 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
         if stop_event.is_set():
             break
         try:
-            # ── 1. Sync Automations (không đổi) ─────────────────────────
+            # ── 1. Sync Automations (không đổi so với v2.2) ─────────────
             auto_docs    = fs_client.collection("automations").get()
             conn         = get_sqlite_conn()
             changed_auto = False
@@ -984,18 +951,23 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                 logger.info("[AutoSync] Automation rules updated in SQLite from Firestore")
                 r.publish("automation_commands", json.dumps({"action": "reload_all"}))
 
-            # ── 2. Sync Schedules — FIX-SCHED-3 ─────────────────────────
+            # ── 2. Sync Schedules — FIX-SCHED-1 ─────────────────────────
+            # Key = (room_id, device_id) — KHÔNG có time hay action.
+            # Mỗi device chỉ được phép có 1 schedule row trong SQLite.
+            # ─────────────────────────────────────────────────────────────
             sched_docs    = fs_client.collection("schedules").get()
             conn          = get_sqlite_conn()
             changed_sched = False
             try:
-                # Đọc SQLite hiện tại
+                # Đọc SQLite: key = room_id + device_id
                 existing: Dict[str, dict] = {}
                 for row in conn.execute("SELECT * FROM schedules WHERE enabled=1").fetchall():
                     k = f"{row['room_id']}__{row['device_id']}"
                     existing[k] = dict(row)
 
-                # Group Firestore docs theo device — lấy doc mới nhất per device
+                # Xử lý từng doc Firestore
+                # Nếu Firestore vẫn có nhiều doc cùng device (chưa migrate xong),
+                # ta group và lấy turn_off như migration logic.
                 fs_by_device: Dict[str, dict] = {}
                 for doc_snap in sched_docs:
                     data      = doc_snap.to_dict()
@@ -1004,45 +976,36 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                     time_val  = data.get("time", "")
                     action    = data.get("action", "turn_off")
                     enabled   = 1 if data.get("enabled", True) else 0
-                    updated_at = _fs_ts_to_datetime(
-                        data.get("updatedAt") or data.get("createdAt")
-                    )
 
                     if not room_id or not device_id or not time_val:
                         continue
 
                     dev_key = f"{room_id}__{device_id}"
-
-                    # Nếu đã có doc này rồi → giữ doc mới nhất theo updatedAt
+                    # Nếu đã có device này trong dict rồi → ưu tiên turn_off
                     if dev_key in fs_by_device:
-                        existing_updated = fs_by_device[dev_key].get("updatedAt")
-                        if existing_updated and updated_at:
-                            if updated_at <= existing_updated:
-                                continue  # doc cũ hơn, bỏ qua
-                        elif fs_by_device[dev_key].get("action") == "turn_off":
-                            continue  # fallback: giữ turn_off
-
+                        existing_action = fs_by_device[dev_key].get("action", "")
+                        if existing_action == "turn_off":
+                            # Đã có turn_off rồi, bỏ qua doc này
+                            continue
                     fs_by_device[dev_key] = {
-                        "room_id":    room_id,
-                        "device_id":  device_id,
-                        "time":       time_val,
-                        "action":     action,
-                        "enabled":    enabled,
-                        "updatedAt":  updated_at,
+                        "room_id":   room_id,
+                        "device_id": device_id,
+                        "time":      time_val,
+                        "action":    action,
+                        "enabled":   enabled,
                     }
 
                 seen_keys = set(fs_by_device.keys())
 
                 for dev_key, fs_data in fs_by_device.items():
-                    room_id    = fs_data["room_id"]
-                    device_id  = fs_data["device_id"]
-                    time_val   = fs_data["time"]
-                    action     = fs_data["action"]
-                    enabled    = fs_data["enabled"]
-                    updated_at = fs_data["updatedAt"]  # datetime UTC hoặc None
+                    room_id   = fs_data["room_id"]
+                    device_id = fs_data["device_id"]
+                    time_val  = fs_data["time"]
+                    action    = fs_data["action"]
+                    enabled   = fs_data["enabled"]
 
                     if dev_key not in existing:
-                        # Device chưa có trong SQLite → INSERT (luôn luôn)
+                        # Insert row mới
                         conn.execute(
                             "INSERT INTO schedules (room_id, device_id, action, time, enabled) "
                             "VALUES (?,?,?,?,?)",
@@ -1053,50 +1016,35 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
                                     room_id, device_id, action, time_val)
                     else:
                         old = existing[dev_key]
-                        # [FIX-SCHED-3] Chỉ UPDATE nếu Firestore doc được sửa SAU gateway start
-                        # → user đã thay đổi trên web sau khi gateway chạy
-                        is_new_from_web = (
-                            updated_at is not None and
-                            updated_at > GATEWAY_START_TIME
-                        )
-                        if is_new_from_web:
-                            if (old["time"]    != time_val or
-                                old["action"]  != action   or
-                                old["enabled"] != enabled):
-                                conn.execute(
-                                    "UPDATE schedules SET action=?, time=?, enabled=? "
-                                    "WHERE room_id=? AND device_id=?",
-                                    (action, time_val, enabled, room_id, device_id)
-                                )
-                                changed_sched = True
-                                logger.info(
-                                    "[AutoSync] Schedule UPDATE (web): %s/%s → %s @ %s (was %s @ %s)",
-                                    room_id, device_id, action, time_val,
-                                    old["action"], old["time"]
-                                )
-                        else:
-                            # Doc cũ hơn gateway start → bỏ qua, không override SQLite
-                            logger.debug(
-                                "[AutoSync] Schedule SKIP (old doc): %s/%s fs=%s sqlite=%s",
-                                room_id, device_id, time_val, old["time"]
-                            )
-
-                # [PATCH] DELETE tắt tạm thời — chỉ DELETE nếu Firestore có ít nhất 1 doc hợp lệ
-                if len(fs_by_device) > 0:
-                    for dev_key in existing:
-                        if dev_key not in seen_keys:
-                            parts     = dev_key.split("__", 1)
-                            room_id   = parts[0]
-                            device_id = parts[1] if len(parts) > 1 else ""
+                        # Update nếu time, action, hoặc enabled thay đổi
+                        if (old["time"]   != time_val or
+                            old["action"] != action   or
+                            old["enabled"] != enabled):
                             conn.execute(
-                                "DELETE FROM schedules WHERE room_id=? AND device_id=?",
-                                (room_id, device_id)
+                                "UPDATE schedules SET action=?, time=?, enabled=? "
+                                "WHERE room_id=? AND device_id=?",
+                                (action, time_val, enabled, room_id, device_id)
                             )
                             changed_sched = True
-                            logger.info("[AutoSync] Schedule DELETE: %s/%s (không còn trong Firestore)",
-                                        room_id, device_id)
-                else:
-                    logger.warning("[AutoSync] Schedule DELETE skipped — Firestore trả về 0 docs (quota/empty)")
+                            logger.info(
+                                "[AutoSync] Schedule UPDATE: %s/%s → %s @ %s (was %s @ %s)",
+                                room_id, device_id, action, time_val,
+                                old["action"], old["time"]
+                            )
+
+                # Xóa schedule của device không còn trong Firestore
+                for dev_key in existing:
+                    if dev_key not in seen_keys:
+                        parts     = dev_key.split("__", 1)
+                        room_id   = parts[0]
+                        device_id = parts[1] if len(parts) > 1 else ""
+                        conn.execute(
+                            "DELETE FROM schedules WHERE room_id=? AND device_id=?",
+                            (room_id, device_id)
+                        )
+                        changed_sched = True
+                        logger.info("[AutoSync] Schedule DELETE: %s/%s (không còn trong Firestore)",
+                                    room_id, device_id)
 
                 conn.commit()
             finally:
@@ -1115,9 +1063,9 @@ def run_automation_schedule_sync_loop(fs_client, r: redis.Redis, stop_event: thr
 # ─────────────────────────────────────────────
 def main():
     logger.info("=" * 60)
-    logger.info("firebase_sync v2.4 starting — project: %s", FIREBASE_PROJECT_ID)
-    logger.info("FIX-SCHED-3: AutoSync không override schedule SQLite bằng Firestore doc cũ")
-    logger.info("FIX-SCHED-4: Migration skip nếu không có doc suffix cũ")
+    logger.info("firebase_sync v2.3 starting — project: %s", FIREBASE_PROJECT_ID)
+    logger.info("FIX-SCHED-1: 1-device-1-schedule (room+device key)")
+    logger.info("FIX-SCHED-2: Firestore doc ID migration (drop _{action} suffix)")
     logger.info("FIX A1: Single Writer RTDB | FIX B1: No force_update")
     logger.info("=" * 60)
 
@@ -1133,7 +1081,7 @@ def main():
         logger.critical("Redis connection failed: %s", e)
         raise SystemExit(1)
 
-    # Migration — chỉ chạy nếu có doc suffix cũ (FIX-SCHED-4)
+    # [FIX-SCHED-2] Migration Firestore schedule doc IDs — chạy 1 lần khi startup
     logger.info("Chạy migration Firestore schedule doc IDs...")
     ops = migrate_schedule_doc_ids(fs_client)
     logger.info("Migration xong: %d operations", ops)
@@ -1163,7 +1111,7 @@ def main():
 
     fs_writer.push_alert(
         alert_type="system",
-        message="firebase_sync v2.4 started (FIX-SCHED-3: no override, FIX-SCHED-4: skip migration)",
+        message="firebase_sync v2.3 started (FIX-SCHED-1: 1-device-1-schedule, FIX-SCHED-2: doc ID migration)",
         level="info", location="Pi Gateway",
     )
 

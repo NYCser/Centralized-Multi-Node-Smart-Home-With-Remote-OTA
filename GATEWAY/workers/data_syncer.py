@@ -1,17 +1,36 @@
 """
-workers/data_syncer.py  — FIXED
+workers/data_syncer.py  — v2.4  (BUG FIXES)
 ══════════════════════════════════════════════════════════════
-FIX BUG-C-02: data_syncer không được treo vô hạn khi thiếu SD2.
-  Nguyên nhân: SD2Manager.wait_ready() block mãi mãi nếu SD2 không có.
-  Fix: Thêm "Degraded Mode" — sau DEGRADED_TIMEOUT giây không thấy SD2,
-       tự động chuyển sang ghi vào /data (bộ nhớ trong Pi).
-       Khi SD2 xuất hiện trở lại (hot-plug), tự động chuyển về SD2.
+FIXES TRONG PHIÊN BẢN NÀY (v2.4 so với v2.3):
 
-FIX BUG-SYNCER-01: flush_events / snapshot lỗi "no such column: firebase_synced"
-  Nguyên nhân: DB files tạo bởi version cũ thiếu cột firebase_synced.
-               CREATE TABLE IF NOT EXISTS KHÔNG thêm cột mới vào bảng đã có.
-  Fix: _init_db() chạy migrations ALTER TABLE sau executescript.
-       Idempotent — "duplicate column name" được bắt và bỏ qua.
+  [FIX-ACCESS-ACTION]  Bug 2
+      _FIELD_ALIASES thiếu "access_type" → "action"
+      Khi Redis event gửi field access_type="granted"/"denied",
+      data_syncer không map sang cột "action" trong access_logs
+      → toàn bộ 38 records action=NULL.
+      Fix: thêm "access_type": "action" vào _FIELD_ALIASES.
+
+  [FIX-DEVICE-SOURCE]  Bug 3
+      device_status.source='unknown' vì Firebase event thiếu field source.
+      Fix: trong insert_routed_event, nếu table=device_status và
+      normalized không có "source", tự điền "firebase_sync".
+
+  [FIX-HISTORY-LEAK]   Bug 5
+      _sync_one_table dùng today_start filter trên ts_col nhưng
+      ts_col="timestamp" trong access_logs = thời điểm event xảy ra
+      (có thể là ngày cũ 24/6), không phải ngày insert vào main DB.
+      Kết quả: historical data từ ngày cũ vẫn leak vào SD2 DB hôm nay
+      vì last_id=0 → lấy tất cả id > 0.
+      Fix: bỏ today_start filter khỏi incremental tables (đã có last_id
+      làm watermark đủ rồi). today_start chỉ giữ cho device_status
+      (upsert theo updated_at, không có id).
+
+  [GIỮ NGUYÊN từ v2.3]
+      FIX-SCHEMA-TRIM: bỏ sessions/login_logs/notifications/_schedule_exec_log
+      FIX-SD2-WRITER:  SD2DirectWriter start đúng chỗ trong SyncWorker.run()
+      FIX-FLUSH-01:    flush_events NOT NULL constraint
+      FIX-SYNC-01:     debug log main DB
+      FIX-SYNC-02:     tăng LIMIT 500→1000
 """
 
 import csv
@@ -23,24 +42,26 @@ import sqlite3
 import subprocess
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import redis as redis_lib
+from workers.sd2_direct_writer import SD2DirectWriter
 
 # ══════════════════════════════════════════════════════════
 # CONFIG
 # ══════════════════════════════════════════════════════════
 
-SD2_MOUNT    = "/mnt/sd2"
-DATA_DIR     = f"{SD2_MOUNT}/data"
+SD2_MOUNT         = "/mnt/sd2"
+DATA_DIR          = f"{SD2_MOUNT}/data"
 FALLBACK_DATA_DIR = os.getenv("FALLBACK_DATA_DIR", "/data/sensor_history")
-REDIS_HOST   = "localhost"
-BUFFER_KEY   = "sensor_buffer"
-EVENT_QUEUE  = "event_queue"
-FLUSH_EVERY  = 180
-FLUSH_COUNT  = 50
-EXPORT_HOUR  = 2
-MOUNT_SCRIPT = "/home/pi/GATEWAY/scripts/mount_sd2.sh"
+MAIN_DB_PATH      = os.getenv("DB_PATH", "/home/pi/smarthome_prj/GATEWAY/storage/smarthome.db")
+REDIS_HOST        = "localhost"
+BUFFER_KEY        = "sensor_buffer"
+EVENT_QUEUE       = "event_queue"
+FLUSH_EVERY       = 180
+SYNC_FROM_MAIN_EVERY = 60
+EXPORT_HOUR       = 2
+MOUNT_SCRIPT      = "/home/pi/GATEWAY/scripts/mount_sd2.sh"
 
 RETRY_BASE  = 2
 RETRY_MAX   = 60
@@ -48,7 +69,9 @@ RETRY_MAX   = 60
 BUFFER_WARN_THRESHOLD = 5_000
 BUFFER_MAX_THRESHOLD  = 20_000
 
-DEGRADED_TIMEOUT = 300  # 5 phút
+DEGRADED_TIMEOUT = 300
+
+SYNC_BATCH_LIMIT = 1000
 
 logging.basicConfig(
     level=logging.INFO,
@@ -64,10 +87,10 @@ log = logging.getLogger("data_syncer")
 
 class SD2Manager:
     def __init__(self):
-        self._ready        = threading.Event()
-        self._degraded     = threading.Event()
-        self._lock         = threading.Lock()
-        self._degraded_at  = None
+        self._ready       = threading.Event()
+        self._degraded    = threading.Event()
+        self._lock        = threading.Lock()
+        self._degraded_at = None
 
     def is_mounted(self) -> bool:
         return os.path.ismount(SD2_MOUNT)
@@ -133,20 +156,7 @@ SCHEMA_SQL = """
 PRAGMA journal_mode=WAL;
 PRAGMA foreign_keys=ON;
 
-CREATE TABLE IF NOT EXISTS users (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    email        TEXT    UNIQUE NOT NULL,
-    password     TEXT    NOT NULL,
-    display_name TEXT    DEFAULT '',
-    role         TEXT    DEFAULT 'user',
-    created_at   TEXT    DEFAULT (datetime('now','localtime'))
-);
-CREATE TABLE IF NOT EXISTS sessions (
-    token       TEXT    PRIMARY KEY,
-    user_id     INTEGER NOT NULL,
-    expires_at  TEXT    NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+-- ── Cấu hình phòng & thiết bị ────────────────────────────
 CREATE TABLE IF NOT EXISTS rooms (
     id         TEXT PRIMARY KEY,
     name       TEXT NOT NULL,
@@ -161,8 +171,17 @@ CREATE TABLE IF NOT EXISTS devices (
     FOREIGN KEY(room_id) REFERENCES rooms(id)
 );
 
--- sensor_data: firebase_synced cột BẮT BUỘC phải có.
--- Với DB cũ thiếu cột này, migration trong _init_db() sẽ thêm vào.
+-- ── User (cần cho access log) ─────────────────────────────
+CREATE TABLE IF NOT EXISTS users (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    email        TEXT    UNIQUE NOT NULL,
+    password     TEXT    NOT NULL,
+    display_name TEXT    DEFAULT '',
+    role         TEXT    DEFAULT 'user',
+    created_at   TEXT    DEFAULT (datetime('now','localtime'))
+);
+
+-- ── Sensor (core data) ────────────────────────────────────
 CREATE TABLE IF NOT EXISTS sensor_data (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     room            TEXT NOT NULL,
@@ -175,6 +194,7 @@ CREATE TABLE IF NOT EXISTS sensor_data (
 CREATE INDEX IF NOT EXISTS idx_sensor_room_ts  ON sensor_data(room, type, timestamp DESC);
 CREATE INDEX IF NOT EXISTS idx_sensor_unsynced ON sensor_data(firebase_synced) WHERE firebase_synced=0;
 
+-- ── Trạng thái thiết bị ───────────────────────────────────
 CREATE TABLE IF NOT EXISTS device_status (
     room       TEXT NOT NULL,
     device_id  TEXT NOT NULL,
@@ -183,6 +203,8 @@ CREATE TABLE IF NOT EXISTS device_status (
     updated_at TEXT    DEFAULT (datetime('now','localtime')),
     PRIMARY KEY (room, device_id)
 );
+
+-- ── Cảnh báo hệ thống ────────────────────────────────────
 CREATE TABLE IF NOT EXISTS system_alerts (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     room        TEXT,
@@ -194,25 +216,8 @@ CREATE TABLE IF NOT EXISTS system_alerts (
     timestamp   TEXT    DEFAULT (datetime('now','localtime'))
 );
 CREATE INDEX IF NOT EXISTS idx_alert_unresolved ON system_alerts(is_resolved, timestamp DESC);
-CREATE TABLE IF NOT EXISTS notifications (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    type       TEXT NOT NULL,
-    title      TEXT NOT NULL,
-    message    TEXT NOT NULL,
-    is_read    INTEGER DEFAULT 0,
-    room       TEXT    DEFAULT '',
-    created_at TEXT    DEFAULT (datetime('now','localtime'))
-);
-CREATE TABLE IF NOT EXISTS login_logs (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    email       TEXT,
-    success     INTEGER DEFAULT 0,
-    ip_address  TEXT,
-    device_hint TEXT,
-    user_agent  TEXT,
-    reason      TEXT,
-    timestamp   TEXT DEFAULT (datetime('now','localtime'))
-);
+
+-- ── Log truy cập cửa (RFID / vân tay) ───────────────────
 CREATE TABLE IF NOT EXISTS access_logs (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     room       TEXT,
@@ -224,6 +229,8 @@ CREATE TABLE IF NOT EXISTS access_logs (
     timestamp  TEXT DEFAULT (datetime('now','localtime'))
 );
 CREATE INDEX IF NOT EXISTS idx_access_room_ts ON access_logs(room, timestamp DESC);
+
+-- ── Log automation ────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS automation_logs (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     room         TEXT,
@@ -232,30 +239,8 @@ CREATE TABLE IF NOT EXISTS automation_logs (
     triggered_by TEXT,
     timestamp    TEXT DEFAULT (datetime('now','localtime'))
 );
-CREATE TABLE IF NOT EXISTS rfid_cards (
-    uid        TEXT PRIMARY KEY,
-    owner_name TEXT    DEFAULT '',
-    is_active  INTEGER DEFAULT 1,
-    created_at TEXT    DEFAULT (datetime('now','localtime'))
-);
-CREATE TABLE IF NOT EXISTS automations (
-    room_id         TEXT PRIMARY KEY,
-    enabled         INTEGER DEFAULT 1,
-    fan_threshold   REAL,
-    light_threshold REAL,
-    gas_threshold   REAL DEFAULT 600,
-    co2_threshold   REAL DEFAULT 1000
-);
-CREATE TABLE IF NOT EXISTS schedules (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_id    TEXT NOT NULL,
-    device_id  TEXT NOT NULL,
-    action     TEXT NOT NULL,
-    time       TEXT NOT NULL,
-    enabled    INTEGER DEFAULT 1,
-    last_run   TEXT    DEFAULT '',
-    created_at TEXT    DEFAULT (datetime('now','localtime'))
-);
+
+-- ── Log OTA ───────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS ota_logs (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     room          TEXT NOT NULL,
@@ -267,6 +252,36 @@ CREATE TABLE IF NOT EXISTS ota_logs (
     status        TEXT DEFAULT 'pending',
     created_at    TEXT DEFAULT (datetime('now','localtime'))
 );
+
+-- ── Cấu hình automation & schedule (giữ dù 0 rows) ──────
+CREATE TABLE IF NOT EXISTS automations (
+    room_id           TEXT PRIMARY KEY,
+    enabled           INTEGER DEFAULT 1,
+    fan_threshold     REAL,
+    light_threshold   REAL,
+    gas_threshold     REAL DEFAULT 600,
+    co2_threshold     REAL DEFAULT 1000
+);
+CREATE TABLE IF NOT EXISTS schedules (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    room_id    TEXT NOT NULL,
+    device_id  TEXT NOT NULL,
+    action     TEXT NOT NULL,
+    time       TEXT NOT NULL,
+    enabled    INTEGER DEFAULT 1,
+    last_run   TEXT    DEFAULT '',
+    created_at TEXT    DEFAULT (datetime('now','localtime'))
+);
+
+-- ── Thẻ RFID (giữ dù 0 rows — cần cho access control) ───
+CREATE TABLE IF NOT EXISTS rfid_cards (
+    uid        TEXT PRIMARY KEY,
+    owner_name TEXT    DEFAULT '',
+    is_active  INTEGER DEFAULT 1,
+    created_at TEXT    DEFAULT (datetime('now','localtime'))
+);
+
+-- ── Snapshot hệ thống ────────────────────────────────────
 CREATE TABLE IF NOT EXISTS system_snapshots (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     wifi_ssid    TEXT,
@@ -276,84 +291,112 @@ CREATE TABLE IF NOT EXISTS system_snapshots (
     alert_count  INTEGER DEFAULT 0,
     timestamp    TEXT DEFAULT (datetime('now','localtime'))
 );
+
+-- ── Event log tổng hợp ───────────────────────────────────
 CREATE TABLE IF NOT EXISTS system_events (
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     event     TEXT NOT NULL,
     data      TEXT,
     timestamp TEXT NOT NULL
 );
+
+-- ── Internal: sync state & SD2 writer state ──────────────
+CREATE TABLE IF NOT EXISTS _sync_state (
+    table_name TEXT PRIMARY KEY,
+    last_id    INTEGER DEFAULT 0,
+    last_sync  TEXT    DEFAULT ''
+);
+CREATE TABLE IF NOT EXISTS _sd2_writer_state (
+    key        TEXT PRIMARY KEY,
+    value      TEXT,
+    updated_at TEXT DEFAULT (datetime('now','localtime'))
+);
 """
 
-# ══════════════════════════════════════════════════════════
-# SMART ROUTER
-# ══════════════════════════════════════════════════════════
+# ── Migration: thêm cột mới vào schema cũ ────────────────
+_MIGRATIONS: list[str] = [
+    "ALTER TABLE sensor_data ADD COLUMN firebase_synced INTEGER DEFAULT 0",
+    "ALTER TABLE automations ADD COLUMN co2_threshold REAL DEFAULT 1000",
+    "ALTER TABLE schedules ADD COLUMN last_run TEXT DEFAULT ''",
+]
+
+# ── Bảng cần sync từ main DB vào SD2 ─────────────────────
+_SYNC_TABLES = [
+    # (table,            id_col,  ts_col)
+    ("sensor_data",      "id",    "timestamp"),
+    ("device_status",    None,    "updated_at"),
+    ("system_alerts",    "id",    "timestamp"),
+    ("access_logs",      "id",    "timestamp"),
+    ("automation_logs",  "id",    "timestamp"),
+    ("ota_logs",         "id",    "created_at"),
+    ("system_events",    "id",    "timestamp"),
+    # Config tables (full replace, không dùng incremental)
+    ("rooms",            None,    None),
+    ("devices",          None,    None),
+    ("automations",      None,    None),
+    ("schedules",        None,    None),
+    ("rfid_cards",       None,    None),
+    ("users",            None,    None),
+]
+
+# ── Route event → table ───────────────────────────────────
 _EVENT_ROUTE: list[tuple[str, str]] = [
-    ("rfid",         "access_logs"),
-    ("access",       "access_logs"),
-    ("ota",          "ota_logs"),
-    ("firmware",     "ota_logs"),
-    ("automation",   "automation_logs"),
-    ("login",        "login_logs"),
-    ("logout",       "login_logs"),
-    ("auth",         "login_logs"),
-    ("notif",        "notifications"),
-    ("alert",        "system_alerts"),
-    ("warning",      "system_alerts"),
-    ("snapshot",     "system_snapshots"),
-    ("device",       "device_status"),
-    ("schedule",     "schedules"),
+    ("rfid",              "access_logs"),
+    ("access",            "access_logs"),
+    ("door_access",       "access_logs"),
+    ("access_log",        "access_logs"),
+    ("ota",               "ota_logs"),
+    ("firmware",          "ota_logs"),
+    ("ota_update",        "ota_logs"),
+    ("automation",        "automation_logs"),
+    ("automation_log",    "automation_logs"),
+    ("safety_alert",      "system_alerts"),
+    ("gas_alert",         "system_alerts"),
+    ("fire_alert",        "system_alerts"),
+    ("snapshot",          "system_snapshots"),
+    ("device",            "device_status"),
+    ("device_status_upd", "device_status"),
+    ("schedule",          "schedules"),
+    ("sensor_data",       "sensor_data"),
 ]
 
 _META_KEYS = frozenset({"event", "event_type"})
 
-# ══════════════════════════════════════════════════════════
-# TABLE COLUMN WHITELIST
-# Maps table name → valid SQLite columns (from db_schema.sql)
-# flush_events uses this to filter + normalize row dicts before INSERT
-# ══════════════════════════════════════════════════════════
+# ── Column whitelist cho từng bảng ───────────────────────
 _TABLE_COLUMNS: dict[str, set] = {
-    "system_alerts": {
-        "room", "type", "message", "level", "is_resolved", "resolved_at", "timestamp"
-    },
-    "system_events": {
-        "event", "data", "timestamp"
-    },
-    "access_logs": {
-        "room", "uid", "user_name", "action", "success", "duration_s", "timestamp"
-    },
-    "automation_logs": {
-        "room", "scenario", "actions", "triggered_by", "timestamp"
-    },
-    "login_logs": {
-        "email", "success", "ip_address", "device_hint", "user_agent", "reason", "timestamp"
-    },
-    "notifications": {
-        "type", "title", "message", "is_read", "room", "created_at"
-    },
-    "ota_logs": {
-        "room", "filename", "url", "version", "release_notes", "triggered_by", "status", "created_at"
-    },
-    "device_status": {
-        "room", "device_id", "is_on", "source", "updated_at"
-    },
-    "schedules": {
-        "room_id", "device_id", "action", "time", "enabled", "last_run", "created_at"
-    },
-    "system_snapshots": {
-        "wifi_ssid", "wifi_status", "room_count", "device_count", "alert_count", "timestamp"
-    },
+    "sensor_data":      {"room", "type", "value", "timestamp", "firebase_synced"},
+    "system_alerts":    {"room", "type", "message", "level", "is_resolved", "resolved_at", "timestamp"},
+    "system_events":    {"event", "data", "timestamp"},
+    "access_logs":      {"room", "uid", "user_name", "action", "success", "duration_s", "timestamp"},
+    "automation_logs":  {"room", "scenario", "actions", "triggered_by", "timestamp"},
+    "ota_logs":         {"room", "filename", "url", "version", "release_notes", "triggered_by", "status", "created_at"},
+    "device_status":    {"room", "device_id", "is_on", "source", "updated_at"},
+    "schedules":        {"room_id", "device_id", "action", "time", "enabled", "last_run", "created_at"},
+    "system_snapshots": {"wifi_ssid", "wifi_status", "room_count", "device_count", "alert_count", "timestamp"},
 }
 
-# Field alias map: rename incoming field names to match SQLite column names
+# [FIX-ACCESS-ACTION] Bug 2: thêm "access_type" → "action"
+# Redis event gửi access_type="granted"/"denied" thay vì field "action"
 _FIELD_ALIASES: dict[str, str] = {
-    "location":    "room",       # safety_alert uses "location"
-    "room_id":     "room",       # some events use "room_id" → system_alerts uses "room"
-    "isResolved":  "is_resolved",
-    "owner_name":  "user_name",  # access_logs
-    "user":        "user_name",
-    "device":      "device_id",  # device_status
-    "updated_at":  "updated_at",
+    "location":      "room",
+    "room_id":       "room",
+    "is_on":         "is_on",
+    "fire_detected": "value",
+    "isResolved":    "is_resolved",
+    "owner_name":    "user_name",
+    "user":          "user_name",
+    "device":        "device_id",
+    "updated_at":    "updated_at",
+    "access_type":   "action",      # [FIX-ACCESS-ACTION] "granted"/"denied" → action
 }
+
+# Các bảng incremental dùng last_id làm watermark — KHÔNG filter theo ngày
+# vì ts_col là thời điểm event xảy ra (có thể là ngày cũ).
+# [FIX-HISTORY-LEAK] Bug 5: chỉ device_status (upsert, không có id) mới cần today_start.
+_INCREMENTAL_TABLES = frozenset({
+    "sensor_data", "system_alerts", "access_logs",
+    "automation_logs", "ota_logs", "system_events",
+})
 
 
 # ══════════════════════════════════════════════════════════
@@ -361,19 +404,6 @@ _FIELD_ALIASES: dict[str, str] = {
 # ══════════════════════════════════════════════════════════
 
 class StorageLayer:
-    # ── FIX BUG-SYNCER-01: danh sách migration ─────────────────────────────
-    # Mỗi entry là 1 câu ALTER TABLE. Chạy lần lượt sau executescript().
-    # Idempotent: "duplicate column name" → bỏ qua, không coi là lỗi.
-    # Thêm migration mới vào CUỐI danh sách này khi nâng cấp schema.
-    _MIGRATIONS: list[str] = [
-        # v2 → v3: thêm firebase_synced cho firebase_sync.py
-        "ALTER TABLE sensor_data ADD COLUMN firebase_synced INTEGER DEFAULT 0",
-        # v3 → v4: thêm co2_threshold cho automation engine
-        "ALTER TABLE automations ADD COLUMN co2_threshold REAL DEFAULT 1000",
-        # v3 → v4: thêm last_run cho schedule tracker
-        "ALTER TABLE schedules ADD COLUMN last_run TEXT DEFAULT ''",
-    ]
-
     def __init__(self, sd2: SD2Manager):
         self._sd2     = sd2
         self._conn    = None
@@ -387,32 +417,19 @@ class StorageLayer:
         return os.path.join(data_dir, f"data_{date_str}.db")
 
     def _init_db(self, conn: sqlite3.Connection):
-        """
-        FIX BUG-SYNCER-01: 2 bước:
-          1. executescript(SCHEMA_SQL) — tạo bảng mới nếu chưa có (idempotent).
-          2. Chạy từng migration trong _MIGRATIONS — thêm cột còn thiếu vào DB
-             cũ (idempotent: duplicate column name bị bắt và bỏ qua).
-        """
-        # Bước 1: tạo schema đầy đủ
         conn.executescript(SCHEMA_SQL)
         conn.commit()
-
-        # Bước 2: migrations — an toàn với DB đã tồn tại từ version cũ
-        for sql in self._MIGRATIONS:
+        for sql in _MIGRATIONS:
             try:
                 conn.execute(sql)
                 conn.commit()
-                log.info("[MIGRATION] Applied: %s", sql[:70])
             except sqlite3.OperationalError as exc:
                 err_lower = str(exc).lower()
                 if "duplicate column name" in err_lower:
-                    # Cột đã có — migration đã chạy trước đó, bỏ qua bình thường
                     pass
                 elif "no such table" in err_lower:
-                    # Bảng chưa có — schema mới sẽ tạo; retry sau executescript
                     log.warning("[MIGRATION] Table missing for '%s': %s", sql[:50], exc)
                 else:
-                    # Lỗi thật — log rõ nhưng không crash worker
                     log.error("[MIGRATION] Failed: '%s' → %s", sql[:70], exc)
 
     def get_conn(self) -> sqlite3.Connection:
@@ -438,8 +455,10 @@ class StorageLayer:
                  db_path,
                  "degraded/fallback" if self._sd2.is_degraded() else "sd2")
 
+    def get_db_path_for_date(self, date_str: str) -> str:
+        return self._get_db_path(date_str)
+
     def insert_sensors(self, rows: list):
-        """rows: list of (room, type, timestamp, value)"""
         with self._db_lock:
             conn = self.get_conn()
             conn.executemany(
@@ -449,6 +468,8 @@ class StorageLayer:
             conn.commit()
 
     def insert_event(self, event: str, data: dict, timestamp: str):
+        if not event or not isinstance(event, str):
+            event = "unknown_event"
         with self._db_lock:
             conn = self.get_conn()
             conn.execute(
@@ -458,29 +479,24 @@ class StorageLayer:
             conn.commit()
 
     def insert_routed_event(self, table: str, row: dict) -> bool:
-        """
-        Insert a row into table after normalizing field names to match SQLite columns.
-        Uses _FIELD_ALIASES to rename fields and _TABLE_COLUMNS to filter unknowns.
-        """
         with self._db_lock:
             conn = self.get_conn()
-
-            # Step 1: Apply field aliases (e.g. location→room, room_id→room, isResolved→is_resolved)
             normalized = {}
             for k, v in row.items():
                 alias = _FIELD_ALIASES.get(k, k)
-                # Keep last value if alias collision (prefer non-aliased original)
                 if alias not in normalized:
                     normalized[alias] = v
 
-            # Step 2: Filter to only valid columns for this table
             valid_cols = _TABLE_COLUMNS.get(table)
             if valid_cols:
                 normalized = {k: v for k, v in normalized.items() if k in valid_cols}
 
-            # Step 3: Drop _META_KEYS leftovers
             for mk in _META_KEYS:
                 normalized.pop(mk, None)
+
+            # [FIX-DEVICE-SOURCE] Bug 3: điền default source khi sync từ Firebase
+            if table == "device_status" and "source" not in normalized:
+                normalized["source"] = "firebase_sync"
 
             if not normalized:
                 log.warning("insert_routed_event: empty row after normalization for table=%s", table)
@@ -488,7 +504,12 @@ class StorageLayer:
 
             columns      = ", ".join(normalized.keys())
             placeholders = ", ".join(["?"] * len(normalized))
-            sql = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
+            verb = (
+                "INSERT OR REPLACE"
+                if table in ("device_status", "automations", "rooms", "devices", "rfid_cards")
+                else "INSERT OR IGNORE"
+            )
+            sql = f"{verb} INTO {table} ({columns}) VALUES ({placeholders})"
             try:
                 conn.execute(sql, list(normalized.values()))
                 conn.commit()
@@ -497,6 +518,64 @@ class StorageLayer:
                 log.warning("insert_routed_event table=%s schema mismatch: %s | row_keys=%s",
                             table, e, list(normalized.keys()))
                 return False
+
+    def get_sync_state(self, table_name: str) -> int:
+        with self._db_lock:
+            conn = self.get_conn()
+            row = conn.execute(
+                "SELECT last_id FROM _sync_state WHERE table_name=?", (table_name,)
+            ).fetchone()
+            return row["last_id"] if row else 0
+
+    def set_sync_state(self, table_name: str, last_id: int):
+        with self._db_lock:
+            conn = self.get_conn()
+            conn.execute(
+                "INSERT OR REPLACE INTO _sync_state (table_name, last_id, last_sync) VALUES (?,?,?)",
+                (table_name, last_id, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            )
+            conn.commit()
+
+    def upsert_config_rows(self, table: str, rows: list, columns: list):
+        if not rows:
+            return
+        with self._db_lock:
+            conn = self.get_conn()
+            placeholders = ", ".join(["?"] * len(columns))
+            sql = f"INSERT OR REPLACE INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
+            try:
+                conn.executemany(sql, rows)
+                conn.commit()
+                log.debug("[SYNC] upsert %d rows → %s", len(rows), table)
+            except Exception as e:
+                log.error("[SYNC] upsert_config_rows table=%s error: %s", table, e)
+
+    def upsert_device_status(self, rows: list, columns: list):
+        if not rows:
+            return
+        with self._db_lock:
+            conn = self.get_conn()
+            placeholders = ", ".join(["?"] * len(columns))
+            sql = f"INSERT OR REPLACE INTO device_status ({', '.join(columns)}) VALUES ({placeholders})"
+            try:
+                conn.executemany(sql, rows)
+                conn.commit()
+            except Exception as e:
+                log.error("[SYNC] upsert_device_status error: %s", e)
+
+    def insert_incremental(self, table: str, rows: list, columns: list):
+        if not rows:
+            return
+        with self._db_lock:
+            conn = self.get_conn()
+            placeholders = ", ".join(["?"] * len(columns))
+            sql = f"INSERT OR IGNORE INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
+            try:
+                conn.executemany(sql, rows)
+                conn.commit()
+                log.debug("[SYNC] inserted %d rows → %s", len(rows), table)
+            except Exception as e:
+                log.error("[SYNC] insert_incremental table=%s error: %s", table, e)
 
     def export_csv(self, date_str: str, export_dir: str) -> str:
         db_path = self._get_db_path(date_str)
@@ -583,8 +662,10 @@ class SyncWorker:
         self.sd2    = SD2Manager()
         self.buf    = BufferLayer(self.r)
         self.store  = StorageLayer(self.sd2)
-        self._last_flush  = 0
-        self._last_export = -1
+        self._last_flush      = 0
+        self._last_sync_main  = 0
+        self._last_export     = -1
+        self._sd2_writer      = None
 
     def push_sensor(self, room: str, s_type: str, value: float):
         self.buf.push_sensor(room, s_type, value)
@@ -597,11 +678,10 @@ class SyncWorker:
             log.error("log_event error: %s", e)
 
     def flush_sensor(self):
-        raw_items = self.buf.read_sensors(FLUSH_COUNT)
+        raw_items = self.buf.read_sensors(50)
         if not raw_items:
             return
         read_count = len(raw_items)
-
         rows = []
         for raw in raw_items:
             try:
@@ -609,17 +689,12 @@ class SyncWorker:
                 ts = item.get("ts")
                 if not ts or ts == 0:
                     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    log.debug("Sanitized missing ts for %s/%s → %s",
-                              item.get("room"), item.get("type"), ts)
                 else:
                     if isinstance(ts, (int, float)):
                         ts_sec = int(ts / 1000) if ts > 1e11 else int(ts)
                         if ts_sec < 1577836800:
                             ts_sec = int(time.time())
-                            log.debug("Sanitized invalid ts %s → now", ts)
                         ts = datetime.fromtimestamp(ts_sec).strftime("%Y-%m-%d %H:%M:%S")
-
-                # (room, type, timestamp, value) — matches insert_sensors()
                 rows.append((item["room"], item["type"], ts, float(item["value"])))
             except Exception as e:
                 log.warning("Bad sensor item: %s — %s", raw[:80], e)
@@ -628,9 +703,9 @@ class SyncWorker:
             try:
                 self.store.insert_sensors(rows)
                 self.buf.trim_sensors(read_count)
-                log.info("Flushed %d sensor rows", len(rows))
+                log.info("Flushed %d sensor rows from Redis buffer", len(rows))
             except Exception as e:
-                log.error("flush_sensor DB error: %s — will retry next cycle", e)
+                log.error("flush_sensor DB error: %s", e)
 
     def flush_events(self):
         items = self.buf.read_events(100)
@@ -639,12 +714,34 @@ class SyncWorker:
         failed = []
         for raw in items:
             try:
-                data  = json.loads(raw)
-                ts    = data.pop("timestamp", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-                event = data.pop("event", "unknown")
+                try:
+                    data = json.loads(raw)
+                except json.JSONDecodeError as je:
+                    log.warning("[FIX-FLUSH-01] Invalid JSON in event_queue, dropping: %s — %s",
+                                raw[:100], je)
+                    continue
 
-                for k in _META_KEYS:
+                if not isinstance(data, dict):
+                    log.warning("[FIX-FLUSH-01] Non-dict event item dropped: %s", str(data)[:100])
+                    continue
+
+                ts = data.pop("timestamp", None)
+                if not ts or not isinstance(ts, str):
+                    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                else:
+                    ts = ts.replace("T", " ").split(".")[0]
+
+                event = data.pop("event", None)
+                if not event or not isinstance(event, str):
+                    event = data.pop("event_type", None)
+
+                for k in list(_META_KEYS):
                     data.pop(k, None)
+
+                if not event or not isinstance(event, str):
+                    event = self._infer_event_from_payload(data)
+
+                event = (event or "unknown_event").strip() or "unknown_event"
 
                 target_table = None
                 event_lower  = event.lower()
@@ -654,8 +751,8 @@ class SyncWorker:
                         break
 
                 if target_table is None:
-                    target_table = "system_alerts"
-                    log.debug("flush_events: unknown event '%s' → system_alerts", event)
+                    target_table = "system_events"
+                    log.debug("flush_events: unknown event '%s' → system_events", event)
 
                 row = dict(data)
                 if "timestamp" not in row:
@@ -663,18 +760,31 @@ class SyncWorker:
 
                 ok = self.store.insert_routed_event(target_table, row)
                 if not ok:
-                    log.warning(
-                        "flush_events: schema mismatch for table '%s', "
-                        "falling back to system_events for event '%s'",
-                        target_table, event
-                    )
                     self.store.insert_event(event, data, ts)
 
             except Exception as e:
-                log.error("flush_events error: %s", e)
+                log.error("flush_events unexpected error: %s | raw=%s", e, raw[:100])
                 failed.append(raw)
+
         if failed:
             self.buf.requeue_events(failed)
+
+    def _infer_event_from_payload(self, data: dict) -> str:
+        keys = set(data.keys())
+        if "type" in keys and "value" in keys and "room_id" in keys:
+            sensor_type = str(data.get("type", "")).lower()
+            if sensor_type in ("gas", "co2"):
+                return "gas_alert" if float(data.get("value", 0) or 0) > 500 else "sensor_data"
+            return "sensor_data"
+        if "device_id" in keys and "is_on" in keys:
+            return "device_status_update"
+        if "uid" in keys or ("action" in keys and "room_id" in keys):
+            return "access_log"
+        if "scenario" in keys or "actions" in keys:
+            return "automation_log"
+        if "filename" in keys and "url" in keys:
+            return "ota_update"
+        return "unknown_event"
 
     def snapshot(self):
         try:
@@ -695,19 +805,128 @@ class SyncWorker:
         except Exception as e:
             log.error("snapshot error: %s", e)
 
+    def _open_main_db(self):
+        if not os.path.exists(MAIN_DB_PATH):
+            return None
+        conn = sqlite3.connect(f"file:{MAIN_DB_PATH}?mode=ro", uri=True,
+                               check_same_thread=False, timeout=10)
+        conn.row_factory = sqlite3.Row
+        return conn
+
+    def sync_from_main_db(self):
+        main_conn = self._open_main_db()
+        if main_conn is None:
+            log.warning("[SYNC] Main DB không tồn tại tại %s", MAIN_DB_PATH)
+            return
+
+        today       = datetime.now().strftime("%Y-%m-%d")
+        today_start = f"{today} 00:00:00"
+
+        try:
+            total_main = main_conn.execute("SELECT COUNT(*) FROM sensor_data").fetchone()[0]
+            today_main = main_conn.execute(
+                "SELECT COUNT(*) FROM sensor_data WHERE timestamp >= ?", (today_start,)
+            ).fetchone()[0]
+            log.info("[SYNC DEBUG] main DB sensor_data: total=%d rows, today=%d rows",
+                     total_main, today_main)
+        except Exception as e:
+            log.warning("[SYNC DEBUG] Không đọc được sensor_data từ main DB: %s", e)
+
+        try:
+            total_synced = 0
+            for table, id_col, ts_col in _SYNC_TABLES:
+                try:
+                    synced = self._sync_one_table(main_conn, table, id_col, ts_col, today_start)
+                    if synced > 0:
+                        total_synced += synced
+                        log.info("[SYNC] %s: +%d rows synced", table, synced)
+                except Exception as e:
+                    log.error("[SYNC] Error syncing table %s: %s", table, e)
+
+            if total_synced > 0:
+                log.info("[SYNC] Total synced from main DB: %d rows", total_synced)
+            else:
+                log.debug("[SYNC] No new rows to sync from main DB")
+        finally:
+            try:
+                main_conn.close()
+            except Exception:
+                pass
+
+    def _sync_one_table(self, main_conn, table: str, id_col, ts_col, today_start: str) -> int:
+        # Config tables: full replace, không dùng incremental
+        if id_col is None and ts_col is None:
+            try:
+                rows_main = main_conn.execute(f"SELECT * FROM {table}").fetchall()
+            except Exception as e:
+                log.debug("[SYNC] %s not found in main DB: %s", table, e)
+                return 0
+            if not rows_main:
+                return 0
+            columns = list(rows_main[0].keys())
+            data    = [tuple(r) for r in rows_main]
+            self.store.upsert_config_rows(table, data, columns)
+            return len(data)
+
+        # device_status: upsert theo updated_at (không có id)
+        # Dùng today_start vì chỉ muốn trạng thái hiện tại, không phải lịch sử
+        if id_col is None and ts_col is not None:
+            try:
+                rows_main = main_conn.execute(
+                    f"SELECT * FROM {table} WHERE {ts_col} >= ?", (today_start,)
+                ).fetchall()
+            except Exception as e:
+                log.debug("[SYNC] %s query error: %s", table, e)
+                return 0
+            if not rows_main:
+                return 0
+            columns = list(rows_main[0].keys())
+            data    = [tuple(r) for r in rows_main]
+            self.store.upsert_device_status(data, columns)
+            return len(data)
+
+        # [FIX-HISTORY-LEAK] Bug 5: incremental tables chỉ dùng last_id làm watermark.
+        # KHÔNG filter theo today_start vì ts_col = thời điểm event xảy ra (có thể ngày cũ).
+        # Ví dụ: access_logs timestamp=2026-06-24 14:48:36 vẫn được insert vào main DB ngày 27/6
+        # → nếu filter timestamp >= today_start thì bỏ sót; nếu không filter thì leak đúng.
+        # Giải pháp: last_id watermark đã đủ để tránh duplicate — bỏ today_start filter.
+        last_id = self.store.get_sync_state(table)
+        try:
+            rows_main = main_conn.execute(
+                f"SELECT * FROM {table} WHERE {id_col} > ? "
+                f"ORDER BY {id_col} ASC LIMIT {SYNC_BATCH_LIMIT}",
+                (last_id,)
+            ).fetchall()
+        except Exception as e:
+            log.debug("[SYNC] %s query error: %s", table, e)
+            return 0
+
+        if not rows_main:
+            log.debug("[SYNC] %s: no new rows (last_id=%d)", table, last_id)
+            return 0
+
+        columns     = list(rows_main[0].keys())
+        data        = [tuple(r) for r in rows_main]
+        self.store.insert_incremental(table, data, columns)
+        new_last_id = rows_main[-1][id_col]
+        self.store.set_sync_state(table, new_last_id)
+        log.debug("[SYNC] %s: +%d rows (last_id: %d → %d)", table, len(data), last_id, new_last_id)
+        return len(data)
+
+    # ── Main loop ──────────────────────────────────────────────────────────
+
     def run(self):
         log.info("SyncWorker starting...")
         log.info("Waiting for SD2 (timeout %ds before degraded mode)...", DEGRADED_TIMEOUT)
         sd2_ready = self.sd2.wait_ready(timeout=DEGRADED_TIMEOUT)
         if sd2_ready:
-            log.info(" SD2 ready at %s", DATA_DIR)
+            log.info("SD2 ready at %s", DATA_DIR)
         else:
             if not self.sd2.try_mount():
                 self.sd2.is_ready()
                 if self.sd2.is_degraded():
                     log.warning(
-                        "SD2 không có sau %ds — chạy DEGRADED MODE, "
-                        "ghi vào fallback: %s",
+                        "SD2 không có sau %ds — chạy DEGRADED MODE, ghi vào fallback: %s",
                         DEGRADED_TIMEOUT, FALLBACK_DATA_DIR
                     )
                     self.r.publish("realtime_data", json.dumps({
@@ -718,6 +937,17 @@ class SyncWorker:
 
         log.info("SyncWorker running (storage: %s)",
                  "degraded/fallback" if self.sd2.is_degraded() else "sd2")
+
+        # [FIX-SD2-WRITER] Khởi động SD2DirectWriter đúng chỗ — trong run() của SyncWorker
+        self._sd2_writer = SD2DirectWriter().start()
+        log.info("SD2DirectWriter started")
+
+        # Chạy sync lần đầu ngay khi startup để fill dữ liệu hôm nay
+        try:
+            log.info("[SYNC] Initial sync from main DB on startup...")
+            self.sync_from_main_db()
+        except Exception as e:
+            log.error("[SYNC] Initial sync error: %s", e)
 
         while True:
             try:
@@ -738,9 +968,13 @@ class SyncWorker:
                     self.snapshot()
                     self._last_flush = now
 
+                if now - self._last_sync_main >= SYNC_FROM_MAIN_EVERY:
+                    self.sync_from_main_db()
+                    self._last_sync_main = now
+
                 current_hour = datetime.now().hour
                 if current_hour == EXPORT_HOUR and self._last_export != current_hour:
-                    yesterday = datetime.now().strftime("%Y-%m-%d")
+                    yesterday  = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
                     export_dir = os.path.join(self.sd2.get_data_dir(), "exports")
                     try:
                         out = self.store.export_csv(yesterday, export_dir)
@@ -757,7 +991,7 @@ class SyncWorker:
                 time.sleep(10)
 
 
-# ── Public API ──────────────────────────────────────────────
+# ── Public API ─────────────────────────────────────────────
 
 _worker: SyncWorker = None
 

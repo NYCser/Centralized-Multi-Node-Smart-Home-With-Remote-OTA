@@ -129,13 +129,15 @@ def _ensure_admin(conn: sqlite3.Connection):
 
 def start_workers():
     from bridge.message_bus import MessageBus
-    from workers import safety_watchdog, automation_engine, data_syncer, network_watchdog
+    from workers import safety_watchdog, automation_engine, data_syncer, network_watchdog, email_notifier, gateway_config
 
     bus = MessageBus.get_instance()
     bus.connect()
 
     threading.Thread(target=safety_watchdog.run,  name="SafetyWatchdog",  daemon=True).start()
     threading.Thread(target=network_watchdog.run, name="NetworkWatchdog", daemon=True).start()
+    threading.Thread(target=gateway_config.run,   name="ConfigSync",      daemon=True).start()
+    threading.Thread(target=email_notifier.run,   name="EmailNotifier",   daemon=True).start()
     threading.Thread(target=data_syncer.run,      name="DataSyncer",      daemon=True).start()
 
     # Firebase sync worker — chỉ start nếu credentials tồn tại
