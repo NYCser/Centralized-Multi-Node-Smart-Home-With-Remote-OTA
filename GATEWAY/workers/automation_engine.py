@@ -128,8 +128,8 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
                      extra: dict = None) -> bool:
     priority = SOURCE_PRIORITY.get(source, 99)
 
-    # ── Safety lock: block tất cả ngoại trừ safety ──────────────────────────
-    if _is_safety_locked(room_id) and source != "safety":
+    # ── Safety lock: block automation/schedule only; user manual/web commands can still run ───
+    if _is_safety_locked(room_id) and source not in ("safety", "manual", "web"):
         event_logger.log_system_message(
             room_id=room_id,
             message=f"Lệnh bị chặn | Hệ thống an toàn bị khóa | Thiết bị: {device_id}",
@@ -143,6 +143,8 @@ def dispatch_command(bus: MessageBus, source: str, room_id: str,
             "message": "Hệ thống đang trong trạng thái khẩn cấp — lệnh bị từ chối!"
         })
         return False
+    elif _is_safety_locked(room_id) and source in ("manual", "web"):
+        print(f"[DISPATCH] Safety lock bypassed for manual/web: {source} → {room_id}/{device_id} {action}")
 
     # ── MANUAL_STATE check ───────────────────────────────────────────────────
     #

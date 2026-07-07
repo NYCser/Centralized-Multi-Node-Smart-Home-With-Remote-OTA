@@ -50,8 +50,8 @@ _email_config = {
 
 
 def _get_firestore_client():
-    """Tái sử dụng firebase_admin app đã init (từ firebase_sync.py) nếu có,
-    tránh lỗi 'default app already exists'."""
+    """Tái sử dụng firebase_admin app đã init nếu có, hoặc gọi chung init helper.
+    Tránh lỗi 'default app already exists' khi gateway_config và firebase_sync khởi tạo cùng lúc."""
     try:
         firebase_admin.get_app()
         return firestore.client()
@@ -64,17 +64,12 @@ def _get_firestore_client():
             return firestore.client()
         except ValueError:
             try:
-                key_path = os.getenv("FIREBASE_KEY_PATH")
-                if key_path and os.path.exists(key_path):
-                    cred = credentials.Certificate(key_path)
-                    firebase_admin.initialize_app(cred)
-                else:
-                    firebase_admin.initialize_app()
+                from workers.firebase_sync import init_firebase
+                fs_client, _ = init_firebase()
+                return fs_client
             except Exception as e:
                 log.error("Không thể khởi tạo Firestore client: %s", e)
                 return None
-
-            return firestore.client()
 
 
 def get_email_config() -> dict:

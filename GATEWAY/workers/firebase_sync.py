@@ -145,6 +145,14 @@ def init_firebase():
                 else:
                     firebase_admin.initialize_app(options=options)
                     logger.warning("Dùng ADC (Application Default Credentials).")
+            except ValueError as e:
+                if "default Firebase app already exists" in str(e):
+                    logger.warning(
+                        "Firebase app đã được khởi tạo đồng thời, tái sử dụng app hiện tại."
+                    )
+                else:
+                    logger.critical("Không thể khởi tạo Firebase: %s", e)
+                    raise
             except Exception as e:
                 logger.critical("Không thể khởi tạo Firebase: %s", e)
                 raise
