@@ -546,32 +546,69 @@ class FirestoreWriter:
             logger.error("Firestore push_alert error: %s", e)
 
     def batch_push_sensor_history(self, rows: list) -> list:
+        """
+        [FIX-QUOTA] Trước đây mỗi row sensor_data = 1 Firestore write riêng
+        (dù gộp trong 1 batch.commit(), Firestore vẫn tính quota theo SỐ LƯỢT
+        set(), không phải số lần commit()) → ~100 rows/phút = ~6.000 writes/giờ
+        → chạm giới hạn 20.000 writes/ngày (Spark free tier) chỉ sau ~3 giờ.
+
+        Fix: gộp NHIỀU rows vào 1 document duy nhất (mảng "readings"), theo
+        room_id + phút. Mỗi lần flush (mỗi 60s) giờ chỉ tốn khoảng
+        (số room có dữ liệu mới) writes thay vì (số rows) writes.
+        Ví dụ: 100 rows/phút, 3 phòng → chỉ ~3 writes/phút thay vì ~100.
+        """
         if not rows:
             return []
         synced_ids = []
-        chunk_size = 499
-        for i in range(0, len(rows), chunk_size):
-            chunk = rows[i: i + chunk_size]
-            batch = self.fs.batch()
-            for row in chunk:
+
+        # Gộp theo (room_id, phút) — mỗi group → 1 document chứa mảng readings
+        groups: Dict[tuple, list] = defaultdict(list)
+        for row in rows:
+            try:
+                ts = datetime.fromisoformat(str(row["timestamp"])).replace(tzinfo=timezone.utc)
+            except Exception:
+                ts = datetime.now(timezone.utc)
+            minute_bucket = ts.strftime("%Y%m%d%H%M")
+            key = (row["room_id"], minute_bucket)
+            groups[key].append({
+                "type":          row["sensor_type"],
+                "value":         float(row["value"]),
+                "timestamp_iso": ts.isoformat(),
+            })
+            synced_ids.append(row["id"])
+
+        batch = self.fs.batch()
+        ops_in_batch = 0
+        for (room_id, minute_bucket), readings in groups.items():
+            doc_id  = f"{room_id}_{minute_bucket}"
+            doc_ref = self.fs.collection("sensor_readings").document(doc_id)
+            batch.set(doc_ref, {
+                "roomId":    room_id,
+                "minute":    minute_bucket,
+                "readings":  firestore.ArrayUnion(readings),
+                "updatedAt": firestore.SERVER_TIMESTAMP,
+            }, merge=True)
+            ops_in_batch += 1
+
+            # Firestore giới hạn 500 ops/batch — an toàn dùng 490
+            if ops_in_batch >= 490:
                 try:
-                    ts = datetime.fromisoformat(str(row["timestamp"])).replace(tzinfo=timezone.utc)
-                except Exception:
-                    ts = datetime.now(timezone.utc)
-                new_ref = self.fs.collection("sensor_readings").document()
-                batch.set(new_ref, {
-                    "roomId":        row["room_id"],
-                    "type":          row["sensor_type"],
-                    "value":         float(row["value"]),
-                    "timestamp":     ts,
-                    "timestamp_iso": ts.isoformat(),
-                })
-                synced_ids.append(row["id"])
+                    batch.commit()
+                except Exception as e:
+                    logger.error("Firestore batch commit failed: %s", e)
+                batch = self.fs.batch()
+                ops_in_batch = 0
+
+        if ops_in_batch > 0:
             try:
                 batch.commit()
-                logger.info("Firestore: Batch flush %d sensor history rows", len(chunk))
             except Exception as e:
                 logger.error("Firestore batch commit failed: %s", e)
+
+        logger.info(
+            "Firestore: Batch flush %d sensor rows → %d docs (gộp theo room+phút)",
+            len(rows), len(groups)
+        )
         return synced_ids
 
     def update_wifi_status(self, status: str, ssid: str = "", ip: str = ""):

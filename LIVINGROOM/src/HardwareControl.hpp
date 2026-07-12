@@ -27,6 +27,7 @@ Preferences preferences;
 // Trạng thái thiết bị Living Room
 bool lrLedState = false;
 bool lrFanState = false;
+bool doorState = false;
 
 // Bộ đệm RAM lưu dữ liệu khi mất mạng
 // Lưu tối đa 50 bản tin (khoảng 4-5 phút dữ liệu nếu gửi 5s/lần)
@@ -116,12 +117,54 @@ void resetToIdle() {
     showMsg("System Ready", "Scan Card/Finger");
 }
 
-void sendStatus(String id, bool state) {
-    if(!client.connected()) return;
+void setDoorRelay(bool open) {
+    bool level = DOOR_RELAY_ACTIVE_LOW ? (open ? LOW : HIGH) : (open ? HIGH : LOW);
+    digitalWrite(PIN_DOOR_RELAY, level);
+    Serial.printf(" [DOOR] RELAY %s -> %s\n", open ? "OPEN" : "CLOSE", level == LOW ? "LOW" : "HIGH");
+}
+
+String getPayloadDevice(JsonDocument &doc) {
+    if (doc.containsKey("device")) return doc["device"].as<String>();
+    if (doc.containsKey("deviceId")) return doc["deviceId"].as<String>();
+    if (doc.containsKey("device_id")) return doc["device_id"].as<String>();
+    return String("");
+}
+
+String getPayloadAction(JsonDocument &doc) {
+    if (doc.containsKey("action")) return doc["action"].as<String>();
+    if (doc.containsKey("command")) return doc["command"].as<String>();
+    return String("");
+}
+
+bool isDoorDevice(const String &device) {
+    String id = device;
+    id.toLowerCase();
+    return id == ID_DOOR_LIVING || id == "door_lock" || id.endsWith("door") || id.indexOf("door") >= 0;
+}
+
+void sendStatus(String id, bool state, const char* topic = TOPIC_STATUS_LR) {
+    if (!client.connected()) {
+        Serial.println(" [STATUS] MQTT disconnected, skip status publish");
+        return;
+    }
     StaticJsonDocument<200> doc;
-    doc["deviceId"] = id; doc["isOn"] = state;
+    doc["device"] = id;
+    doc["deviceId"] = id;
+    doc["device_id"] = id;
+    doc["isOn"] = state;
+    if (id == ID_DOOR_LIVING || isDoorDevice(id)) {
+        doc["type"] = "door";
+        doc["name"] = "Door";
+    } else if (id == ID_LIGHT_LIVING) {
+        doc["type"] = "light";
+        doc["name"] = "Light";
+    } else if (id == ID_FAN_LIVING) {
+        doc["type"] = "fan";
+        doc["name"] = "Fan";
+    }
     String out; serializeJson(doc, out);
-    sendMQTT(TOPIC_STATUS_LR, out);
+    Serial.printf(" [STATUS] Publishing %s=%s to %s\n", id.c_str(), state ? "true" : "false", topic);
+    sendMQTT(topic, out);
 }
 
 // Hàm xả bộ đệm (Gửi dữ liệu cũ lên Gateway)
@@ -148,7 +191,10 @@ void flushSensorBuffer() {
 }
 
 void openDoor(String method, String uid) {
-    digitalWrite(PIN_DOOR_RELAY, HIGH);
+    setDoorRelay(true);
+    doorState = true;
+    sendStatus(ID_DOOR_ENTRANCE, true, TOPIC_STATUS_EN);
+    sendStatus(ID_DOOR_LIVING, true); // Preserve living room status sync too
     showMsg("Access Granted", "Welcome " + uid);
     currentState = DOOR_OPEN; 
     doorOpenTime = millis();
@@ -306,7 +352,9 @@ inline void setupHardware() {
 
     pinMode(PIN_LR_LED, OUTPUT); digitalWrite(PIN_LR_LED, lrLedState ? HIGH : LOW);
     pinMode(PIN_LR_RELAY, OUTPUT); digitalWrite(PIN_LR_RELAY, lrFanState ? HIGH : LOW);
-    pinMode(PIN_DOOR_RELAY, OUTPUT); digitalWrite(PIN_DOOR_RELAY, LOW);
+    pinMode(PIN_DOOR_RELAY, OUTPUT);
+    setDoorRelay(false);
+    doorState = false;
 
     btnLed.init(PIN_BTN_LR_LED);
     btnFan.init(PIN_BTN_LR_FAN);
@@ -402,7 +450,10 @@ inline void loopHardware() {
     } 
     else if (currentState == DOOR_OPEN) {
         if (millis() - doorOpenTime > 5000) { 
-            digitalWrite(PIN_DOOR_RELAY, LOW);
+            setDoorRelay(false);
+            doorState = false;
+            sendStatus(ID_DOOR_ENTRANCE, false, TOPIC_STATUS_EN);
+            sendStatus(ID_DOOR_LIVING, false);
             Serial.println(" [DOOR] Closed");
             resetToIdle();
         }
@@ -508,6 +559,8 @@ inline void loopHardware() {
         if (client.connected()) {
             sendStatus(ID_LIGHT_LIVING, lrLedState);
             sendStatus(ID_FAN_LIVING, lrFanState);
+            sendStatus(ID_DOOR_LIVING, doorState);
+            sendStatus(ID_DOOR_ENTRANCE, doorState, TOPIC_STATUS_EN);
         }
     }
 }
@@ -518,30 +571,90 @@ inline void processCommand(String topic, String payload) {
     DeserializationError error = deserializeJson(doc, payload);
     if (error) return;
 
-    String device = doc["device"]; 
-    String action = doc["action"]; 
+String device = getPayloadDevice(doc);
+    String action = getPayloadAction(doc);
 
-    Serial.printf(" [CMD] %s -> %s\n", device.c_str(), action.c_str());
+    Serial.printf(" [CMD] topic=%s payload=%s\n", topic.c_str(), payload.c_str());
+    Serial.printf(" [CMD] parsed device=%s action=%s\n", device.c_str(), action.c_str());
 
     // Lệnh cho Phòng Khách
     if (topic == TOPIC_CMD_LIVING) {
         bool state = (action == "turn_on");
-        if (device == ID_LIGHT_LIVING) {
+        if (device == ID_LIGHT_LIVING || device == "light_lv_1") {
             lrLedState = state;
             digitalWrite(PIN_LR_LED, state);
             preferences.begin("living_state", false); preferences.putBool("led", state); preferences.end();
             sendStatus(ID_LIGHT_LIVING, state);
         }
-        else if (device == ID_FAN_LIVING) {
+        else if (device == ID_FAN_LIVING || device == "fan_lv_1") {
             lrFanState = state;
             digitalWrite(PIN_LR_RELAY, state);
             preferences.begin("living_state", false); preferences.putBool("fan", state); preferences.end();
             sendStatus(ID_FAN_LIVING, state);
         }
+        else if (device == ID_DOOR_LIVING || device == "door_lock" || device == "door_lock_lv_1" || isDoorDevice(device)) {
+            // Các action có thể là "turn_on"/"turn_off" hoặc "open"/"close"
+            if (action == "turn_on" || action == "open" || action == "unlock" || action == "open_door") {
+                setDoorRelay(true);
+                doorState = true;
+                currentState = DOOR_OPEN;
+                doorOpenTime = millis();
+                sendStatus(ID_DOOR_ENTRANCE, true, TOPIC_STATUS_EN);
+                sendStatus(ID_DOOR_LIVING, true);
+                Serial.println(" [CMD] Remote door OPEN (living room)");
+            } else if (action == "turn_off" || action == "close" || action == "lock" || action == "close_door") {
+                setDoorRelay(false);
+                doorState = false;
+                sendStatus(ID_DOOR_ENTRANCE, false, TOPIC_STATUS_EN);
+                sendStatus(ID_DOOR_LIVING, false);
+                resetToIdle();
+                Serial.println(" [CMD] Remote door CLOSED (living room)");
+            } else if (action == "") {
+                Serial.println(" [CMD] Door command missing action, checking payload fallback");
+                if (device.equalsIgnoreCase("door_lock_lv_1") || device.equalsIgnoreCase("door_lock")) {
+                    setDoorRelay(true);
+                    doorState = true;
+                    currentState = DOOR_OPEN;
+                    doorOpenTime = millis();
+                    sendStatus(ID_DOOR_ENTRANCE, true, TOPIC_STATUS_EN);
+                    sendStatus(ID_DOOR_LIVING, true);
+                    Serial.println(" [CMD] Remote door OPEN by fallback");
+                }
+            } else {
+                Serial.printf(" [CMD] Unknown door action: %s\n", action.c_str());
+            }
+        }
+        else if (action == "ota_update") {
+            // OTA command routed to living room node
+            String url     = doc["url"]     | "";
+            String version = doc["version"] | "unknown";
+            String docId   = doc["doc_id"]  | "";
+
+            if (url.length() > 0) {
+                Serial.println("[CMD] OTA Update (living) received!");
+                struct OtaParams { String url; String ver; String docId; };
+                OtaParams* p = new OtaParams{url, version, docId};
+                xTaskCreate([](void* arg) {
+                    OtaParams* p = (OtaParams*)arg;
+                    performOTA(p->url, p->ver, p->docId);
+                    delete p;
+                    vTaskDelete(NULL);
+                }, "OTATask", 8192, p, 5, NULL);
+            }
+        }
     }
     // Lệnh cho Lối Vào (Cửa/Đăng ký)
     else if (topic == TOPIC_CMD_ENTRANCE) {
-        if (action == "open" || action == "open_door") openDoor("remote", "admin");
+        if (action == "turn_on" || action == "open" || action == "open_door" || action == "unlock") {
+            openDoor("remote", "admin");
+        }
+        else if (action == "turn_off" || action == "close" || action == "close_door" || action == "lock") {
+            setDoorRelay(false);
+            doorState = false;
+            sendStatus(ID_DOOR_ENTRANCE, false, TOPIC_STATUS_EN);
+            resetToIdle();
+            Serial.println(" [CMD] Remote door CLOSED (entrance)");
+        }
         else if (action == "enroll") {
             currentState = ENROLL_WAIT_RFID;
             Serial.println(" [CMD] Start Enrollment Mode");

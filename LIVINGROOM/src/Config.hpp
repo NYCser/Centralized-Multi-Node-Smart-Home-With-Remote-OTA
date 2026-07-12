@@ -20,6 +20,10 @@
 // ID thiết bị (Living Room)
 #define ID_LIGHT_LIVING "light_lv_1"
 #define ID_FAN_LIVING   "fan_lv_1"
+// ID cho khóa cửa phòng khách (thiết bị điều khiển từ web)
+#define ID_DOOR_LIVING  "door_lock_lv_1"
+// ID cho khóa cửa lối vào / entrance panel
+#define ID_DOOR_ENTRANCE "door_lock"
 
 // ================= 3. PIN MAP  =================
 // --- Living Room ---
@@ -37,6 +41,10 @@
 #define PIN_RFID_RST   4
 #define PIN_FP_RX      16
 #define PIN_FP_TX      17
+
+// RELAY LOGIC FOR DOOR
+// true if relay closes the circuit when pin is LOW (common module behavior)
+#define DOOR_RELAY_ACTIVE_LOW true
 
 // --- LCD I2C ---
 #define PIN_I2C_SDA    21
