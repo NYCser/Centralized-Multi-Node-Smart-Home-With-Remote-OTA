@@ -49137,3 +49137,187 @@ ValueError: The default Firebase app already exists. This means you called initi
 2026-07-12 17:01:31 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
 2026-07-12 17:01:38 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
 2026-07-12 17:01:53 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:02:08 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:02:23 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:02:31 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:02:38 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:02:53 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:03:09 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:03:24 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:03:25 [INFO][SD2-WRITER] Đã cập nhật config email từ Firestore — user=ycao800@gmail.com, to=caota959@gmail.com, cooldown=120s
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:03:32 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:03:39 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:03:54 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:04:10 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:04:25 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:04:32 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:04:40 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:04:55 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:05:10 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:05:26 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:05:32 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:05:41 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:05:56 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:06:11 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:06:26 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:06:32 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:06:42 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:06:57 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:07:12 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:07:27 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:07:33 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:07:43 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:07:58 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:08:13 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:08:25 [INFO][SD2-WRITER] Đã cập nhật config email từ Firestore — user=ycao800@gmail.com, to=caota959@gmail.com, cooldown=120s
+2026-07-12 17:08:28 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:08:33 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:08:44 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:08:59 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:09:14 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:09:29 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:09:33 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:09:44 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:10:00 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:10:15 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:10:30 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:10:34 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:10:45 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:11:00 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:11:15 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:11:31 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:11:34 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:11:46 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:12:01 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:12:16 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:12:22 [WARNING][SD2-WRITER] Retrying (Retry(total=9, connect=1, read=0, redirect=None, status=4)) after connection broken by 'ProtocolError('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))': /gateway_status.json?print=silent
+2026-07-12 17:12:32 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:12:34 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:12:47 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:13:02 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:13:17 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:13:25 [INFO][SD2-WRITER] Đã cập nhật config email từ Firestore — user=ycao800@gmail.com, to=caota959@gmail.com, cooldown=120s
+2026-07-12 17:13:32 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:13:35 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:13:48 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:14:03 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:14:18 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:14:33 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:14:35 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
+2026-07-12 17:14:48 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:15:04 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:15:19 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:15:34 [INFO][SD2-WRITER] Event flush: +200 rows → SD2
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC DEBUG] main DB sensor_data: total=185163 rows, today=0 rows
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] sensor_data: +1000 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] rooms: +3 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] devices: +6 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] automations: +3 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] schedules: +6 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] rfid_cards: +2 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] users: +2 rows synced
+2026-07-12 17:15:35 [INFO][SD2-WRITER] [SYNC] Total synced from main DB: 1022 rows
