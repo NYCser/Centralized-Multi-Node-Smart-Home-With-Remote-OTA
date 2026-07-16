@@ -10,7 +10,7 @@ Gateway trung tâm (chạy trên **Raspberry Pi**, Python) đóng vai trò cầu
 
 Thay vì để ESP32 giao tiếp trực tiếp với Firebase (tốn tài nguyên, khó bảo mật, không hoạt động khi mất Internet), toàn bộ hệ thống được thiết kế theo mô hình **Edge Gateway**:
 
-![Kiến trúc SmartHome Gateway](docs/gateway-architecture.png)
+![Kiến trúc SmartHome Gateway](kientrucsmarthome.drawio.png)
 
 **Nguyên tắc cốt lõi:**
 - **Message Bus làm xương sống** — mọi thành phần (ESP32, worker, API, Firebase) chỉ giao tiếp qua Redis Pub/Sub, không gọi trực tiếp lẫn nhau → dễ mở rộng, dễ debug, các worker độc lập (crash 1 worker không sập cả hệ thống).
