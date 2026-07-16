@@ -1,4 +1,3 @@
-Last update: Tue 21 Apr 12:46:18 +07 2026
 # 🏠 SmartHome Gateway — Raspberry Pi Middleware
 
 Gateway trung tâm (chạy trên **Raspberry Pi**, Python) đóng vai trò cầu nối giữa các node **ESP32** (cảm biến/thiết bị vật lý) và **Firebase Cloud** (Web dashboard). Đây là thành phần lõi của đồ án hệ thống Nhà Thông Minh — nơi xử lý toàn bộ logic tự động hóa, an toàn, đồng bộ dữ liệu và cập nhật firmware từ xa.
@@ -11,31 +10,7 @@ Gateway trung tâm (chạy trên **Raspberry Pi**, Python) đóng vai trò cầu
 
 Thay vì để ESP32 giao tiếp trực tiếp với Firebase (tốn tài nguyên, khó bảo mật, không hoạt động khi mất Internet), toàn bộ hệ thống được thiết kế theo mô hình **Edge Gateway**:
 
-```
-                         ┌─────────────────────────────────────────────┐
-                         │              RASPBERRY PI GATEWAY            │
-   ┌─────────┐   MQTT    │  ┌───────────┐        ┌─────────────────┐  │   Firestore
-   │ ESP32   │◀─────────▶│  │MessageBus │◀──────▶│  Redis Pub/Sub   │  │  /RTDB/Auth
-   │ Nodes   │  (LAN AP) │  │(MQTT↔Redis)│        │  (message queue) │  │◀───────────▶ ┌─────────┐
-   └─────────┘           │  └───────────┘        └────────┬─────────┘  │              │ Firebase │
-                         │                                 │            │              │  Cloud   │
-                         │   ┌─────────────────────────────┼─────────┐ │              └────┬────┘
-                         │   │           WORKER THREADS      │         │ │                   │
-                         │   │  automation_engine  safety_watchdog    │ │                   │
-                         │   │  data_syncer  firebase_sync  network_watchdog                 │
-                         │   │  email_notifier  ota_manager  event_logger  gateway_config     │
-                         │   └───────────────────────────────┬─────────┘ │                   │
-                         │                        ┌──────────▼─────────┐ │                   │
-                         │                        │  SQLite (main DB)   │ │                   │
-                         │                        │  + SD2 (backup DB)  │ │                   │
-                         │                        └─────────────────────┘ │                   │
-                         │   ┌──────────────────────────────────────────┐ │                   │
-                         │   │  Flask REST API (all_routes.py) + SocketIO│ │                   │
-                         │   └──────────────────────────────────────────┘ │                   │
-                         └─────────────────────────────────────────────┘                       │
-                                                    ▲                                            │
-                                                    └────────────────── Web Dashboard ───────────┘
-```
+![Kiến trúc SmartHome Gateway](docs/gateway-architecture.png)
 
 **Nguyên tắc cốt lõi:**
 - **Message Bus làm xương sống** — mọi thành phần (ESP32, worker, API, Firebase) chỉ giao tiếp qua Redis Pub/Sub, không gọi trực tiếp lẫn nhau → dễ mở rộng, dễ debug, các worker độc lập (crash 1 worker không sập cả hệ thống).
