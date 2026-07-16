@@ -109,18 +109,6 @@ MessageBus (bridge/message_bus.py)
     ESP32 (Device Command Processing)
 ```
 
-### Worker Responsibilities
-
-| Worker | Purpose | Input | Output |
-|--------|---------|-------|--------|
-| **automation_engine** | Process sensor data, trigger automations | mqtt_inbound, automation rules | device_commands, logs |
-| **safety_watchdog** | Monitor gas/fire, apply safety locks | mqtt_inbound, automation rules | safety_alert, alarm commands |
-| **firebase_sync** | Sync data to Firebase cloud | mqtt_inbound, device_status, alerts | RTDB, Firestore collections |
-| **data_syncer** | Persist sensor history to SD2 | event_queue, redis buffer | CSV exports, daily DBs |
-| **network_watchdog** | Maintain WiFi/Hotspot, NTP sync | system checks | wifi_status, network events |
-
----
-
 ## FILE STRUCTURE & MODULES
 
 ### GATEWAY/ (Main Server)
