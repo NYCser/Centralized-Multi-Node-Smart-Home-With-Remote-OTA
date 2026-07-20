@@ -3,6 +3,8 @@
 Gateway trung tâm (chạy trên **Raspberry Pi**, Python) đóng vai trò cầu nối giữa các node **ESP32** (cảm biến/thiết bị vật lý) và **Firebase Cloud** (Web dashboard). Đây là thành phần lõi của đồ án hệ thống Nhà Thông Minh — nơi xử lý toàn bộ logic tự động hóa, an toàn, đồng bộ dữ liệu và cập nhật firmware từ xa.
 
 > Đồ án 1 — Khoa Đào tạo Chất lượng cao, HCMUTE
+> https://youtu.be/iGAsCEW-4ug?feature=shared
+> 
 
 ---
 
