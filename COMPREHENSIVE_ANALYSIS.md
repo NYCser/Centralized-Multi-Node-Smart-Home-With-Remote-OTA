@@ -18,54 +18,7 @@
 9. [API Endpoints](#api-endpoints)
 10. [Error Conditions & Edge Cases](#error-conditions--edge-cases)
 
----
-
-## SYSTEM ARCHITECTURE
-
-### Overview
-```raw
-┌─────────────────────────────────────────────────────────────────┐
-│                    SMARTHOME ARCHITECTURE                       │
-└─────────────────────────────────────────────────────────────────┘
-
-                          ┌──────────────────┐
-                          │   FIREBASE       │
-                          │ - Firestore      │
-                          │ - RTDB           │
-                          │ - Auth           │
-                          │ - Storage        │
-                          └────────┬─────────┘
-                                   │
-                ┌──────────────────┴──────────────────┐
-                │                                     │
-        ┌───────▼────────────┐              ┌────────▼───────────┐
-        │  WEB DASHBOARD     │              │  GATEWAY (Pi)      │
-        │ - HTML/CSS/JS      │              │ - Flask API        │
-        │ - Firebase Config  │              │ - MQTT Broker      │
-        │ - Realtime Updates │              │ - Redis Pub/Sub    │
-        │ - Admin Panel      │              │ - SQLite DB        │
-        └────────┬───────────┘              └────────┬───────────┘
-                 │                                   │
-                 │ (HTTPS/SocketIO)    (MQTT 1883)   │
-                 │                         ▲         │
-                 │                         │         │
-        ┌────────┴─────────────────────────┴─────────┴──────────┐
-        │                                                       │
-   ┌────▼────┐  ┌─────────┐  ┌─────────────┐  ┌──────────────┐
-   │ BEDROOM  │  │ KITCHEN │  │ LIVING ROOM │  │ ESP32 Nodes  │
-   │ ESP32-01 │  │ESP32-02 │  │  ESP32-03   │  │              │
-   ├──────────┤  ├─────────┤  ├─────────────┤  │  Features:   │
-   │ - HDC1080│  │- HDC1080│  │ - HDC1080   │  │ - Temp/Hum   │
-   │ - CCS811 │  │- CCS811 │  │ - CCS811    │  │ - Gas Sensor │
-   │ - Fan    │  │- Fan    │  │ - Fan       │  │ - CO2 Sensor │
-   │ - Light  │  │- Light  │  │ - Light     │  │ - Relays     │
-   │ - Relays │  │- Relays │  │ - Relays    │  │ - RFID       │
-   └──────────┘  └─────────┘  └─────────────┘  └──────────────┘
-        │            │             │
-        └────────────┴─────────────┘
-             MQTT Topics
-             home/{room}/{category}
-```
+---```
 
 ### Technology Stack
 - **Gateway**: Python 3 (Flask, PubSubClient, Firebase Admin SDK)
