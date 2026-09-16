@@ -5,7 +5,7 @@ Gateway trung tâm (chạy trên **Raspberry Pi**, Python) đóng vai trò cầu
 > Đồ án 1 — Khoa Đào tạo Chất lượng cao, HCMUTE
 > https://youtu.be/iGAsCEW-4ug?feature=shared
 > 
-> CAONHUY_DAMH1.pdf
+> [Xem tài liệu đồ án (PDF)](CAONHUY_DAMH1.pdf)
 
 ---
 
