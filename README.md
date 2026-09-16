@@ -52,26 +52,7 @@ Thay vì để ESP32 giao tiếp trực tiếp với Firebase (tốn tài nguyê
 
 ---
 
-## 4. Liên hệ với vị trí Kỹ sư Phần mềm Nhúng (Embedded Software Engineer)
-
-Đối chiếu với các yêu cầu công việc thường gặp cho vị trí Fresher/Junior Embedded Software Engineer, phần nào của đồ án đã thực hành/đáp ứng và phần nào là hướng cần bổ sung:
-
-| Yêu cầu JD | Mức độ đã thực hành trong đồ án |
-|---|---|
-| Lập trình C, C++, Python (test tool, scripting), Shell script | ✅ **Python** cho toàn bộ gateway (workers, Flask API, xử lý đa luồng với `threading`, giao tiếp Redis/MQTT/SQLite/Firestore); **C++** cho firmware ESP32 (3 node: bedroom/kitchen/living room, kiến trúc `NetworkManager`, `MessageBus` phía firmware). |
-| Kiến thức về RTOS (FreeRTOS, Zephyr, ThreadX...) | 🟡 ESP32 Arduino framework chạy trên nền **FreeRTOS** (task OTA, MQTT, sensor polling) — đã làm việc gián tiếp qua Arduino API, chưa viết task/queue FreeRTOS thuần thục ở mức low-level. |
-| Giao tiếp I2C, SPI, UART, CAN, Ethernet, USB, BLE | 🟡 Đã dùng **UART** (debug/nạp firmware ESP32), cảm biến nhiệt độ/độ ẩm/gas qua chân digital/analog trên ESP32, module RFID qua **SPI**. Chưa có kinh nghiệm với **CAN bus**. |
-| Giao thức mạng Ethernet, UDP, TCP | ✅ MQTT chạy trên TCP (`paho-mqtt`), Redis giao tiếp TCP nội bộ, REST API HTTP/TCP (Flask), tự quản lý Access Point (`wlan0`) và giao thức DHCP/WiFi ở tầng OS (`network_watchdog.py`). |
-| Bootloader, OTA update, bảo mật firmware | ✅ Đây là phần được đầu tư kỹ nhất: cả **luồng OTA hoàn chỉnh** (upload → notice → user xác nhận → dispatch MQTT → ESP32 tự tải & flash → báo cáo kết quả), có xử lý fail-safe (mở khóa an toàn khi OTA thất bại) và versioning firmware qua RTDB. |
-| Tích hợp hệ thống nhúng với Cloud (MQTT, HTTP, WebSocket) | ✅ Đúng trọng tâm của gateway: **MQTT** (ESP32↔Pi), **HTTP REST** (Web↔Pi qua Flask), **WebSocket** (Flask-SocketIO cho realtime bổ sung), cộng thêm **Firestore/RTDB** (Pi↔Cloud) — tức là đã thực hành gần như trọn bộ giao thức tích hợp cloud phổ biến cho thiết bị nhúng. |
-| Linux Embedded: Yocto, Buildroot, U-Boot, Device Tree | 🟡 Gateway chạy trên **Raspberry Pi OS** (Debian-based), có cấu hình **systemd service** để tự khởi động/restart, quản lý network interface ở tầng hệ điều hành — nhưng chưa từng build custom Linux image bằng Yocto/Buildroot hay tùy biến Device Tree/U-Boot. Đây là khoảng trống lớn nhất so với JD. |
-| Containerization (Docker) | ❌ Chưa áp dụng trong đồ án — dự án hiện chạy trực tiếp trên Pi qua systemd, chưa đóng gói Docker. Là hướng cải tiến tiếp theo (đặc biệt hợp lý cho các worker Python vốn đã tách module rõ ràng, dễ container hóa). |
-
-**Nhận xét chung**: đồ án bám khá sát nhóm kỹ năng "tích hợp hệ thống nhúng với Cloud" và "OTA/bảo mật firmware" — vốn là phần thường bị đánh giá thấp ở ứng viên fresher vì ít được thực hành trong môn học. Điểm cần bổ sung để khớp JD trọn vẹn hơn là mảng **Embedded Linux build system** (Yocto/Buildroot/U-Boot/Device Tree), **RTOS thuần** (viết task/queue trực tiếp thay vì qua Arduino abstraction), và **Docker**.
-
----
-
-## 5. Cấu trúc thư mục (rút gọn)
+##  Cấu trúc thư mục (rút gọn)
 
 ```
 gateway/
@@ -98,7 +79,7 @@ gateway/
 
 ---
 
-## 6. Chạy thử (tóm tắt)
+##  Chạy thử (tóm tắt)
 
 ```bash
 # Yêu cầu: Python 3.10+, Redis server, Mosquitto MQTT broker, Firebase service account key
@@ -117,9 +98,3 @@ CONFIG_POLL_INTERVAL_SECONDS=300
 ```
 
 ---
-
-## 7. Thực hiện
-
-| Họ tên | Email |
-|---|---|
-| Cao Như Ý | 23139052@student.hcmute.edu.vn |
